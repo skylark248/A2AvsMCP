@@ -46,6 +46,12 @@ export interface TraceEvent {
   transport?: string;
   requested_transport?: string;
   error?: string;
+  // Phase 2 enrichment fields
+  step_index?: number;
+  phase?: "discovery" | "execution";
+  parallel_batch_id?: string;
+  started_at?: number;
+  completed_at?: number;
   [key: string]: unknown;
 }
 
