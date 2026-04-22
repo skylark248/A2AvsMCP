@@ -48,7 +48,7 @@ Plans:
 **Plans**: 3 plans
 Plans:
 - [ ] 02-01-PLAN.md — Backend: TraceRecorder enrichment (step_index, phase), A2ABroker.send_tasks_parallel(), timeout_ms=5000, api_schemas.py extension
-- [ ] 02-02-PLAN.md — Frontend types: TraceEvent + TraceEventResponse extended with 5 fields; groupA2AEventsByTaskId() helper
+- [x] 02-02-PLAN.md — Frontend types: TraceEvent + TraceEventResponse extended with 5 fields; groupA2AEventsByTaskId() helper
 - [ ] 02-03-PLAN.md — Frontend: Three-tier accordion TraceExplorer; pytest Phase 2 trace field assertions
 
 ### Phase 3: New Scenarios
@@ -95,7 +95,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Demo Stability Foundation | 2/2 | Complete | 2026-04-22 |
-| 2. Backend Trace Enrichment | 0/3 | Not started | - |
+| 2. Backend Trace Enrichment | 1/3 | In Progress|  |
 | 3. New Scenarios | 0/TBD | Not started | - |
 | 4. Comparison UI | 0/TBD | Not started | - |
 | 5. Presentation Polish | 0/TBD | Not started | - |

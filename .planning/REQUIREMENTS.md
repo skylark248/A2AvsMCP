@@ -21,9 +21,9 @@
 
 ### Trace Enrichment
 
-- [ ] **TRACE-01**: `step_index` field added to `tool_call` and `task_submit` trace events
-- [ ] **TRACE-02**: `parallel_batch_id`, `started_at`, and `completed_at` fields added to parallel task events; mock mode injects deterministic synthetic timing offsets
-- [ ] **TRACE-03**: `phase` field (`"discovery"` / `"execution"`) added to all trace event types
+- [x] **TRACE-01**: `step_index` field added to `tool_call` and `task_submit` trace events
+- [x] **TRACE-02**: `parallel_batch_id`, `started_at`, and `completed_at` fields added to parallel task events; mock mode injects deterministic synthetic timing offsets
+- [x] **TRACE-03**: `phase` field (`"discovery"` / `"execution"`) added to all trace event types
 - [ ] **TRACE-04**: `A2ABroker` gains `send_tasks_parallel()` method; `timeout_ms` raised to 5000ms for mock parallel scenarios
 - [ ] **TRACE-05**: Trace view tier architecture implemented — summary strip / protocol-level / full trace (with A2A task sub-events collapsible; 150-event soft render cap)
 
