@@ -79,6 +79,7 @@ class RunResultResponse(BaseModel):
     trace: list[TraceEventResponse]
     external_log_path: str | None = None
     a2a_transport: str = "local"
+    mcp_transport: str | None = None
 
 
 class ModeScorecardResponse(BaseModel):
