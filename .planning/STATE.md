@@ -5,14 +5,14 @@
 See: .planning/PROJECT.md (updated 2026-04-22)
 
 **Core value:** A side-by-side, runnable comparison that makes the differences between MCP and A2A visible — not described, not diagrammed, but live and traceable.
-**Current focus:** Phase 1 — Demo Stability Foundation
+**Current focus:** Phase 2 — Backend Trace Enrichment
 
 ## Current Position
 
-Phase: 1 of 5 (Demo Stability Foundation)
-Plan: 2 of 2 in current phase
-Status: Complete
-Last activity: 2026-04-22 — Phase 1 verified 5/5 (serialization gap fixed post-verification)
+Phase: 2 of 5 (Backend Trace Enrichment)
+Plan: 0 of TBD in current phase
+Status: Context captured — ready for planning
+Last activity: 2026-04-22 — Phase 2 context gathered (step_index, phase tagging, trace tier UI decisions locked)
 
 Progress: [██░░░░░░░░] 20%
 
@@ -68,5 +68,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-04-22
-Stopped at: Roadmap, STATE.md, and REQUIREMENTS.md traceability written — project ready for Phase 1 planning
-Resume file: None
+Stopped at: Phase 2 context captured — ready for /gsd-plan-phase 2
+Resume file: .planning/phases/02-backend-trace-enrichment/02-CONTEXT.md
