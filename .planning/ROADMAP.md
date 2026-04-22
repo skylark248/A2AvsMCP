@@ -32,8 +32,8 @@ Decimal phases appear between their surrounding integers in numeric order.
   5. `FakeReasoningEngine` exists so the LLM code path can be exercised in tests without `OPENAI_API_KEY`
 **Plans**: 2 plans
 Plans:
-- [ ] 01-PLAN-01.md — Backend: dependency pins, FakeReasoningEngine, mcp_transport schema field, pytest migration + conftest, async integration tests
-- [ ] 01-PLAN-02.md — Frontend: mcp_transport in RunResult TS interface + transport badge Chip in run header row
+- [x] 01-PLAN-01.md — Backend: dependency pins, FakeReasoningEngine, mcp_transport schema field, pytest migration + conftest, async integration tests
+- [x] 01-PLAN-02.md — Frontend: mcp_transport in RunResult TS interface + transport badge Chip in run header row
 
 ### Phase 2: Backend Trace Enrichment
 **Goal**: All trace events carry the enriched fields (`step_index`, `parallel_batch_id`, timing offsets, `phase`) that downstream UI components depend on, and the broker supports parallel task dispatch
