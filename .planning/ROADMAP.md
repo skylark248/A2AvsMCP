@@ -12,7 +12,7 @@ This milestone deepens the demo platform from a working prototype into a polishe
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Demo Stability Foundation** - All four modes run reliably without an API key; test harness in place
+- [x] **Phase 1: Demo Stability Foundation** - All four modes run reliably without an API key; test harness in place
 - [ ] **Phase 2: Backend Trace Enrichment** - Trace events carry the data contract all frontend components require
 - [ ] **Phase 3: New Scenarios** - Multi-step and parallel-agent scenarios expose protocol depth visibly
 - [ ] **Phase 4: Comparison UI** - Side-by-side visualization makes protocol differences unmissable at a glance
@@ -90,7 +90,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Demo Stability Foundation | 0/2 | Not started | - |
+| 1. Demo Stability Foundation | 2/2 | Complete | 2026-04-22 |
 | 2. Backend Trace Enrichment | 0/TBD | Not started | - |
 | 3. New Scenarios | 0/TBD | Not started | - |
 | 4. Comparison UI | 0/TBD | Not started | - |
