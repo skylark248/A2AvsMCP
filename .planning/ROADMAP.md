@@ -30,7 +30,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. `pyproject.toml` pins `mcp>=1.27,<2` and `a2a-sdk==0.3.26`; `pip install` succeeds cleanly
   4. `pytest` suite passes including at least one async FastAPI integration test that exercises the MCP mode end-to-end without an API key
   5. `FakeReasoningEngine` exists so the LLM code path can be exercised in tests without `OPENAI_API_KEY`
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 01-PLAN-01.md — Backend: dependency pins, FakeReasoningEngine, mcp_transport schema field, pytest migration + conftest, async integration tests
+- [ ] 01-PLAN-02.md — Frontend: mcp_transport in RunResult TS interface + transport badge Chip in run header row
 
 ### Phase 2: Backend Trace Enrichment
 **Goal**: All trace events carry the enriched fields (`step_index`, `parallel_batch_id`, timing offsets, `phase`) that downstream UI components depend on, and the broker supports parallel task dispatch
@@ -87,7 +90,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Demo Stability Foundation | 0/TBD | Not started | - |
+| 1. Demo Stability Foundation | 0/2 | Not started | - |
 | 2. Backend Trace Enrichment | 0/TBD | Not started | - |
 | 3. New Scenarios | 0/TBD | Not started | - |
 | 4. Comparison UI | 0/TBD | Not started | - |
