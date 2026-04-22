@@ -75,30 +75,30 @@
 
 ## Traceability
 
-| Requirement | Phase | Status |
-|-------------|-------|--------|
-| STAB-01 | Phase 1 | Pending |
-| STAB-02 | Phase 1 | Pending |
-| STAB-03 | Phase 1 | Pending |
-| STAB-04 | Phase 1 | Pending |
-| STAB-05 | Phase 1 | Pending |
-| TRACE-01 | Phase 2 | Pending |
-| TRACE-02 | Phase 2 | Pending |
-| TRACE-03 | Phase 2 | Pending |
-| TRACE-04 | Phase 2 | Pending |
-| TRACE-05 | Phase 2 | Pending |
-| SCEN-01 | Phase 3 | Pending |
-| SCEN-02 | Phase 3 | Pending |
-| SCEN-03 | Phase 3 | Pending |
-| UI-01 | Phase 4 | Pending |
-| UI-02 | Phase 4 | Pending |
-| UI-03 | Phase 4 | Pending |
-| UI-04 | Phase 4 | Pending |
-| UI-05 | Phase 4 | Pending |
-| PRES-01 | Phase 5 | Pending |
-| PRES-02 | Phase 5 | Pending |
-| PRES-03 | Phase 5 | Pending |
-| PRES-04 | Phase 5 | Pending |
+| Requirement | Phase | Phase Name | Status |
+|-------------|-------|------------|--------|
+| STAB-01 | Phase 1 | Demo Stability Foundation | Pending |
+| STAB-02 | Phase 1 | Demo Stability Foundation | Pending |
+| STAB-03 | Phase 1 | Demo Stability Foundation | Pending |
+| STAB-04 | Phase 1 | Demo Stability Foundation | Pending |
+| STAB-05 | Phase 1 | Demo Stability Foundation | Pending |
+| TRACE-01 | Phase 2 | Backend Trace Enrichment | Pending |
+| TRACE-02 | Phase 2 | Backend Trace Enrichment | Pending |
+| TRACE-03 | Phase 2 | Backend Trace Enrichment | Pending |
+| TRACE-04 | Phase 2 | Backend Trace Enrichment | Pending |
+| TRACE-05 | Phase 2 | Backend Trace Enrichment | Pending |
+| SCEN-01 | Phase 3 | New Scenarios | Pending |
+| SCEN-02 | Phase 3 | New Scenarios | Pending |
+| SCEN-03 | Phase 3 | New Scenarios | Pending |
+| UI-01 | Phase 4 | Comparison UI | Pending |
+| UI-02 | Phase 4 | Comparison UI | Pending |
+| UI-03 | Phase 4 | Comparison UI | Pending |
+| UI-04 | Phase 4 | Comparison UI | Pending |
+| UI-05 | Phase 4 | Comparison UI | Pending |
+| PRES-01 | Phase 5 | Presentation Polish | Pending |
+| PRES-02 | Phase 5 | Presentation Polish | Pending |
+| PRES-03 | Phase 5 | Presentation Polish | Pending |
+| PRES-04 | Phase 5 | Presentation Polish | Pending |
 
 **Coverage:**
 - v1 requirements: 22 total
@@ -107,4 +107,4 @@
 
 ---
 *Requirements defined: 2026-04-22*
-*Last updated: 2026-04-22 after initial definition*
+*Last updated: 2026-04-22 after roadmap creation*
