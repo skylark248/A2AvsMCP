@@ -45,7 +45,11 @@ Plans:
   3. All trace event types include a `phase` field with value `"discovery"` or `"execution"`
   4. `A2ABroker` has a working `send_tasks_parallel()` method and `timeout_ms` is raised to 5000ms for parallel scenarios
   5. The trace view renders in three tiers — summary strip, protocol-level, full trace — with A2A sub-events collapsible and a 150-event soft render cap
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+- [ ] 02-01-PLAN.md — Backend: TraceRecorder enrichment (step_index, phase), A2ABroker.send_tasks_parallel(), timeout_ms=5000, api_schemas.py extension
+- [ ] 02-02-PLAN.md — Frontend types: TraceEvent + TraceEventResponse extended with 5 fields; groupA2AEventsByTaskId() helper
+- [ ] 02-03-PLAN.md — Frontend: Three-tier accordion TraceExplorer; pytest Phase 2 trace field assertions
 
 ### Phase 3: New Scenarios
 **Goal**: The multi-step workflow and parallel-agent scenarios are runnable from the UI, producing rich traces that make protocol depth immediately visible
@@ -91,7 +95,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Demo Stability Foundation | 2/2 | Complete | 2026-04-22 |
-| 2. Backend Trace Enrichment | 0/TBD | Not started | - |
+| 2. Backend Trace Enrichment | 0/3 | Not started | - |
 | 3. New Scenarios | 0/TBD | Not started | - |
 | 4. Comparison UI | 0/TBD | Not started | - |
 | 5. Presentation Polish | 0/TBD | Not started | - |
