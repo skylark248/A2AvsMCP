@@ -68,6 +68,12 @@ export interface ComparisonMetrics {
   failures: number;
 }
 
+export interface TalkingPointCard {
+  headline: string;
+  sentence: string;
+  callout: string;
+}
+
 export interface RunResult {
   mode: string;
   runtime: string;
@@ -79,6 +85,8 @@ export interface RunResult {
     title?: string;
     difficulty?: string;
     tags?: string[];
+    // Phase 3: per-scenario talking point for presenter card
+    talking_point?: TalkingPointCard | null;
   };
   final_answer: string;
   metrics: ComparisonMetrics;

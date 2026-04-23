@@ -13,6 +13,7 @@ import {
   Grid,
   InputLabel,
   MenuItem,
+  Paper,
   Select,
   Stack,
   Switch,
@@ -44,6 +45,13 @@ import type {
   ScenarioOption,
   TransportMode,
 } from "../../lib/types/api";
+
+const protocolColor: Record<string, string> = {
+  mcp: "#1976d2",      // MUI blue
+  a2a: "#7b1fa2",      // MUI purple
+  hybrid: "#2e7d32",   // MUI green
+  baseline: "#757575", // MUI grey
+};
 
 const modeOptions: DemoMode[] = ["all", "baseline", "mcp", "a2a", "hybrid"];
 const runtimeOptions: RuntimeMode[] = ["mock", "llm"];
@@ -883,6 +891,29 @@ export function RunWorkspacePage() {
                                         <Chip label={`A2A ${item.a2a_transport}`} size="small" variant="outlined" />
                                       ) : null}
                                     </Stack>
+                                    {item.ticket?.talking_point ? (
+                                      <Paper
+                                        elevation={0}
+                                        sx={{
+                                          borderLeft: `4px solid ${protocolColor[item.mode] ?? "#757575"}`,
+                                          bgcolor: "action.hover",
+                                          p: 1.5,
+                                        }}
+                                      >
+                                        <Typography variant="subtitle2" fontWeight="bold">
+                                          {item.ticket.talking_point.headline}
+                                        </Typography>
+                                        <Typography variant="body2" sx={{ mt: 0.5 }}>
+                                          {item.ticket.talking_point.sentence}
+                                        </Typography>
+                                        <Typography
+                                          variant="body2"
+                                          sx={{ mt: 0.5, fontStyle: "italic", color: "text.secondary" }}
+                                        >
+                                          {item.ticket.talking_point.callout}
+                                        </Typography>
+                                      </Paper>
+                                    ) : null}
                                   </Stack>
                                 </CardContent>
                               </Card>
