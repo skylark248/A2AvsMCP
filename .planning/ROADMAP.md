@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Demo Stability Foundation** - All four modes run reliably without an API key; test harness in place
 - [x] **Phase 2: Backend Trace Enrichment** - Trace events carry the data contract all frontend components require
-- [ ] **Phase 3: New Scenarios** - Multi-step and parallel-agent scenarios expose protocol depth visibly
+- [x] **Phase 3: New Scenarios** - Multi-step and parallel-agent scenarios expose protocol depth visibly
 - [ ] **Phase 4: Comparison UI** - Side-by-side visualization makes protocol differences unmissable at a glance
 - [ ] **Phase 5: Presentation Polish** - Talking-point cards, glossary popovers, and failure-mode walkthrough complete demo day readiness
 
@@ -65,7 +65,7 @@ Plans:
 - [x] 03-01-PLAN.md — Seed data + schema layer (SupportTicket.talking_point, TalkingPointResponse, scenarios.json 12 entries, warranties.json WAR-7004, SCEN-03 pytest)
 - [x] 03-02-PLAN.md — TriageAgent parallel dispatch (_resolve_parallel, send_tasks_parallel branch, SCEN-02 pytest)
 - [x] 03-03-PLAN.md — SCEN-01 pytest validation (all 4 modes, 3+ a2a handoffs, 4+ mcp tool calls)
-- [ ] 03-04-PLAN.md — Frontend types + TalkingPointCard UI (api.generated.ts TalkingPointCard interface, RunWorkspacePage.tsx Paper + protocolColor + render)
+- [x] 03-04-PLAN.md — Frontend types + TalkingPointCard UI (api.generated.ts TalkingPointCard interface, RunWorkspacePage.tsx Paper + protocolColor + render)
 
 ### Phase 4: Comparison UI
 **Goal**: The comparison UI exposes protocol differences as first-class visual elements — outcome metrics, swimlane timelines, and side-by-side trace panels — without requiring the viewer to read raw trace JSON
@@ -111,6 +111,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. Demo Stability Foundation | 2/2 | Complete | 2026-04-22 |
 | 2. Backend Trace Enrichment | 3/3 | Complete | 2026-04-23 |
-| 3. New Scenarios | 3/4 | In progress | - |
+| 3. New Scenarios | 4/4 | Complete | 2026-04-23 |
 | 4. Comparison UI | 0/TBD | Not started | - |
 | 5. Presentation Polish | 0/TBD | Not started | - |

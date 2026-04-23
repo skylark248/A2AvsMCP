@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: "Completed 03-03-PLAN.md — SCEN-01 pytest validation, 49/49 tests passing, Wave 1 complete"
-last_updated: "2026-04-23T16:13:33Z"
+stopped_at: "Completed 03-04-PLAN.md — TalkingPointCard TS interface + RunWorkspacePage Paper/protocolColor/JSX render, Vite build clean, Phase 3 all 4 plans complete"
+last_updated: "2026-04-23T16:32:00Z"
 last_activity: 2026-04-23
 progress:
   total_phases: 5
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-04-22)
 ## Current Position
 
 Phase: 3 of 5 (New Scenarios)
-Plan: 3 of 4 in current phase (03-03 complete, Wave 1 done)
-Status: Executing — Wave 2 ready (03-04 next)
+Plan: 4 of 4 in current phase (03-04 complete, Phase 3 done)
+Status: Phase 3 complete — ready for Phase 4 (Comparison UI)
 Last activity: 2026-04-23
 
-Progress: [██████░░░░] 60%
+Progress: [████████░░] 80%
 
 ## Performance Metrics
 
@@ -72,6 +72,9 @@ Recent decisions affecting current work:
 - 03-02: Tag check inserted as first line of resolve_with_broker() before intent classification — deterministic, crash-safe (D-06); _merge() used with issue_type='parallel_investigation'
 - 03-03: a2a sequential dispatch emits a2a_message(task_request) not task_submit — task_submit is parallel-only (D-07); assertion corrected from task_submit to a2a_message filter
 - 03-03: MockReasoner classifies 'failed after 6 months — warranty refund' as warranty_return with needs_docs=False (no failing/error/setup match) — 2 specialists fire; assertion adjusted to >= 2 with comment (D-08)
+- 03-04: api.ts maintains an independent inline RunResult.ticket type separate from api.generated.ts TicketResponse — both must be patched when adding fields; TalkingPointCard added to both (Rule 1 fix)
+- 03-04: protocolColor hardcoded at module level in RunWorkspacePage.tsx — Phase 4 eventColors.ts will subsume this (D-15)
+- 03-04: TalkingPointCard JSX inline in result map, not extracted to a component file (D-14)
 
 ### Pending Todos
 
@@ -94,5 +97,5 @@ None — Phase 2 complete. TRACE-05 delivered; timeout_ms=5000 in A2ABroker conf
 ## Session Continuity
 
 Last session: 2026-04-23
-Stopped at: Completed 03-03-PLAN.md — SCEN-01 pytest validation. Scen01Tests class (3 methods), 49/49 tests passing, Wave 1 complete.
-Resume file: .planning/phases/03-new-scenarios/03-04-PLAN.md
+Stopped at: Completed 03-04-PLAN.md — TalkingPointCard TS interface + RunWorkspacePage Paper/protocolColor/JSX render. Vite build clean. Phase 3 all 4 plans complete.
+Resume file: .planning/phases/04-comparison-ui/04-01-PLAN.md
