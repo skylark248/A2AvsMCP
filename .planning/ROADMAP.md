@@ -60,7 +60,12 @@ Plans:
   2. The parallel-agent scenario trace shows overlapping execution timestamps for A2A specialists vs sequential execution for MCP
   3. Both new scenarios display a talking-point card (8-word headline, one sentence, one callout) in the run UI
   4. The parallel scenario produces zero `task_failed` events under mock runtime
-**Plans**: TBD
+**Plans**: 4 plans
+Plans:
+- [ ] 03-01-PLAN.md — Seed data + schema layer (SupportTicket.talking_point, TalkingPointResponse, scenarios.json 12 entries, warranties.json WAR-7004, SCEN-03 pytest)
+- [ ] 03-02-PLAN.md — TriageAgent parallel dispatch (_resolve_parallel, send_tasks_parallel branch, SCEN-02 pytest)
+- [ ] 03-03-PLAN.md — SCEN-01 pytest validation (all 4 modes, 3+ a2a handoffs, 4+ mcp tool calls)
+- [ ] 03-04-PLAN.md — Frontend types + TalkingPointCard UI (api.generated.ts TalkingPointCard interface, RunWorkspacePage.tsx Paper + protocolColor + render)
 
 ### Phase 4: Comparison UI
 **Goal**: The comparison UI exposes protocol differences as first-class visual elements — outcome metrics, swimlane timelines, and side-by-side trace panels — without requiring the viewer to read raw trace JSON
@@ -73,7 +78,12 @@ Plans:
   4. All trace components use `eventColors.ts` as a single source of truth — no hardcoded color values elsewhere
   5. Frontend dependencies (`@xyflow/react`, `recharts`, `react-syntax-highlighter`, `motion`) are installed and the app still builds
 **UI hint**: yes
-**Plans**: TBD
+**Plans**: 4 plans
+Plans:
+- [ ] 03-01-PLAN.md — Seed data + schema layer (SupportTicket.talking_point, TalkingPointResponse, scenarios.json 12 entries, warranties.json WAR-7004, SCEN-03 pytest)
+- [ ] 03-02-PLAN.md — TriageAgent parallel dispatch (_resolve_parallel, send_tasks_parallel branch, SCEN-02 pytest)
+- [ ] 03-03-PLAN.md — SCEN-01 pytest validation (all 4 modes, 3+ a2a handoffs, 4+ mcp tool calls)
+- [ ] 03-04-PLAN.md — Frontend types + TalkingPointCard UI (api.generated.ts TalkingPointCard interface, RunWorkspacePage.tsx Paper + protocolColor + render)
 
 ### Phase 5: Presentation Polish
 **Goal**: The demo is ready for a mixed audience — talking-point cards guide narration, glossary popovers remove jargon friction, the real-LLM path is clearly surfaced, and failure modes are selectable for a deeper technical walkthrough
@@ -85,7 +95,12 @@ Plans:
   3. The real-LLM toggle is visually prominent and the trace explorer shows a latency expectation badge when OpenAI runtime is active
   4. `FailureConfig` failure paths are selectable in the UI and their outcomes appear visibly in the trace, enabling a failure-mode walkthrough without code changes
 **UI hint**: yes
-**Plans**: TBD
+**Plans**: 4 plans
+Plans:
+- [ ] 03-01-PLAN.md — Seed data + schema layer (SupportTicket.talking_point, TalkingPointResponse, scenarios.json 12 entries, warranties.json WAR-7004, SCEN-03 pytest)
+- [ ] 03-02-PLAN.md — TriageAgent parallel dispatch (_resolve_parallel, send_tasks_parallel branch, SCEN-02 pytest)
+- [ ] 03-03-PLAN.md — SCEN-01 pytest validation (all 4 modes, 3+ a2a handoffs, 4+ mcp tool calls)
+- [ ] 03-04-PLAN.md — Frontend types + TalkingPointCard UI (api.generated.ts TalkingPointCard interface, RunWorkspacePage.tsx Paper + protocolColor + render)
 
 ## Progress
 
