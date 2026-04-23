@@ -13,7 +13,7 @@ This milestone deepens the demo platform from a working prototype into a polishe
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Demo Stability Foundation** - All four modes run reliably without an API key; test harness in place
-- [ ] **Phase 2: Backend Trace Enrichment** - Trace events carry the data contract all frontend components require
+- [x] **Phase 2: Backend Trace Enrichment** - Trace events carry the data contract all frontend components require
 - [ ] **Phase 3: New Scenarios** - Multi-step and parallel-agent scenarios expose protocol depth visibly
 - [ ] **Phase 4: Comparison UI** - Side-by-side visualization makes protocol differences unmissable at a glance
 - [ ] **Phase 5: Presentation Polish** - Talking-point cards, glossary popovers, and failure-mode walkthrough complete demo day readiness
@@ -47,9 +47,9 @@ Plans:
   5. The trace view renders in three tiers — summary strip, protocol-level, full trace — with A2A sub-events collapsible and a 150-event soft render cap
 **Plans**: 3 plans
 Plans:
-- [ ] 02-01-PLAN.md — Backend: TraceRecorder enrichment (step_index, phase), A2ABroker.send_tasks_parallel(), timeout_ms=5000, api_schemas.py extension
+- [x] 02-01-PLAN.md — Backend: TraceRecorder enrichment (step_index, phase), A2ABroker.send_tasks_parallel(), timeout_ms=5000, api_schemas.py extension
 - [x] 02-02-PLAN.md — Frontend types: TraceEvent + TraceEventResponse extended with 5 fields; groupA2AEventsByTaskId() helper
-- [ ] 02-03-PLAN.md — Frontend: Three-tier accordion TraceExplorer; pytest Phase 2 trace field assertions
+- [x] 02-03-PLAN.md — Frontend: Three-tier accordion TraceExplorer; pytest Phase 2 trace field assertions
 
 ### Phase 3: New Scenarios
 **Goal**: The multi-step workflow and parallel-agent scenarios are runnable from the UI, producing rich traces that make protocol depth immediately visible
@@ -95,7 +95,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Demo Stability Foundation | 2/2 | Complete | 2026-04-22 |
-| 2. Backend Trace Enrichment | 1/3 | In Progress|  |
+| 2. Backend Trace Enrichment | 3/3 | Complete | 2026-04-23 |
 | 3. New Scenarios | 0/TBD | Not started | - |
 | 4. Comparison UI | 0/TBD | Not started | - |
 | 5. Presentation Polish | 0/TBD | Not started | - |

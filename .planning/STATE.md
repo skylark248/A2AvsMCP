@@ -4,11 +4,11 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Phase 2 planned — 3 plans in 2 waves, verification passed. Ready for /gsd-execute-phase 2
-last_updated: "2026-04-22T17:41:00.605Z"
-last_activity: 2026-04-22
+last_updated: "2026-04-23T03:42:00.000Z"
+last_activity: 2026-04-23
 progress:
   total_phases: 5
-  completed_phases: 0
+  completed_phases: 2
   total_plans: 3
   completed_plans: 3
   percent: 100
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-22)
 
 **Core value:** A side-by-side, runnable comparison that makes the differences between MCP and A2A visible — not described, not diagrammed, but live and traceable.
-**Current focus:** Phase 2 — Backend Trace Enrichment
+**Current focus:** Phase 3 — New Scenarios
 
 ## Current Position
 
 Phase: 2 of 5 (Backend Trace Enrichment)
-Plan: 2 of 3 in current phase (02-02 complete)
-Status: Executing — ready for plan 03
-Last activity: 2026-04-22
+Plan: 3 of 3 in current phase (02-03 complete — Phase 2 DONE)
+Status: Executing — ready for Phase 3
+Last activity: 2026-04-23
 
-Progress: [████░░░░░░] 40%
+Progress: [██████░░░░] 60%
 
 ## Performance Metrics
 
@@ -65,6 +65,8 @@ Recent decisions affecting current work:
 - Init: Add new scenarios as `DemoRepository` entries — fits existing dispatch pattern without infrastructure changes
 - 02-02: Cast event.task_id via `(event as { task_id?: unknown }).task_id` — keeps task_id out of TraceEvent interface since it is A2A-internal, accessed through index signature
 - 02-02: api.generated.ts manually patched with `| null` pattern; comment documents regeneration path after api_schemas.py is updated
+- 02-03: Tests pass at RED commit — Plan 01 pre-implemented enrichment fields; test methods serve as regression guards for TRACE-01/02/03/04
+- 02-03: handler.handle_task() (not handle()) is the broker handler protocol — matched FlakyHandler in existing test suite
 
 ### Pending Todos
 
@@ -72,8 +74,7 @@ None yet.
 
 ### Blockers/Concerns
 
-- TRACE-05 (trace view tiers) must be complete before Phase 3 scenarios are built — new scenarios will produce 60-120+ events
-- `timeout_ms=1500` in `A2ABroker` is too low for parallel dispatch (TRACE-04 addresses this in Phase 2)
+None — Phase 2 complete. TRACE-05 delivered; timeout_ms=5000 in A2ABroker confirmed.
 
 ## Deferred Items
 
@@ -87,6 +88,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-22
-Stopped at: Completed 02-02-PLAN.md — TypeScript type layer for enriched trace fields; groupA2AEventsByTaskId() helper added. Ready for plan 03.
-Resume file: .planning/phases/02-backend-trace-enrichment/02-03-PLAN.md
+Last session: 2026-04-23
+Stopped at: Completed 02-03-PLAN.md — Three-tier TraceExplorer UI + Phase 2 pytest assertions. Phase 2 fully complete. Ready for Phase 3.
+Resume file: .planning/phases/03-new-scenarios/ (Phase 3 plans)
