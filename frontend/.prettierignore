@@ -1,0 +1,5 @@
+dist
+node_modules
+coverage
+*.tsbuildinfo
+src/lib/types/api.generated.ts

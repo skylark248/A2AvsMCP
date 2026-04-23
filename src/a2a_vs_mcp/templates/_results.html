@@ -1,0 +1,592 @@
+{% macro meter(value, label='', suffix='') -%}
+<div class="meter-cell">
+  <strong>{{ value }}{{ suffix }}</strong>
+  <div class="meter-track" aria-label="{{ label }}">
+    <span class="meter-fill" style="width: {{ value if value <= 100 else 100 }}%"></span>
+  </div>
+</div>
+{%- endmacro %}
+{% if trend_view %}
+<div class="results-stack">
+  <section class="summary-strip trend-highlight">
+    <div>
+      <p class="eyebrow">Saved Report Trends</p>
+      <h2>Cross-Run Trend View</h2>
+      <p>Compare how modes and scenarios have behaved across the reports you have already saved.</p>
+    </div>
+    <div class="metric-pills">
+      <span>{{ report_trends.total_reports }} matched reports</span>
+      <span>{{ report_trends.average_totals.tool_calls }} avg tool calls</span>
+      <span>{{ report_trends.average_totals.a2a_messages }} avg A2A messages</span>
+      <span>{{ report_trends.average_totals.failures }} avg failures</span>
+    </div>
+  </section>
+
+  <section class="table-panel">
+    <div class="panel-head compact">
+      <h3>Trend Filters</h3>
+      <p>Narrow the saved-report analysis by scenario, runtime, or recommended demo mode.</p>
+    </div>
+    <form class="run-form" hx-get="/legacy/trends" hx-target="#results-panel" hx-swap="innerHTML">
+      <input type="hidden" name="mode_sort" value="{{ trend_sorting.mode_sort }}" />
+      <input type="hidden" name="mode_dir" value="{{ trend_sorting.mode_dir }}" />
+      <input type="hidden" name="scenario_sort" value="{{ trend_sorting.scenario_sort }}" />
+      <input type="hidden" name="scenario_dir" value="{{ trend_sorting.scenario_dir }}" />
+      <input type="hidden" name="report_sort" value="{{ trend_sorting.report_sort }}" />
+      <input type="hidden" name="report_dir" value="{{ trend_sorting.report_dir }}" />
+      <label>
+        <span>Scenario</span>
+        <select name="scenario">
+          <option value="">All scenarios</option>
+          {% for option in report_trends.available_filters.scenarios %}
+          <option value="{{ option }}" {% if trend_filters.scenario == option %}selected{% endif %}>{{ option|replace('_', ' ')|title }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        <span>Runtime</span>
+        <select name="runtime">
+          <option value="">All runtimes</option>
+          {% for option in report_trends.available_filters.runtimes %}
+          <option value="{{ option }}" {% if trend_filters.runtime == option %}selected{% endif %}>{{ option }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        <span>Recommended Mode</span>
+        <select name="recommended_mode">
+          <option value="">All recommended modes</option>
+          {% for option in report_trends.available_filters.recommended_modes %}
+          <option value="{{ option }}" {% if trend_filters.recommended_mode == option %}selected{% endif %}>{{ option|upper }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <button type="submit" class="primary-btn">Apply Filters</button>
+    </form>
+  </section>
+
+  <section class="table-panel">
+    <div class="panel-head compact">
+      <h3>Active Filters</h3>
+      <p>See exactly which slice is active and clear filters in one click.</p>
+    </div>
+    <div class="chip-row">
+      {% set trend_query = 'mode_sort=' ~ trend_sorting.mode_sort ~ '&mode_dir=' ~ trend_sorting.mode_dir ~ '&scenario_sort=' ~ trend_sorting.scenario_sort ~ '&scenario_dir=' ~ trend_sorting.scenario_dir ~ '&report_sort=' ~ trend_sorting.report_sort ~ '&report_dir=' ~ trend_sorting.report_dir %}
+      {% if trend_filters.scenario %}
+      <button class="filter-chip" hx-get="/legacy/trends?runtime={{ trend_filters.runtime }}&recommended_mode={{ trend_filters.recommended_mode }}&{{ trend_query }}" hx-target="#results-panel" hx-swap="innerHTML" type="button">Scenario: {{ trend_filters.scenario|replace('_', ' ')|title }} x</button>
+      {% endif %}
+      {% if trend_filters.runtime %}
+      <button class="filter-chip" hx-get="/legacy/trends?scenario={{ trend_filters.scenario }}&recommended_mode={{ trend_filters.recommended_mode }}&{{ trend_query }}" hx-target="#results-panel" hx-swap="innerHTML" type="button">Runtime: {{ trend_filters.runtime }} x</button>
+      {% endif %}
+      {% if trend_filters.recommended_mode %}
+      <button class="filter-chip" hx-get="/legacy/trends?scenario={{ trend_filters.scenario }}&runtime={{ trend_filters.runtime }}&{{ trend_query }}" hx-target="#results-panel" hx-swap="innerHTML" type="button">Recommended: {{ trend_filters.recommended_mode|upper }} x</button>
+      {% endif %}
+      {% if trend_filters.scenario or trend_filters.runtime or trend_filters.recommended_mode %}
+      <button class="report-chip" hx-get="/legacy/trends?{{ trend_query }}" hx-target="#results-panel" hx-swap="innerHTML" type="button">Clear All Filters</button>
+      {% else %}
+      <span class="muted">No active filters.</span>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="table-panel">
+    <div class="panel-head compact">
+      <h3>Trend Narrative</h3>
+      <p>Auto-generated summary of what your saved runs are showing overall.</p>
+    </div>
+    <div class="failure-box">
+      {% for note in report_trends.narrative %}
+      <p>{{ note }}</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="comparison-grid">
+    <article class="mode-card trend-highlight">
+      <p class="eyebrow">Recommended Most Often</p>
+      {% if report_trends.recommended_mode_counts %}
+      <h3><button class="link-btn" hx-get="/legacy/trends?recommended_mode={{ report_trends.recommended_mode_counts[0].mode }}&{{ trend_query }}" hx-target="#results-panel" hx-swap="innerHTML" type="button">{{ report_trends.recommended_mode_counts[0].mode|upper }}</button></h3>
+      <p class="muted">Chosen {{ report_trends.recommended_mode_counts[0].count }} time(s) as the best demo mode.</p>
+      {% else %}
+      <h3>No data yet</h3>
+      {% endif %}
+    </article>
+    <article class="mode-card trend-highlight">
+      <p class="eyebrow">Top Scenario</p>
+      {% if report_trends.scenario_counts %}
+      <h3><button class="link-btn" hx-get="/legacy/trends?scenario={{ report_trends.scenario_counts[0].scenario }}&{{ trend_query }}" hx-target="#results-panel" hx-swap="innerHTML" type="button">{{ report_trends.scenario_counts[0].scenario|replace('_', ' ' )|title }}</button></h3>
+      <p class="muted">Saved {{ report_trends.scenario_counts[0].count }} time(s).</p>
+      {% else %}
+      <h3>No data yet</h3>
+      {% endif %}
+    </article>
+    <article class="mode-card trend-highlight">
+      <p class="eyebrow">Top Avg Score</p>
+      {% if report_trends.mode_trends %}
+      <h3><button class="link-btn" hx-get="/legacy/trends?recommended_mode={{ report_trends.mode_trends[0].mode }}&{{ trend_query }}" hx-target="#results-panel" hx-swap="innerHTML" type="button">{{ report_trends.mode_trends[0].mode|upper }}</button></h3>
+      <p class="muted">Average overall score {{ report_trends.mode_trends[0].avg_overall_score }}.</p>
+      {% else %}
+      <h3>No data yet</h3>
+      {% endif %}
+    </article>
+  </section>
+
+  <section class="table-panel">
+    <div class="panel-head compact">
+      <h3>Mode Trend Table</h3>
+      <p>Average behavior for each mode across all saved reports.</p>
+    </div>
+    <form class="toolbar-grid" hx-get="/legacy/trends" hx-target="#results-panel" hx-swap="innerHTML">
+      <input type="hidden" name="scenario" value="{{ trend_filters.scenario }}" />
+      <input type="hidden" name="runtime" value="{{ trend_filters.runtime }}" />
+      <input type="hidden" name="recommended_mode" value="{{ trend_filters.recommended_mode }}" />
+      <input type="hidden" name="scenario_sort" value="{{ trend_sorting.scenario_sort }}" />
+      <input type="hidden" name="scenario_dir" value="{{ trend_sorting.scenario_dir }}" />
+      <input type="hidden" name="report_sort" value="{{ trend_sorting.report_sort }}" />
+      <input type="hidden" name="report_dir" value="{{ trend_sorting.report_dir }}" />
+      <label>
+        <span>Sort Mode Trends</span>
+        <select name="mode_sort">
+          <option value="overall" {% if trend_sorting.mode_sort == 'overall' %}selected{% endif %}>Average overall</option>
+          <option value="presentation" {% if trend_sorting.mode_sort == 'presentation' %}selected{% endif %}>Presentation</option>
+          <option value="resilience" {% if trend_sorting.mode_sort == 'resilience' %}selected{% endif %}>Resilience</option>
+          <option value="latency" {% if trend_sorting.mode_sort == 'latency' %}selected{% endif %}>Latency</option>
+          <option value="tools" {% if trend_sorting.mode_sort == 'tools' %}selected{% endif %}>Tool calls</option>
+          <option value="a2a" {% if trend_sorting.mode_sort == 'a2a' %}selected{% endif %}>A2A messages</option>
+          <option value="recommended" {% if trend_sorting.mode_sort == 'recommended' %}selected{% endif %}>Recommended count</option>
+          <option value="mode" {% if trend_sorting.mode_sort == 'mode' %}selected{% endif %}>Mode name</option>
+        </select>
+      </label>
+      <label>
+        <span>Direction</span>
+        <select name="mode_dir">
+          <option value="desc" {% if trend_sorting.mode_dir == 'desc' %}selected{% endif %}>High to low</option>
+          <option value="asc" {% if trend_sorting.mode_dir == 'asc' %}selected{% endif %}>Low to high</option>
+        </select>
+      </label>
+      <button type="submit" class="report-chip toolbar-btn">Update Table</button>
+    </form>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Mode</th>
+            <th>Avg Overall</th>
+            <th>Avg Presentation</th>
+            <th>Avg Resilience</th>
+            <th>Avg Latency</th>
+            <th>Avg Tools</th>
+            <th>Avg A2A</th>
+            <th>Recommended</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for trend in report_trends.mode_trends %}
+          <tr>
+            <td><button class="table-link" hx-get="/legacy/trends?recommended_mode={{ trend.mode }}&{{ trend_query }}" hx-target="#results-panel" hx-swap="innerHTML" type="button">{{ trend.mode }}</button></td>
+            <td>{{ meter(trend.avg_overall_score, 'Overall score') }}</td>
+            <td>{{ meter(trend.avg_presentation_score, 'Presentation score') }}</td>
+            <td>{{ meter(trend.avg_resilience_score, 'Resilience score') }}</td>
+            <td><span class="data-pill">{{ trend.avg_latency_ms }} ms</span></td>
+            <td>{{ trend.avg_tool_calls }}</td>
+            <td>{{ trend.avg_a2a_messages }}</td>
+            <td>{{ trend.recommended_count }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="comparison-grid">
+    <article class="table-panel">
+      <div class="panel-head compact">
+        <h3>Scenario Frequency</h3>
+        <p>Which support stories you are saving most often.</p>
+      </div>
+      <form class="toolbar-grid compact-toolbar" hx-get="/legacy/trends" hx-target="#results-panel" hx-swap="innerHTML">
+        <input type="hidden" name="scenario" value="{{ trend_filters.scenario }}" />
+        <input type="hidden" name="runtime" value="{{ trend_filters.runtime }}" />
+        <input type="hidden" name="recommended_mode" value="{{ trend_filters.recommended_mode }}" />
+        <input type="hidden" name="mode_sort" value="{{ trend_sorting.mode_sort }}" />
+        <input type="hidden" name="mode_dir" value="{{ trend_sorting.mode_dir }}" />
+        <input type="hidden" name="report_sort" value="{{ trend_sorting.report_sort }}" />
+        <input type="hidden" name="report_dir" value="{{ trend_sorting.report_dir }}" />
+        <label>
+          <span>Sort Scenarios</span>
+          <select name="scenario_sort">
+            <option value="count" {% if trend_sorting.scenario_sort == 'count' %}selected{% endif %}>Count</option>
+            <option value="scenario" {% if trend_sorting.scenario_sort == 'scenario' %}selected{% endif %}>Scenario name</option>
+          </select>
+        </label>
+        <label>
+          <span>Direction</span>
+          <select name="scenario_dir">
+            <option value="desc" {% if trend_sorting.scenario_dir == 'desc' %}selected{% endif %}>High to low</option>
+            <option value="asc" {% if trend_sorting.scenario_dir == 'asc' %}selected{% endif %}>Low to high</option>
+          </select>
+        </label>
+        <button type="submit" class="report-chip toolbar-btn">Sort</button>
+      </form>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Scenario</th>
+              <th>Count</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in report_trends.scenario_counts %}
+            <tr>
+              <td><button class="table-link" hx-get="/legacy/trends?scenario={{ item.scenario }}&{{ trend_query }}" hx-target="#results-panel" hx-swap="innerHTML" type="button">{{ item.scenario|replace('_', ' ' )|title }}</button></td>
+              <td>{{ item.count }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </article>
+    <article class="table-panel">
+      <div class="panel-head compact">
+        <h3>Recent Reports</h3>
+        <p>Latest saved report summaries.</p>
+      </div>
+      <form class="toolbar-grid compact-toolbar" hx-get="/legacy/trends" hx-target="#results-panel" hx-swap="innerHTML">
+        <input type="hidden" name="scenario" value="{{ trend_filters.scenario }}" />
+        <input type="hidden" name="runtime" value="{{ trend_filters.runtime }}" />
+        <input type="hidden" name="recommended_mode" value="{{ trend_filters.recommended_mode }}" />
+        <input type="hidden" name="mode_sort" value="{{ trend_sorting.mode_sort }}" />
+        <input type="hidden" name="mode_dir" value="{{ trend_sorting.mode_dir }}" />
+        <input type="hidden" name="scenario_sort" value="{{ trend_sorting.scenario_sort }}" />
+        <input type="hidden" name="scenario_dir" value="{{ trend_sorting.scenario_dir }}" />
+        <label>
+          <span>Sort Reports</span>
+          <select name="report_sort">
+            <option value="recent" {% if trend_sorting.report_sort == 'recent' %}selected{% endif %}>Most recent</option>
+            <option value="report" {% if trend_sorting.report_sort == 'report' %}selected{% endif %}>Report name</option>
+            <option value="scenario" {% if trend_sorting.report_sort == 'scenario' %}selected{% endif %}>Scenario</option>
+            <option value="runtime" {% if trend_sorting.report_sort == 'runtime' %}selected{% endif %}>Runtime</option>
+            <option value="recommended" {% if trend_sorting.report_sort == 'recommended' %}selected{% endif %}>Recommended mode</option>
+            <option value="tools" {% if trend_sorting.report_sort == 'tools' %}selected{% endif %}>Tool calls</option>
+            <option value="failures" {% if trend_sorting.report_sort == 'failures' %}selected{% endif %}>Failures</option>
+          </select>
+        </label>
+        <label>
+          <span>Direction</span>
+          <select name="report_dir">
+            <option value="desc" {% if trend_sorting.report_dir == 'desc' %}selected{% endif %}>High to low</option>
+            <option value="asc" {% if trend_sorting.report_dir == 'asc' %}selected{% endif %}>Low to high</option>
+          </select>
+        </label>
+        <button type="submit" class="report-chip toolbar-btn">Sort</button>
+      </form>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Report</th>
+              <th>Scenario</th>
+              <th>Runtime</th>
+              <th>Recommended</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in report_trends.recent_reports %}
+            <tr>
+              <td><button class="table-link" hx-get="/legacy/reports/{{ item.report_name }}" hx-target="#results-panel" hx-swap="innerHTML" type="button">{{ item.report_name }}</button><div class="subtle-meta">{{ item.generated_at[:10] }}</div></td>
+              <td><button class="table-link" hx-get="/legacy/trends?scenario={{ item.scenario }}&{{ trend_query }}" hx-target="#results-panel" hx-swap="innerHTML" type="button">{{ item.scenario|replace('_', ' ' )|title }}</button></td>
+              <td>{{ item.runtime }}</td>
+              <td>{% if item.scorecard %}<span class="data-pill">{{ item.scorecard.recommended_demo_mode|upper }}</span>{% endif %}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+</div>
+{% elif loaded_report %}
+<div class="loaded-banner">Loaded report: {{ loaded_report }} <a href="/reports/{{ loaded_report }}/export" target="_blank" rel="noopener">HTML export</a> <a href="/reports/{{ loaded_report }}/export.pdf" target="_blank" rel="noopener">PDF export</a></div>
+{% endif %}
+{% if not trend_view and results %}
+<div class="results-stack">
+  <section class="summary-strip trend-highlight">
+    <div>
+      <p class="eyebrow">Run Summary</p>
+      <h2>{{ results[0].ticket.title or results[0].ticket.scenario|replace('_', ' ')|title }}</h2>
+      <p>{{ results[0].ticket.query }}</p>
+      <div class="chip-row muted-row">
+        <span class="chip ghost">{{ results[0].ticket.difficulty or 'standard' }}</span>
+        {% for tag in results[0].ticket.tags or [] %}
+        <span class="chip ghost">{{ tag }}</span>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="metric-pills">
+      <span>{{ results|length }} result set{% if results|length > 1 %}s{% endif %}</span>
+      <span>{{ results|sum(attribute='metrics.tool_calls') }} tool calls</span>
+      <span>{{ results|sum(attribute='metrics.a2a_messages') }} A2A messages</span>
+      {% if report_summary %}
+      <span>{{ report_summary.generated_at[:10] }}</span>
+      {% endif %}
+    </div>
+  </section>
+
+  {% if report_summary and report_summary.scorecard %}
+  <section class="comparison-grid">
+    <article class="mode-card spotlight-card">
+      <p class="eyebrow">Recommended Story</p>
+      <h3>{{ report_summary.scorecard.recommended_demo_mode|upper }}</h3>
+      <p class="muted">Use this as the lead mode when you want the strongest overall architecture narrative.</p>
+    </article>
+    <article class="mode-card spotlight-card">
+      <p class="eyebrow">Fastest Walkthrough</p>
+      <h3>{{ report_summary.scorecard.fastest_mode|upper }}</h3>
+      <p class="muted">Best choice when you want the cleanest happy-path opening.</p>
+    </article>
+    <article class="mode-card spotlight-card">
+      <p class="eyebrow">Resilience Anchor</p>
+      <h3>{{ report_summary.scorecard.most_resilient_mode|upper }}</h3>
+      <p class="muted">Strongest fallback and recovery talking point for this report.</p>
+    </article>
+  </section>
+
+  <section class="table-panel">
+    <div class="panel-head compact">
+      <h3>Report Scorecard</h3>
+      <p>Quick guidance for presentation flow and mode positioning.</p>
+    </div>
+    <div class="comparison-grid">
+      <article class="mode-card trend-highlight">
+        <p class="eyebrow">Fastest</p>
+        <h3>{{ report_summary.scorecard.fastest_mode|upper }}</h3>
+      </article>
+      <article class="mode-card trend-highlight">
+        <p class="eyebrow">Tooling</p>
+        <h3>{{ report_summary.scorecard.most_tool_heavy_mode|upper }}</h3>
+      </article>
+      <article class="mode-card trend-highlight">
+        <p class="eyebrow">Collaboration</p>
+        <h3>{{ report_summary.scorecard.most_collaborative_mode|upper }}</h3>
+      </article>
+      <article class="mode-card trend-highlight">
+        <p class="eyebrow">Resilience</p>
+        <h3>{{ report_summary.scorecard.most_resilient_mode|upper }}</h3>
+      </article>
+      <article class="mode-card trend-highlight">
+        <p class="eyebrow">Recommended</p>
+        <h3>{{ report_summary.scorecard.recommended_demo_mode|upper }}</h3>
+      </article>
+    </div>
+    <div class="failure-box">
+      {% for note in report_summary.scorecard.notes %}
+      <p>{{ note }}</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  {% set report_query = 'score_sort=' ~ report_sorting.score_sort ~ '&score_dir=' ~ report_sorting.score_dir ~ '&result_sort=' ~ report_sorting.result_sort ~ '&result_dir=' ~ report_sorting.result_dir %}
+  <section class="table-panel">
+    <div class="panel-head compact">
+      <h3>Mode Scorecards</h3>
+      <p>Blended scoring tuned for live demos and architecture comparison.</p>
+    </div>
+    {% if loaded_report %}
+    <form class="toolbar-grid" hx-get="/legacy/reports/{{ loaded_report }}" hx-target="#results-panel" hx-swap="innerHTML">
+      <input type="hidden" name="result_sort" value="{{ report_sorting.result_sort }}" />
+      <input type="hidden" name="result_dir" value="{{ report_sorting.result_dir }}" />
+      <label>
+        <span>Sort Scorecards</span>
+        <select name="score_sort">
+          <option value="overall" {% if report_sorting.score_sort == 'overall' %}selected{% endif %}>Overall</option>
+          <option value="presentation" {% if report_sorting.score_sort == 'presentation' %}selected{% endif %}>Presentation</option>
+          <option value="resilience" {% if report_sorting.score_sort == 'resilience' %}selected{% endif %}>Resilience</option>
+          <option value="responsive" {% if report_sorting.score_sort == 'responsive' %}selected{% endif %}>Responsiveness</option>
+          <option value="tooling" {% if report_sorting.score_sort == 'tooling' %}selected{% endif %}>Tooling</option>
+          <option value="collaboration" {% if report_sorting.score_sort == 'collaboration' %}selected{% endif %}>Collaboration</option>
+          <option value="mode" {% if report_sorting.score_sort == 'mode' %}selected{% endif %}>Mode name</option>
+        </select>
+      </label>
+      <label>
+        <span>Direction</span>
+        <select name="score_dir">
+          <option value="desc" {% if report_sorting.score_dir == 'desc' %}selected{% endif %}>High to low</option>
+          <option value="asc" {% if report_sorting.score_dir == 'asc' %}selected{% endif %}>Low to high</option>
+        </select>
+      </label>
+      <button type="submit" class="report-chip toolbar-btn">Update Table</button>
+    </form>
+    {% endif %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Mode</th>
+            <th>Overall</th>
+            <th>Responsive</th>
+            <th>Tooling</th>
+            <th>Collaboration</th>
+            <th>Resilience</th>
+            <th>Presentation</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for card in report_summary.scorecard.mode_scorecards %}
+          <tr>
+            <td><span class="data-pill">{{ card.mode|upper }}</span></td>
+            <td>{{ meter(card.overall_score, 'Overall score') }}</td>
+            <td>{{ meter(card.responsiveness_score, 'Responsiveness score') }}</td>
+            <td>{{ meter(card.tooling_score, 'Tooling score') }}</td>
+            <td>{{ meter(card.collaboration_score, 'Collaboration score') }}</td>
+            <td>{{ meter(card.resilience_score, 'Resilience score') }}</td>
+            <td>{{ meter(card.presentation_score, 'Presentation score') }}</td>
+          </tr>
+          <tr class="headline-row">
+            <td colspan="7">{{ card.headline }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  {% endif %}
+
+  <section class="comparison-grid">
+    {% for result in results %}
+    <article class="mode-card mode-{{ result.mode }}">
+      <div class="mode-header">
+        <div>
+          <p class="eyebrow">{{ result.mode|upper }}</p>
+          <h3>{{ result.ticket.ticket_id }}</h3>
+        </div>
+        <span class="complexity-badge complexity-{{ result.metrics.complexity }}">{{ result.metrics.complexity }}</span>
+      </div>
+      <p class="answer-copy">{{ result.final_answer }}</p>
+      <dl class="metrics-grid">
+        <div><dt>Latency</dt><dd>{{ result.metrics.latency_ms }} ms</dd></div>
+        <div><dt>Tool Calls</dt><dd>{{ result.metrics.tool_calls }}</dd></div>
+        <div><dt>A2A Messages</dt><dd>{{ result.metrics.a2a_messages }}</dd></div>
+        <div><dt>Retries</dt><dd>{{ result.metrics.retries }}</dd></div>
+        <div><dt>Failures</dt><dd>{{ result.metrics.failures }}</dd></div>
+        <div><dt>Agents</dt><dd>{{ result.agents_used|length }}</dd></div>
+      </dl>
+      <div class="chip-row">
+        {% for agent in result.agents_used %}
+        <span class="chip">{{ agent }}</span>
+        {% endfor %}
+      </div>
+      <div class="chip-row muted-row">
+        {% if result.tools_used %}
+          {% for tool in result.tools_used %}
+          <span class="chip ghost">{{ tool }}</span>
+          {% endfor %}
+        {% else %}
+          <span class="muted">No tool calls in this mode.</span>
+        {% endif %}
+      </div>
+      {% if result.external_log_path %}
+      <p class="subtle-meta">External log: {{ result.external_log_path }}</p>
+      {% endif %}
+      {% if result.failures %}
+      <div class="failure-box">
+        {% for failure in result.failures %}
+        <p>{{ failure }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </article>
+    {% endfor %}
+  </section>
+
+  <section class="table-panel">
+    <div class="panel-head compact">
+      <h3>Comparison Table</h3>
+      <p>Side-by-side metrics for the selected run.</p>
+    </div>
+    {% if loaded_report %}
+    <form class="toolbar-grid" hx-get="/legacy/reports/{{ loaded_report }}" hx-target="#results-panel" hx-swap="innerHTML">
+      <input type="hidden" name="score_sort" value="{{ report_sorting.score_sort }}" />
+      <input type="hidden" name="score_dir" value="{{ report_sorting.score_dir }}" />
+      <label>
+        <span>Sort Comparison</span>
+        <select name="result_sort">
+          <option value="latency" {% if report_sorting.result_sort == 'latency' %}selected{% endif %}>Latency</option>
+          <option value="tools" {% if report_sorting.result_sort == 'tools' %}selected{% endif %}>Tool calls</option>
+          <option value="a2a" {% if report_sorting.result_sort == 'a2a' %}selected{% endif %}>A2A messages</option>
+          <option value="retries" {% if report_sorting.result_sort == 'retries' %}selected{% endif %}>Retries</option>
+          <option value="failures" {% if report_sorting.result_sort == 'failures' %}selected{% endif %}>Failures</option>
+          <option value="mode" {% if report_sorting.result_sort == 'mode' %}selected{% endif %}>Mode name</option>
+        </select>
+      </label>
+      <label>
+        <span>Direction</span>
+        <select name="result_dir">
+          <option value="asc" {% if report_sorting.result_dir == 'asc' %}selected{% endif %}>Low to high</option>
+          <option value="desc" {% if report_sorting.result_dir == 'desc' %}selected{% endif %}>High to low</option>
+        </select>
+      </label>
+      <button type="submit" class="report-chip toolbar-btn">Update Table</button>
+    </form>
+    {% endif %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Mode</th>
+            <th>Latency</th>
+            <th>Tools</th>
+            <th>A2A</th>
+            <th>Retries</th>
+            <th>Failures</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for result in results %}
+          <tr>
+            <td><span class="data-pill">{{ result.mode|upper }}</span></td>
+            <td><span class="data-pill">{{ result.metrics.latency_ms }} ms</span></td>
+            <td>{{ result.metrics.tool_calls }}</td>
+            <td>{{ result.metrics.a2a_messages }}</td>
+            <td>{{ result.metrics.retries }}</td>
+            <td>{{ result.metrics.failures }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="trace-section">
+    <div class="panel-head compact">
+      <h3>Execution Timelines</h3>
+      <p>Expand each mode to inspect tool calls, task states, and agent events.</p>
+    </div>
+    {% for result in results %}
+    <details class="trace-card" {% if loop.first %}open{% endif %}>
+      <summary>
+        <span>{{ result.mode|upper }}</span>
+        <span>{{ result.trace|length }} events</span>
+      </summary>
+      <div class="timeline">
+        {% for event in result.trace %}
+        <div class="timeline-item event-{{ event.event_type|replace('_', '-') }}">
+          <div class="timeline-meta">
+            <strong>{{ event.event_type }}</strong>
+            <span>{{ event.timestamp_ms }} ms</span>
+          </div>
+          <pre>{{ event|tojson(indent=2) }}</pre>
+        </div>
+        {% endfor %}
+      </div>
+    </details>
+    {% endfor %}
+  </section>
+</div>
+{% elif not trend_view %}
+<div class="empty-state">
+  <p class="eyebrow">Ready</p>
+  <h2>Run a support ticket comparison</h2>
+  <p>Choose a scenario on the left, then inspect answers, metrics, and trace timelines here.</p>
+</div>
+{% endif %}

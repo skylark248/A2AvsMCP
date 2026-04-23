@@ -1,0 +1,2141 @@
+[
+  {
+    "index": 1,
+    "event_type": "ticket_received",
+    "timestamp_ms": 0.013,
+    "ticket": {
+      "ticket_id": "TICKET-1006",
+      "customer_id": "CUST-002",
+      "query": "My HomeSensor Pro setup keeps failing and I want a warranty replacement if this defect continues.",
+      "scenario": "setup_and_warranty",
+      "title": "Setup Failure with Warranty Concern",
+      "difficulty": "standard",
+      "tags": [
+        "troubleshooting",
+        "warranty",
+        "multi-step"
+      ]
+    },
+    "failure_config": {
+      "db_down": false,
+      "docs_timeout": false,
+      "unavailable_agents": [],
+      "malformed_task": false
+    },
+    "mcp_transport": "in_process",
+    "profile": {
+      "name": "dev",
+      "runtime": "mock",
+      "mcp_transport": "in_process",
+      "save_report": false,
+      "export_logs": false,
+      "description": "Fast local development defaults with minimal persistence."
+    },
+    "user_id": "default"
+  },
+  {
+    "index": 2,
+    "event_type": "runtime_config",
+    "timestamp_ms": 0.03,
+    "agent": "triage_agent",
+    "runtime": "mock",
+    "llm_enabled": false,
+    "llm_model": null,
+    "failure_config": {
+      "db_down": false,
+      "docs_timeout": false,
+      "unavailable_agents": [],
+      "malformed_task": false
+    }
+  },
+  {
+    "index": 3,
+    "event_type": "runtime_config",
+    "timestamp_ms": 0.04,
+    "agent": "customer_data_agent",
+    "runtime": "mock",
+    "llm_enabled": false,
+    "llm_model": null,
+    "failure_config": {
+      "db_down": false,
+      "docs_timeout": false,
+      "unavailable_agents": [],
+      "malformed_task": false
+    }
+  },
+  {
+    "index": 4,
+    "event_type": "runtime_config",
+    "timestamp_ms": 0.049,
+    "agent": "documentation_agent",
+    "runtime": "mock",
+    "llm_enabled": false,
+    "llm_model": null,
+    "failure_config": {
+      "db_down": false,
+      "docs_timeout": false,
+      "unavailable_agents": [],
+      "malformed_task": false
+    }
+  },
+  {
+    "index": 5,
+    "event_type": "runtime_config",
+    "timestamp_ms": 0.057,
+    "agent": "policy_or_billing_agent",
+    "runtime": "mock",
+    "llm_enabled": false,
+    "llm_model": null,
+    "failure_config": {
+      "db_down": false,
+      "docs_timeout": false,
+      "unavailable_agents": [],
+      "malformed_task": false
+    }
+  },
+  {
+    "index": 6,
+    "event_type": "a2a_message",
+    "timestamp_ms": 0.07,
+    "message_type": "agent_register",
+    "sender": "customer_data_agent",
+    "capabilities": [
+      "customer_data"
+    ],
+    "a2a_protocol_version": "1.0",
+    "a2a_agent_card": {
+      "protocolVersion": "1.0",
+      "name": "Customer_Data_Agent",
+      "description": "Specialist for MCP-backed customer and order access.",
+      "url": "local://agents/customer_data_agent",
+      "preferredTransport": "JSONRPC",
+      "capabilities": {
+        "streaming": true,
+        "pushNotifications": false,
+        "stateTransitionHistory": true
+      },
+      "defaultInputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "defaultOutputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "skills": [
+        {
+          "id": "customer-data",
+          "name": "Customer Data",
+          "description": "Handles customer data tasks.",
+          "tags": [
+            "customer_data"
+          ]
+        }
+      ],
+      "metadata": {
+        "agentId": "customer_data_agent",
+        "demoScope": "educational-a2a-style-broker"
+      }
+    }
+  },
+  {
+    "index": 7,
+    "event_type": "a2a_message",
+    "timestamp_ms": 0.072,
+    "message_type": "capability_advertise",
+    "sender": "customer_data_agent",
+    "capabilities": [
+      "customer_data"
+    ],
+    "a2a_protocol_version": "1.0",
+    "a2a_agent_card": {
+      "protocolVersion": "1.0",
+      "name": "Customer_Data_Agent",
+      "description": "Specialist for MCP-backed customer and order access.",
+      "url": "local://agents/customer_data_agent",
+      "preferredTransport": "JSONRPC",
+      "capabilities": {
+        "streaming": true,
+        "pushNotifications": false,
+        "stateTransitionHistory": true
+      },
+      "defaultInputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "defaultOutputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "skills": [
+        {
+          "id": "customer-data",
+          "name": "Customer Data",
+          "description": "Handles customer data tasks.",
+          "tags": [
+            "customer_data"
+          ]
+        }
+      ],
+      "metadata": {
+        "agentId": "customer_data_agent",
+        "demoScope": "educational-a2a-style-broker"
+      }
+    }
+  },
+  {
+    "index": 8,
+    "event_type": "a2a_message",
+    "timestamp_ms": 0.078,
+    "message_type": "agent_register",
+    "sender": "documentation_agent",
+    "capabilities": [
+      "documentation"
+    ],
+    "a2a_protocol_version": "1.0",
+    "a2a_agent_card": {
+      "protocolVersion": "1.0",
+      "name": "Documentation_Agent",
+      "description": "Specialist for MCP-backed document search.",
+      "url": "local://agents/documentation_agent",
+      "preferredTransport": "JSONRPC",
+      "capabilities": {
+        "streaming": true,
+        "pushNotifications": false,
+        "stateTransitionHistory": true
+      },
+      "defaultInputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "defaultOutputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "skills": [
+        {
+          "id": "documentation",
+          "name": "Documentation",
+          "description": "Handles documentation tasks.",
+          "tags": [
+            "documentation"
+          ]
+        }
+      ],
+      "metadata": {
+        "agentId": "documentation_agent",
+        "demoScope": "educational-a2a-style-broker"
+      }
+    }
+  },
+  {
+    "index": 9,
+    "event_type": "a2a_message",
+    "timestamp_ms": 0.079,
+    "message_type": "capability_advertise",
+    "sender": "documentation_agent",
+    "capabilities": [
+      "documentation"
+    ],
+    "a2a_protocol_version": "1.0",
+    "a2a_agent_card": {
+      "protocolVersion": "1.0",
+      "name": "Documentation_Agent",
+      "description": "Specialist for MCP-backed document search.",
+      "url": "local://agents/documentation_agent",
+      "preferredTransport": "JSONRPC",
+      "capabilities": {
+        "streaming": true,
+        "pushNotifications": false,
+        "stateTransitionHistory": true
+      },
+      "defaultInputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "defaultOutputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "skills": [
+        {
+          "id": "documentation",
+          "name": "Documentation",
+          "description": "Handles documentation tasks.",
+          "tags": [
+            "documentation"
+          ]
+        }
+      ],
+      "metadata": {
+        "agentId": "documentation_agent",
+        "demoScope": "educational-a2a-style-broker"
+      }
+    }
+  },
+  {
+    "index": 10,
+    "event_type": "a2a_message",
+    "timestamp_ms": 0.083,
+    "message_type": "agent_register",
+    "sender": "policy_or_billing_agent",
+    "capabilities": [
+      "policy_billing"
+    ],
+    "a2a_protocol_version": "1.0",
+    "a2a_agent_card": {
+      "protocolVersion": "1.0",
+      "name": "Policy_Or_Billing_Agent",
+      "description": "Specialist for MCP-backed policy and billing analysis.",
+      "url": "local://agents/policy_or_billing_agent",
+      "preferredTransport": "JSONRPC",
+      "capabilities": {
+        "streaming": true,
+        "pushNotifications": false,
+        "stateTransitionHistory": true
+      },
+      "defaultInputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "defaultOutputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "skills": [
+        {
+          "id": "policy-billing",
+          "name": "Policy Billing",
+          "description": "Handles policy billing tasks.",
+          "tags": [
+            "policy_billing"
+          ]
+        }
+      ],
+      "metadata": {
+        "agentId": "policy_or_billing_agent",
+        "demoScope": "educational-a2a-style-broker"
+      }
+    }
+  },
+  {
+    "index": 11,
+    "event_type": "a2a_message",
+    "timestamp_ms": 0.084,
+    "message_type": "capability_advertise",
+    "sender": "policy_or_billing_agent",
+    "capabilities": [
+      "policy_billing"
+    ],
+    "a2a_protocol_version": "1.0",
+    "a2a_agent_card": {
+      "protocolVersion": "1.0",
+      "name": "Policy_Or_Billing_Agent",
+      "description": "Specialist for MCP-backed policy and billing analysis.",
+      "url": "local://agents/policy_or_billing_agent",
+      "preferredTransport": "JSONRPC",
+      "capabilities": {
+        "streaming": true,
+        "pushNotifications": false,
+        "stateTransitionHistory": true
+      },
+      "defaultInputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "defaultOutputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "skills": [
+        {
+          "id": "policy-billing",
+          "name": "Policy Billing",
+          "description": "Handles policy billing tasks.",
+          "tags": [
+            "policy_billing"
+          ]
+        }
+      ],
+      "metadata": {
+        "agentId": "policy_or_billing_agent",
+        "demoScope": "educational-a2a-style-broker"
+      }
+    }
+  },
+  {
+    "index": 12,
+    "event_type": "agent_reasoning",
+    "timestamp_ms": 0.101,
+    "agent": "triage_agent",
+    "issue_type": "troubleshooting"
+  },
+  {
+    "index": 13,
+    "event_type": "a2a_message",
+    "timestamp_ms": 0.125,
+    "message_type": "task_request",
+    "sender": "triage_agent",
+    "target": "customer_data_agent",
+    "capability": "customer_data",
+    "attempt": 1,
+    "a2a_protocol_version": "1.0",
+    "a2a_method": "message/send",
+    "a2a_transport": "JSONRPC",
+    "a2a_message": {
+      "messageId": "msg-bb34543f",
+      "role": "ROLE_USER",
+      "taskId": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "parts": [
+        {
+          "kind": "data",
+          "data": {
+            "ticket": {
+              "ticket_id": "TICKET-1006",
+              "customer_id": "CUST-002",
+              "query": "My HomeSensor Pro setup keeps failing and I want a warranty replacement if this defect continues.",
+              "scenario": "setup_and_warranty",
+              "title": "Setup Failure with Warranty Concern",
+              "difficulty": "standard",
+              "tags": [
+                "troubleshooting",
+                "warranty",
+                "multi-step"
+              ]
+            }
+          }
+        }
+      ],
+      "metadata": {
+        "senderAgent": "triage_agent",
+        "targetAgent": "customer_data_agent",
+        "capability": "customer_data",
+        "attempt": 1,
+        "messageType": "task_request"
+      }
+    }
+  },
+  {
+    "index": 14,
+    "event_type": "task_status",
+    "timestamp_ms": 0.139,
+    "task_id": "TICKET-1006",
+    "status": "queued",
+    "a2a_state": "submitted",
+    "target": "customer_data_agent",
+    "attempt": 1,
+    "error": null,
+    "a2a_protocol_version": "1.0",
+    "a2a_task_event": {
+      "kind": "status-update",
+      "taskId": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "submitted",
+        "timestamp": "2026-04-07T12:51:11.868370+00:00",
+        "message": {
+          "messageId": "msg-d3806ee0",
+          "role": "ROLE_AGENT",
+          "taskId": "TICKET-1006",
+          "contextId": "TICKET-1006",
+          "parts": [
+            {
+              "kind": "text",
+              "text": "Task submitted to specialist."
+            }
+          ],
+          "metadata": {
+            "senderAgent": "customer_data_agent",
+            "capability": "customer_data",
+            "attempt": 1
+          }
+        }
+      },
+      "final": false,
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC"
+      }
+    },
+    "a2a_task": {
+      "id": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "submitted",
+        "timestamp": "2026-04-07T12:51:11.868374+00:00"
+      },
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC",
+        "capability": "customer_data",
+        "senderAgent": "triage_agent",
+        "targetAgent": "customer_data_agent",
+        "attempt": 1
+      }
+    }
+  },
+  {
+    "index": 15,
+    "event_type": "a2a_message",
+    "timestamp_ms": 0.141,
+    "message_type": "task_accept",
+    "sender": "customer_data_agent",
+    "target": "triage_agent",
+    "attempt": 1,
+    "a2a_protocol_version": "1.0",
+    "a2a_method": "tasks/get"
+  },
+  {
+    "index": 16,
+    "event_type": "task_status",
+    "timestamp_ms": 0.152,
+    "task_id": "TICKET-1006",
+    "status": "accepted",
+    "a2a_state": "working",
+    "target": "customer_data_agent",
+    "attempt": 1,
+    "error": null,
+    "a2a_protocol_version": "1.0",
+    "a2a_task_event": {
+      "kind": "status-update",
+      "taskId": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "working",
+        "timestamp": "2026-04-07T12:51:11.868383+00:00",
+        "message": {
+          "messageId": "msg-e540a129",
+          "role": "ROLE_AGENT",
+          "taskId": "TICKET-1006",
+          "contextId": "TICKET-1006",
+          "parts": [
+            {
+              "kind": "text",
+              "text": "Specialist accepted the task."
+            }
+          ],
+          "metadata": {
+            "senderAgent": "customer_data_agent",
+            "capability": "customer_data",
+            "attempt": 1
+          }
+        }
+      },
+      "final": false,
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC"
+      }
+    },
+    "a2a_task": {
+      "id": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "working",
+        "timestamp": "2026-04-07T12:51:11.868388+00:00"
+      },
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC",
+        "capability": "customer_data",
+        "senderAgent": "triage_agent",
+        "targetAgent": "customer_data_agent",
+        "attempt": 1
+      }
+    }
+  },
+  {
+    "index": 17,
+    "event_type": "a2a_message",
+    "timestamp_ms": 0.153,
+    "message_type": "task_progress",
+    "sender": "customer_data_agent",
+    "target": "triage_agent",
+    "state": "in_progress",
+    "attempt": 1,
+    "a2a_protocol_version": "1.0"
+  },
+  {
+    "index": 18,
+    "event_type": "task_status",
+    "timestamp_ms": 0.16,
+    "task_id": "TICKET-1006",
+    "status": "in_progress",
+    "a2a_state": "working",
+    "target": "customer_data_agent",
+    "attempt": 1,
+    "error": null,
+    "a2a_protocol_version": "1.0",
+    "a2a_task_event": {
+      "kind": "status-update",
+      "taskId": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "working",
+        "timestamp": "2026-04-07T12:51:11.868395+00:00",
+        "message": {
+          "messageId": "msg-c7691cf3",
+          "role": "ROLE_AGENT",
+          "taskId": "TICKET-1006",
+          "contextId": "TICKET-1006",
+          "parts": [
+            {
+              "kind": "text",
+              "text": "Specialist is working on the task."
+            }
+          ],
+          "metadata": {
+            "senderAgent": "customer_data_agent",
+            "capability": "customer_data",
+            "attempt": 1
+          }
+        }
+      },
+      "final": false,
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC"
+      }
+    },
+    "a2a_task": {
+      "id": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "working",
+        "timestamp": "2026-04-07T12:51:11.868397+00:00"
+      },
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC",
+        "capability": "customer_data",
+        "senderAgent": "triage_agent",
+        "targetAgent": "customer_data_agent",
+        "attempt": 1
+      }
+    }
+  },
+  {
+    "index": 19,
+    "event_type": "tool_discovery",
+    "timestamp_ms": 8.262,
+    "server": "a2a_vs_mcp.mcp_servers.db_server",
+    "tools": [
+      "get_customer_profile",
+      "get_order_history",
+      "get_payment_issues",
+      "get_ticket_history",
+      "get_warranty"
+    ],
+    "protocol": "official_mcp_sdk",
+    "transport": "in_process",
+    "requested_transport": "in_process"
+  },
+  {
+    "index": 20,
+    "event_type": "tool_call",
+    "timestamp_ms": 8.272,
+    "tool": "get_customer_profile",
+    "arguments": {
+      "customer_id": "CUST-002"
+    },
+    "server": "a2a_vs_mcp.mcp_servers.db_server",
+    "protocol": "official_mcp_sdk",
+    "transport": "in_process",
+    "requested_transport": "in_process"
+  },
+  {
+    "index": 21,
+    "event_type": "tool_call",
+    "timestamp_ms": 9.026,
+    "tool": "get_order_history",
+    "arguments": {
+      "customer_id": "CUST-002"
+    },
+    "server": "a2a_vs_mcp.mcp_servers.db_server",
+    "protocol": "official_mcp_sdk",
+    "transport": "in_process",
+    "requested_transport": "in_process"
+  },
+  {
+    "index": 22,
+    "event_type": "tool_call",
+    "timestamp_ms": 9.8,
+    "tool": "get_payment_issues",
+    "arguments": {
+      "customer_id": "CUST-002",
+      "order_id": null
+    },
+    "server": "a2a_vs_mcp.mcp_servers.db_server",
+    "protocol": "official_mcp_sdk",
+    "transport": "in_process",
+    "requested_transport": "in_process"
+  },
+  {
+    "index": 23,
+    "event_type": "tool_call",
+    "timestamp_ms": 10.628,
+    "tool": "get_warranty",
+    "arguments": {
+      "customer_id": "CUST-002",
+      "product": "HomeSensor Pro"
+    },
+    "server": "a2a_vs_mcp.mcp_servers.db_server",
+    "protocol": "official_mcp_sdk",
+    "transport": "in_process",
+    "requested_transport": "in_process"
+  },
+  {
+    "index": 24,
+    "event_type": "task_status",
+    "timestamp_ms": 11.51,
+    "task_id": "TICKET-1006",
+    "status": "completed",
+    "a2a_state": "completed",
+    "target": "customer_data_agent",
+    "attempt": 1,
+    "error": null,
+    "a2a_protocol_version": "1.0",
+    "a2a_task_event": {
+      "kind": "status-update",
+      "taskId": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "completed",
+        "timestamp": "2026-04-07T12:51:11.879737+00:00",
+        "message": {
+          "messageId": "msg-bc39dd68",
+          "role": "ROLE_AGENT",
+          "taskId": "TICKET-1006",
+          "contextId": "TICKET-1006",
+          "parts": [
+            {
+              "kind": "text",
+              "text": "Specialist completed the task."
+            }
+          ],
+          "metadata": {
+            "senderAgent": "customer_data_agent",
+            "capability": "customer_data",
+            "attempt": 1
+          }
+        }
+      },
+      "final": true,
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC"
+      }
+    },
+    "a2a_task": {
+      "id": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "completed",
+        "timestamp": "2026-04-07T12:51:11.879745+00:00"
+      },
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC",
+        "capability": "customer_data",
+        "senderAgent": "triage_agent",
+        "targetAgent": "customer_data_agent",
+        "attempt": 1
+      }
+    }
+  },
+  {
+    "index": 25,
+    "event_type": "a2a_message",
+    "timestamp_ms": 11.528,
+    "message_type": "task_result",
+    "sender": "customer_data_agent",
+    "target": "triage_agent",
+    "attempt": 1,
+    "a2a_protocol_version": "1.0",
+    "a2a_artifact_event": {
+      "kind": "artifact-update",
+      "taskId": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "artifact": {
+        "artifactId": "artifact-b9b71862",
+        "name": "customer_data_agent result",
+        "description": "Specialist result returned by customer_data_agent.",
+        "parts": [
+          {
+            "kind": "text",
+            "text": "The product is still under standard warranty until 2027-03-29. Order ORD-1002 for HomeSensor Pro is currently 'Delivered' with tracking TRK-9002 and ETA 2026-03-29."
+          },
+          {
+            "kind": "data",
+            "data": {
+              "customer": {
+                "customer_id": "CUST-002",
+                "name": "Daniel Reed",
+                "email": "daniel@example.com",
+                "segment": "standard"
+              },
+              "orders": [
+                {
+                  "order_id": "ORD-1002",
+                  "customer_id": "CUST-002",
+                  "product": "HomeSensor Pro",
+                  "status": "Delivered",
+                  "tracking_id": "TRK-9002",
+                  "eta": "2026-03-29"
+                }
+              ],
+              "billing": [
+                {
+                  "payment_id": "PAY-3001",
+                  "customer_id": "CUST-002",
+                  "order_id": "ORD-1002",
+                  "issue_type": "duplicate_charge",
+                  "amount": 249.99,
+                  "status": "under_review"
+                }
+              ],
+              "warranty": [
+                {
+                  "warranty_id": "WAR-7001",
+                  "customer_id": "CUST-002",
+                  "product": "HomeSensor Pro",
+                  "expires_on": "2027-03-29",
+                  "coverage": "standard"
+                }
+              ]
+            }
+          }
+        ],
+        "metadata": {
+          "agentId": "customer_data_agent",
+          "confidence": 0.95,
+          "status": "completed"
+        }
+      },
+      "append": false,
+      "lastChunk": true,
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC"
+      }
+    },
+    "a2a_task": {
+      "id": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "completed",
+        "timestamp": "2026-04-07T12:51:11.879759+00:00"
+      },
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC",
+        "capability": "customer_data",
+        "senderAgent": "triage_agent",
+        "targetAgent": "customer_data_agent",
+        "attempt": 1
+      },
+      "artifacts": [
+        {
+          "artifactId": "artifact-8b40b880",
+          "name": "customer_data_agent result",
+          "description": "Specialist result returned by customer_data_agent.",
+          "parts": [
+            {
+              "kind": "text",
+              "text": "The product is still under standard warranty until 2027-03-29. Order ORD-1002 for HomeSensor Pro is currently 'Delivered' with tracking TRK-9002 and ETA 2026-03-29."
+            },
+            {
+              "kind": "data",
+              "data": {
+                "customer": {
+                  "customer_id": "CUST-002",
+                  "name": "Daniel Reed",
+                  "email": "daniel@example.com",
+                  "segment": "standard"
+                },
+                "orders": [
+                  {
+                    "order_id": "ORD-1002",
+                    "customer_id": "CUST-002",
+                    "product": "HomeSensor Pro",
+                    "status": "Delivered",
+                    "tracking_id": "TRK-9002",
+                    "eta": "2026-03-29"
+                  }
+                ],
+                "billing": [
+                  {
+                    "payment_id": "PAY-3001",
+                    "customer_id": "CUST-002",
+                    "order_id": "ORD-1002",
+                    "issue_type": "duplicate_charge",
+                    "amount": 249.99,
+                    "status": "under_review"
+                  }
+                ],
+                "warranty": [
+                  {
+                    "warranty_id": "WAR-7001",
+                    "customer_id": "CUST-002",
+                    "product": "HomeSensor Pro",
+                    "expires_on": "2027-03-29",
+                    "coverage": "standard"
+                  }
+                ]
+              }
+            }
+          ],
+          "metadata": {
+            "agentId": "customer_data_agent",
+            "confidence": 0.95,
+            "status": "completed"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "index": 26,
+    "event_type": "a2a_task_artifact",
+    "timestamp_ms": 11.53,
+    "task_id": "TICKET-1006",
+    "target": "customer_data_agent",
+    "attempt": 1,
+    "a2a_artifact_event": {
+      "kind": "artifact-update",
+      "taskId": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "artifact": {
+        "artifactId": "artifact-b9b71862",
+        "name": "customer_data_agent result",
+        "description": "Specialist result returned by customer_data_agent.",
+        "parts": [
+          {
+            "kind": "text",
+            "text": "The product is still under standard warranty until 2027-03-29. Order ORD-1002 for HomeSensor Pro is currently 'Delivered' with tracking TRK-9002 and ETA 2026-03-29."
+          },
+          {
+            "kind": "data",
+            "data": {
+              "customer": {
+                "customer_id": "CUST-002",
+                "name": "Daniel Reed",
+                "email": "daniel@example.com",
+                "segment": "standard"
+              },
+              "orders": [
+                {
+                  "order_id": "ORD-1002",
+                  "customer_id": "CUST-002",
+                  "product": "HomeSensor Pro",
+                  "status": "Delivered",
+                  "tracking_id": "TRK-9002",
+                  "eta": "2026-03-29"
+                }
+              ],
+              "billing": [
+                {
+                  "payment_id": "PAY-3001",
+                  "customer_id": "CUST-002",
+                  "order_id": "ORD-1002",
+                  "issue_type": "duplicate_charge",
+                  "amount": 249.99,
+                  "status": "under_review"
+                }
+              ],
+              "warranty": [
+                {
+                  "warranty_id": "WAR-7001",
+                  "customer_id": "CUST-002",
+                  "product": "HomeSensor Pro",
+                  "expires_on": "2027-03-29",
+                  "coverage": "standard"
+                }
+              ]
+            }
+          }
+        ],
+        "metadata": {
+          "agentId": "customer_data_agent",
+          "confidence": 0.95,
+          "status": "completed"
+        }
+      },
+      "append": false,
+      "lastChunk": true,
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC"
+      }
+    }
+  },
+  {
+    "index": 27,
+    "event_type": "a2a_message",
+    "timestamp_ms": 11.557,
+    "message_type": "task_request",
+    "sender": "triage_agent",
+    "target": "documentation_agent",
+    "capability": "documentation",
+    "attempt": 1,
+    "a2a_protocol_version": "1.0",
+    "a2a_method": "message/send",
+    "a2a_transport": "JSONRPC",
+    "a2a_message": {
+      "messageId": "msg-3e11dd9a",
+      "role": "ROLE_USER",
+      "taskId": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "parts": [
+        {
+          "kind": "data",
+          "data": {
+            "ticket": {
+              "ticket_id": "TICKET-1006",
+              "customer_id": "CUST-002",
+              "query": "My HomeSensor Pro setup keeps failing and I want a warranty replacement if this defect continues.",
+              "scenario": "setup_and_warranty",
+              "title": "Setup Failure with Warranty Concern",
+              "difficulty": "standard",
+              "tags": [
+                "troubleshooting",
+                "warranty",
+                "multi-step"
+              ]
+            }
+          }
+        }
+      ],
+      "metadata": {
+        "senderAgent": "triage_agent",
+        "targetAgent": "documentation_agent",
+        "capability": "documentation",
+        "attempt": 1,
+        "messageType": "task_request"
+      }
+    }
+  },
+  {
+    "index": 28,
+    "event_type": "task_status",
+    "timestamp_ms": 11.57,
+    "task_id": "TICKET-1006",
+    "status": "queued",
+    "a2a_state": "submitted",
+    "target": "documentation_agent",
+    "attempt": 1,
+    "error": null,
+    "a2a_protocol_version": "1.0",
+    "a2a_task_event": {
+      "kind": "status-update",
+      "taskId": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "submitted",
+        "timestamp": "2026-04-07T12:51:11.879800+00:00",
+        "message": {
+          "messageId": "msg-67daeb8d",
+          "role": "ROLE_AGENT",
+          "taskId": "TICKET-1006",
+          "contextId": "TICKET-1006",
+          "parts": [
+            {
+              "kind": "text",
+              "text": "Task submitted to specialist."
+            }
+          ],
+          "metadata": {
+            "senderAgent": "documentation_agent",
+            "capability": "documentation",
+            "attempt": 1
+          }
+        }
+      },
+      "final": false,
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC"
+      }
+    },
+    "a2a_task": {
+      "id": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "submitted",
+        "timestamp": "2026-04-07T12:51:11.879803+00:00"
+      },
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC",
+        "capability": "documentation",
+        "senderAgent": "triage_agent",
+        "targetAgent": "documentation_agent",
+        "attempt": 1
+      }
+    }
+  },
+  {
+    "index": 29,
+    "event_type": "a2a_message",
+    "timestamp_ms": 11.572,
+    "message_type": "task_accept",
+    "sender": "documentation_agent",
+    "target": "triage_agent",
+    "attempt": 1,
+    "a2a_protocol_version": "1.0",
+    "a2a_method": "tasks/get"
+  },
+  {
+    "index": 30,
+    "event_type": "task_status",
+    "timestamp_ms": 11.582,
+    "task_id": "TICKET-1006",
+    "status": "accepted",
+    "a2a_state": "working",
+    "target": "documentation_agent",
+    "attempt": 1,
+    "error": null,
+    "a2a_protocol_version": "1.0",
+    "a2a_task_event": {
+      "kind": "status-update",
+      "taskId": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "working",
+        "timestamp": "2026-04-07T12:51:11.879814+00:00",
+        "message": {
+          "messageId": "msg-6baf0ece",
+          "role": "ROLE_AGENT",
+          "taskId": "TICKET-1006",
+          "contextId": "TICKET-1006",
+          "parts": [
+            {
+              "kind": "text",
+              "text": "Specialist accepted the task."
+            }
+          ],
+          "metadata": {
+            "senderAgent": "documentation_agent",
+            "capability": "documentation",
+            "attempt": 1
+          }
+        }
+      },
+      "final": false,
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC"
+      }
+    },
+    "a2a_task": {
+      "id": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "working",
+        "timestamp": "2026-04-07T12:51:11.879817+00:00"
+      },
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC",
+        "capability": "documentation",
+        "senderAgent": "triage_agent",
+        "targetAgent": "documentation_agent",
+        "attempt": 1
+      }
+    }
+  },
+  {
+    "index": 31,
+    "event_type": "a2a_message",
+    "timestamp_ms": 11.583,
+    "message_type": "task_progress",
+    "sender": "documentation_agent",
+    "target": "triage_agent",
+    "state": "in_progress",
+    "attempt": 1,
+    "a2a_protocol_version": "1.0"
+  },
+  {
+    "index": 32,
+    "event_type": "task_status",
+    "timestamp_ms": 11.591,
+    "task_id": "TICKET-1006",
+    "status": "in_progress",
+    "a2a_state": "working",
+    "target": "documentation_agent",
+    "attempt": 1,
+    "error": null,
+    "a2a_protocol_version": "1.0",
+    "a2a_task_event": {
+      "kind": "status-update",
+      "taskId": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "working",
+        "timestamp": "2026-04-07T12:51:11.879825+00:00",
+        "message": {
+          "messageId": "msg-c9b617f9",
+          "role": "ROLE_AGENT",
+          "taskId": "TICKET-1006",
+          "contextId": "TICKET-1006",
+          "parts": [
+            {
+              "kind": "text",
+              "text": "Specialist is working on the task."
+            }
+          ],
+          "metadata": {
+            "senderAgent": "documentation_agent",
+            "capability": "documentation",
+            "attempt": 1
+          }
+        }
+      },
+      "final": false,
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC"
+      }
+    },
+    "a2a_task": {
+      "id": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "working",
+        "timestamp": "2026-04-07T12:51:11.879827+00:00"
+      },
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC",
+        "capability": "documentation",
+        "senderAgent": "triage_agent",
+        "targetAgent": "documentation_agent",
+        "attempt": 1
+      }
+    }
+  },
+  {
+    "index": 33,
+    "event_type": "tool_discovery",
+    "timestamp_ms": 15.635,
+    "server": "a2a_vs_mcp.mcp_servers.docs_server",
+    "tools": [
+      "search_docs",
+      "get_policy"
+    ],
+    "protocol": "official_mcp_sdk",
+    "transport": "in_process",
+    "requested_transport": "in_process"
+  },
+  {
+    "index": 34,
+    "event_type": "tool_call",
+    "timestamp_ms": 15.646,
+    "tool": "search_docs",
+    "arguments": {
+      "query": "My HomeSensor Pro setup keeps failing and I want a warranty replacement if this defect continues.",
+      "product": "HomeSensor Pro",
+      "error_code": null
+    },
+    "server": "a2a_vs_mcp.mcp_servers.docs_server",
+    "protocol": "official_mcp_sdk",
+    "transport": "in_process",
+    "requested_transport": "in_process"
+  },
+  {
+    "index": 35,
+    "event_type": "task_status",
+    "timestamp_ms": 16.982,
+    "task_id": "TICKET-1006",
+    "status": "completed",
+    "a2a_state": "completed",
+    "target": "documentation_agent",
+    "attempt": 1,
+    "error": null,
+    "a2a_protocol_version": "1.0",
+    "a2a_task_event": {
+      "kind": "status-update",
+      "taskId": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "completed",
+        "timestamp": "2026-04-07T12:51:11.885210+00:00",
+        "message": {
+          "messageId": "msg-5b456b8e",
+          "role": "ROLE_AGENT",
+          "taskId": "TICKET-1006",
+          "contextId": "TICKET-1006",
+          "parts": [
+            {
+              "kind": "text",
+              "text": "Specialist completed the task."
+            }
+          ],
+          "metadata": {
+            "senderAgent": "documentation_agent",
+            "capability": "documentation",
+            "attempt": 1
+          }
+        }
+      },
+      "final": true,
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC"
+      }
+    },
+    "a2a_task": {
+      "id": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "completed",
+        "timestamp": "2026-04-07T12:51:11.885217+00:00"
+      },
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC",
+        "capability": "documentation",
+        "senderAgent": "triage_agent",
+        "targetAgent": "documentation_agent",
+        "attempt": 1
+      }
+    }
+  },
+  {
+    "index": 36,
+    "event_type": "a2a_message",
+    "timestamp_ms": 16.998,
+    "message_type": "task_result",
+    "sender": "documentation_agent",
+    "target": "triage_agent",
+    "attempt": 1,
+    "a2a_protocol_version": "1.0",
+    "a2a_artifact_event": {
+      "kind": "artifact-update",
+      "taskId": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "artifact": {
+        "artifactId": "artifact-44feaeaf",
+        "name": "documentation_agent result",
+        "description": "Specialist result returned by documentation_agent.",
+        "parts": [
+          {
+            "kind": "text",
+            "text": "The best troubleshooting guidance comes from setup_guide.md: restart the device, reconnect to 2.4 GHz Wi-Fi, and retry pairing."
+          },
+          {
+            "kind": "data",
+            "data": {
+              "docs": [
+                {
+                  "document": "setup_guide.md",
+                  "score": 8,
+                  "excerpt": [
+                    "# SmartHub Mini Setup Guide",
+                    "",
+                    "If SmartHub Mini setup fails with error code X123, restart the hub, reconnect to 2.4 GHz Wi-Fi, and reinstall the mobile app.",
+                    "",
+                    "If the problem persists after two attempts, collect the serial number and escalate to device support."
+                  ]
+                },
+                {
+                  "document": "mcp_transport_tradeoffs.md",
+                  "score": 7,
+                  "excerpt": [
+                    "\ufeff# MCP Transport Tradeoffs",
+                    "",
+                    "This project supports three MCP transport modes:",
+                    "",
+                    "- `in_process`",
+                    "- `stdio`"
+                  ]
+                },
+                {
+                  "document": "troubleshooting_kb.md",
+                  "score": 7,
+                  "excerpt": [
+                    "# Troubleshooting Knowledge Base",
+                    "",
+                    "Error code X123 usually means the device cannot complete secure pairing. The recommended fix is:",
+                    "",
+                    "1. Power cycle the device.",
+                    "2. Reset the pairing mode."
+                  ]
+                },
+                {
+                  "document": "refund_policy.md",
+                  "score": 6,
+                  "excerpt": [
+                    "# Refund and Return Policy",
+                    "",
+                    "Customers can request a return within 30 days of delivery. If the product is still under warranty and there is a functional defect, support may approve a replacement or warranty return after validating the order and warranty status."
+                  ]
+                },
+                {
+                  "document": "warranty_rules.md",
+                  "score": 6,
+                  "excerpt": [
+                    "# Warranty Rules",
+                    "",
+                    "Standard warranty covers manufacturing defects for one year from delivery. If a product is still covered, the customer is eligible for repair, replacement, or approved return based on issue severity and stock availability."
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "metadata": {
+          "agentId": "documentation_agent",
+          "confidence": 0.95,
+          "status": "completed"
+        }
+      },
+      "append": false,
+      "lastChunk": true,
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC"
+      }
+    },
+    "a2a_task": {
+      "id": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "completed",
+        "timestamp": "2026-04-07T12:51:11.885230+00:00"
+      },
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC",
+        "capability": "documentation",
+        "senderAgent": "triage_agent",
+        "targetAgent": "documentation_agent",
+        "attempt": 1
+      },
+      "artifacts": [
+        {
+          "artifactId": "artifact-2f3c3b52",
+          "name": "documentation_agent result",
+          "description": "Specialist result returned by documentation_agent.",
+          "parts": [
+            {
+              "kind": "text",
+              "text": "The best troubleshooting guidance comes from setup_guide.md: restart the device, reconnect to 2.4 GHz Wi-Fi, and retry pairing."
+            },
+            {
+              "kind": "data",
+              "data": {
+                "docs": [
+                  {
+                    "document": "setup_guide.md",
+                    "score": 8,
+                    "excerpt": [
+                      "# SmartHub Mini Setup Guide",
+                      "",
+                      "If SmartHub Mini setup fails with error code X123, restart the hub, reconnect to 2.4 GHz Wi-Fi, and reinstall the mobile app.",
+                      "",
+                      "If the problem persists after two attempts, collect the serial number and escalate to device support."
+                    ]
+                  },
+                  {
+                    "document": "mcp_transport_tradeoffs.md",
+                    "score": 7,
+                    "excerpt": [
+                      "\ufeff# MCP Transport Tradeoffs",
+                      "",
+                      "This project supports three MCP transport modes:",
+                      "",
+                      "- `in_process`",
+                      "- `stdio`"
+                    ]
+                  },
+                  {
+                    "document": "troubleshooting_kb.md",
+                    "score": 7,
+                    "excerpt": [
+                      "# Troubleshooting Knowledge Base",
+                      "",
+                      "Error code X123 usually means the device cannot complete secure pairing. The recommended fix is:",
+                      "",
+                      "1. Power cycle the device.",
+                      "2. Reset the pairing mode."
+                    ]
+                  },
+                  {
+                    "document": "refund_policy.md",
+                    "score": 6,
+                    "excerpt": [
+                      "# Refund and Return Policy",
+                      "",
+                      "Customers can request a return within 30 days of delivery. If the product is still under warranty and there is a functional defect, support may approve a replacement or warranty return after validating the order and warranty status."
+                    ]
+                  },
+                  {
+                    "document": "warranty_rules.md",
+                    "score": 6,
+                    "excerpt": [
+                      "# Warranty Rules",
+                      "",
+                      "Standard warranty covers manufacturing defects for one year from delivery. If a product is still covered, the customer is eligible for repair, replacement, or approved return based on issue severity and stock availability."
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "metadata": {
+            "agentId": "documentation_agent",
+            "confidence": 0.95,
+            "status": "completed"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "index": 37,
+    "event_type": "a2a_task_artifact",
+    "timestamp_ms": 16.999,
+    "task_id": "TICKET-1006",
+    "target": "documentation_agent",
+    "attempt": 1,
+    "a2a_artifact_event": {
+      "kind": "artifact-update",
+      "taskId": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "artifact": {
+        "artifactId": "artifact-44feaeaf",
+        "name": "documentation_agent result",
+        "description": "Specialist result returned by documentation_agent.",
+        "parts": [
+          {
+            "kind": "text",
+            "text": "The best troubleshooting guidance comes from setup_guide.md: restart the device, reconnect to 2.4 GHz Wi-Fi, and retry pairing."
+          },
+          {
+            "kind": "data",
+            "data": {
+              "docs": [
+                {
+                  "document": "setup_guide.md",
+                  "score": 8,
+                  "excerpt": [
+                    "# SmartHub Mini Setup Guide",
+                    "",
+                    "If SmartHub Mini setup fails with error code X123, restart the hub, reconnect to 2.4 GHz Wi-Fi, and reinstall the mobile app.",
+                    "",
+                    "If the problem persists after two attempts, collect the serial number and escalate to device support."
+                  ]
+                },
+                {
+                  "document": "mcp_transport_tradeoffs.md",
+                  "score": 7,
+                  "excerpt": [
+                    "\ufeff# MCP Transport Tradeoffs",
+                    "",
+                    "This project supports three MCP transport modes:",
+                    "",
+                    "- `in_process`",
+                    "- `stdio`"
+                  ]
+                },
+                {
+                  "document": "troubleshooting_kb.md",
+                  "score": 7,
+                  "excerpt": [
+                    "# Troubleshooting Knowledge Base",
+                    "",
+                    "Error code X123 usually means the device cannot complete secure pairing. The recommended fix is:",
+                    "",
+                    "1. Power cycle the device.",
+                    "2. Reset the pairing mode."
+                  ]
+                },
+                {
+                  "document": "refund_policy.md",
+                  "score": 6,
+                  "excerpt": [
+                    "# Refund and Return Policy",
+                    "",
+                    "Customers can request a return within 30 days of delivery. If the product is still under warranty and there is a functional defect, support may approve a replacement or warranty return after validating the order and warranty status."
+                  ]
+                },
+                {
+                  "document": "warranty_rules.md",
+                  "score": 6,
+                  "excerpt": [
+                    "# Warranty Rules",
+                    "",
+                    "Standard warranty covers manufacturing defects for one year from delivery. If a product is still covered, the customer is eligible for repair, replacement, or approved return based on issue severity and stock availability."
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "metadata": {
+          "agentId": "documentation_agent",
+          "confidence": 0.95,
+          "status": "completed"
+        }
+      },
+      "append": false,
+      "lastChunk": true,
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC"
+      }
+    }
+  },
+  {
+    "index": 38,
+    "event_type": "a2a_message",
+    "timestamp_ms": 17.029,
+    "message_type": "task_request",
+    "sender": "triage_agent",
+    "target": "policy_or_billing_agent",
+    "capability": "policy_billing",
+    "attempt": 1,
+    "a2a_protocol_version": "1.0",
+    "a2a_method": "message/send",
+    "a2a_transport": "JSONRPC",
+    "a2a_message": {
+      "messageId": "msg-f8805862",
+      "role": "ROLE_USER",
+      "taskId": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "parts": [
+        {
+          "kind": "data",
+          "data": {
+            "ticket": {
+              "ticket_id": "TICKET-1006",
+              "customer_id": "CUST-002",
+              "query": "My HomeSensor Pro setup keeps failing and I want a warranty replacement if this defect continues.",
+              "scenario": "setup_and_warranty",
+              "title": "Setup Failure with Warranty Concern",
+              "difficulty": "standard",
+              "tags": [
+                "troubleshooting",
+                "warranty",
+                "multi-step"
+              ]
+            }
+          }
+        }
+      ],
+      "metadata": {
+        "senderAgent": "triage_agent",
+        "targetAgent": "policy_or_billing_agent",
+        "capability": "policy_billing",
+        "attempt": 1,
+        "messageType": "task_request"
+      }
+    }
+  },
+  {
+    "index": 39,
+    "event_type": "task_status",
+    "timestamp_ms": 17.041,
+    "task_id": "TICKET-1006",
+    "status": "queued",
+    "a2a_state": "submitted",
+    "target": "policy_or_billing_agent",
+    "attempt": 1,
+    "error": null,
+    "a2a_protocol_version": "1.0",
+    "a2a_task_event": {
+      "kind": "status-update",
+      "taskId": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "submitted",
+        "timestamp": "2026-04-07T12:51:11.885273+00:00",
+        "message": {
+          "messageId": "msg-3aee1153",
+          "role": "ROLE_AGENT",
+          "taskId": "TICKET-1006",
+          "contextId": "TICKET-1006",
+          "parts": [
+            {
+              "kind": "text",
+              "text": "Task submitted to specialist."
+            }
+          ],
+          "metadata": {
+            "senderAgent": "policy_or_billing_agent",
+            "capability": "policy_billing",
+            "attempt": 1
+          }
+        }
+      },
+      "final": false,
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC"
+      }
+    },
+    "a2a_task": {
+      "id": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "submitted",
+        "timestamp": "2026-04-07T12:51:11.885277+00:00"
+      },
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC",
+        "capability": "policy_billing",
+        "senderAgent": "triage_agent",
+        "targetAgent": "policy_or_billing_agent",
+        "attempt": 1
+      }
+    }
+  },
+  {
+    "index": 40,
+    "event_type": "a2a_message",
+    "timestamp_ms": 17.044,
+    "message_type": "task_accept",
+    "sender": "policy_or_billing_agent",
+    "target": "triage_agent",
+    "attempt": 1,
+    "a2a_protocol_version": "1.0",
+    "a2a_method": "tasks/get"
+  },
+  {
+    "index": 41,
+    "event_type": "task_status",
+    "timestamp_ms": 17.058,
+    "task_id": "TICKET-1006",
+    "status": "accepted",
+    "a2a_state": "working",
+    "target": "policy_or_billing_agent",
+    "attempt": 1,
+    "error": null,
+    "a2a_protocol_version": "1.0",
+    "a2a_task_event": {
+      "kind": "status-update",
+      "taskId": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "working",
+        "timestamp": "2026-04-07T12:51:11.885287+00:00",
+        "message": {
+          "messageId": "msg-2ed9a7a7",
+          "role": "ROLE_AGENT",
+          "taskId": "TICKET-1006",
+          "contextId": "TICKET-1006",
+          "parts": [
+            {
+              "kind": "text",
+              "text": "Specialist accepted the task."
+            }
+          ],
+          "metadata": {
+            "senderAgent": "policy_or_billing_agent",
+            "capability": "policy_billing",
+            "attempt": 1
+          }
+        }
+      },
+      "final": false,
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC"
+      }
+    },
+    "a2a_task": {
+      "id": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "working",
+        "timestamp": "2026-04-07T12:51:11.885290+00:00"
+      },
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC",
+        "capability": "policy_billing",
+        "senderAgent": "triage_agent",
+        "targetAgent": "policy_or_billing_agent",
+        "attempt": 1
+      }
+    }
+  },
+  {
+    "index": 42,
+    "event_type": "a2a_message",
+    "timestamp_ms": 17.06,
+    "message_type": "task_progress",
+    "sender": "policy_or_billing_agent",
+    "target": "triage_agent",
+    "state": "in_progress",
+    "attempt": 1,
+    "a2a_protocol_version": "1.0"
+  },
+  {
+    "index": 43,
+    "event_type": "task_status",
+    "timestamp_ms": 17.073,
+    "task_id": "TICKET-1006",
+    "status": "in_progress",
+    "a2a_state": "working",
+    "target": "policy_or_billing_agent",
+    "attempt": 1,
+    "error": null,
+    "a2a_protocol_version": "1.0",
+    "a2a_task_event": {
+      "kind": "status-update",
+      "taskId": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "working",
+        "timestamp": "2026-04-07T12:51:11.885306+00:00",
+        "message": {
+          "messageId": "msg-fc5b1063",
+          "role": "ROLE_AGENT",
+          "taskId": "TICKET-1006",
+          "contextId": "TICKET-1006",
+          "parts": [
+            {
+              "kind": "text",
+              "text": "Specialist is working on the task."
+            }
+          ],
+          "metadata": {
+            "senderAgent": "policy_or_billing_agent",
+            "capability": "policy_billing",
+            "attempt": 1
+          }
+        }
+      },
+      "final": false,
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC"
+      }
+    },
+    "a2a_task": {
+      "id": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "working",
+        "timestamp": "2026-04-07T12:51:11.885309+00:00"
+      },
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC",
+        "capability": "policy_billing",
+        "senderAgent": "triage_agent",
+        "targetAgent": "policy_or_billing_agent",
+        "attempt": 1
+      }
+    }
+  },
+  {
+    "index": 44,
+    "event_type": "tool_call",
+    "timestamp_ms": 17.284,
+    "tool": "get_payment_issues",
+    "arguments": {
+      "customer_id": "CUST-002",
+      "order_id": null
+    },
+    "server": "a2a_vs_mcp.mcp_servers.db_server",
+    "protocol": "official_mcp_sdk",
+    "transport": "in_process",
+    "requested_transport": "in_process"
+  },
+  {
+    "index": 45,
+    "event_type": "tool_call",
+    "timestamp_ms": 18.19,
+    "tool": "get_warranty",
+    "arguments": {
+      "customer_id": "CUST-002",
+      "product": "HomeSensor Pro"
+    },
+    "server": "a2a_vs_mcp.mcp_servers.db_server",
+    "protocol": "official_mcp_sdk",
+    "transport": "in_process",
+    "requested_transport": "in_process"
+  },
+  {
+    "index": 46,
+    "event_type": "tool_call",
+    "timestamp_ms": 18.979,
+    "tool": "get_policy",
+    "arguments": {
+      "policy_type": "warranty"
+    },
+    "server": "a2a_vs_mcp.mcp_servers.docs_server",
+    "protocol": "official_mcp_sdk",
+    "transport": "in_process",
+    "requested_transport": "in_process"
+  },
+  {
+    "index": 47,
+    "event_type": "task_status",
+    "timestamp_ms": 19.731,
+    "task_id": "TICKET-1006",
+    "status": "completed",
+    "a2a_state": "completed",
+    "target": "policy_or_billing_agent",
+    "attempt": 1,
+    "error": null,
+    "a2a_protocol_version": "1.0",
+    "a2a_task_event": {
+      "kind": "status-update",
+      "taskId": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "completed",
+        "timestamp": "2026-04-07T12:51:11.887953+00:00",
+        "message": {
+          "messageId": "msg-94720ed9",
+          "role": "ROLE_AGENT",
+          "taskId": "TICKET-1006",
+          "contextId": "TICKET-1006",
+          "parts": [
+            {
+              "kind": "text",
+              "text": "Specialist completed the task."
+            }
+          ],
+          "metadata": {
+            "senderAgent": "policy_or_billing_agent",
+            "capability": "policy_billing",
+            "attempt": 1
+          }
+        }
+      },
+      "final": true,
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC"
+      }
+    },
+    "a2a_task": {
+      "id": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "completed",
+        "timestamp": "2026-04-07T12:51:11.887964+00:00"
+      },
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC",
+        "capability": "policy_billing",
+        "senderAgent": "triage_agent",
+        "targetAgent": "policy_or_billing_agent",
+        "attempt": 1
+      }
+    }
+  },
+  {
+    "index": 48,
+    "event_type": "a2a_message",
+    "timestamp_ms": 19.754,
+    "message_type": "task_result",
+    "sender": "policy_or_billing_agent",
+    "target": "triage_agent",
+    "attempt": 1,
+    "a2a_protocol_version": "1.0",
+    "a2a_artifact_event": {
+      "kind": "artifact-update",
+      "taskId": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "artifact": {
+        "artifactId": "artifact-4175ea3f",
+        "name": "policy_or_billing_agent result",
+        "description": "Specialist result returned by policy_or_billing_agent.",
+        "parts": [
+          {
+            "kind": "text",
+            "text": "The product is still under standard warranty until 2027-03-29. A duplicate-charge issue appears on order ORD-1002 with status 'under_review'."
+          },
+          {
+            "kind": "data",
+            "data": {
+              "billing": [
+                {
+                  "payment_id": "PAY-3001",
+                  "customer_id": "CUST-002",
+                  "order_id": "ORD-1002",
+                  "issue_type": "duplicate_charge",
+                  "amount": 249.99,
+                  "status": "under_review"
+                }
+              ],
+              "warranty": [
+                {
+                  "warranty_id": "WAR-7001",
+                  "customer_id": "CUST-002",
+                  "product": "HomeSensor Pro",
+                  "expires_on": "2027-03-29",
+                  "coverage": "standard"
+                }
+              ],
+              "policy": {
+                "policy_type": "warranty",
+                "document": "warranty_rules.md",
+                "content": "# Warranty Rules\n\nStandard warranty covers manufacturing defects for one year from delivery. If a product is still covered, the customer is eligible for repair, replacement, or approved return based on issue severity and stock availability.\n"
+              }
+            }
+          }
+        ],
+        "metadata": {
+          "agentId": "policy_or_billing_agent",
+          "confidence": 0.95,
+          "status": "completed"
+        }
+      },
+      "append": false,
+      "lastChunk": true,
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC"
+      }
+    },
+    "a2a_task": {
+      "id": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "status": {
+        "state": "completed",
+        "timestamp": "2026-04-07T12:51:11.887982+00:00"
+      },
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC",
+        "capability": "policy_billing",
+        "senderAgent": "triage_agent",
+        "targetAgent": "policy_or_billing_agent",
+        "attempt": 1
+      },
+      "artifacts": [
+        {
+          "artifactId": "artifact-5825526e",
+          "name": "policy_or_billing_agent result",
+          "description": "Specialist result returned by policy_or_billing_agent.",
+          "parts": [
+            {
+              "kind": "text",
+              "text": "The product is still under standard warranty until 2027-03-29. A duplicate-charge issue appears on order ORD-1002 with status 'under_review'."
+            },
+            {
+              "kind": "data",
+              "data": {
+                "billing": [
+                  {
+                    "payment_id": "PAY-3001",
+                    "customer_id": "CUST-002",
+                    "order_id": "ORD-1002",
+                    "issue_type": "duplicate_charge",
+                    "amount": 249.99,
+                    "status": "under_review"
+                  }
+                ],
+                "warranty": [
+                  {
+                    "warranty_id": "WAR-7001",
+                    "customer_id": "CUST-002",
+                    "product": "HomeSensor Pro",
+                    "expires_on": "2027-03-29",
+                    "coverage": "standard"
+                  }
+                ],
+                "policy": {
+                  "policy_type": "warranty",
+                  "document": "warranty_rules.md",
+                  "content": "# Warranty Rules\n\nStandard warranty covers manufacturing defects for one year from delivery. If a product is still covered, the customer is eligible for repair, replacement, or approved return based on issue severity and stock availability.\n"
+                }
+              }
+            }
+          ],
+          "metadata": {
+            "agentId": "policy_or_billing_agent",
+            "confidence": 0.95,
+            "status": "completed"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "index": 49,
+    "event_type": "a2a_task_artifact",
+    "timestamp_ms": 19.756,
+    "task_id": "TICKET-1006",
+    "target": "policy_or_billing_agent",
+    "attempt": 1,
+    "a2a_artifact_event": {
+      "kind": "artifact-update",
+      "taskId": "TICKET-1006",
+      "contextId": "TICKET-1006",
+      "artifact": {
+        "artifactId": "artifact-4175ea3f",
+        "name": "policy_or_billing_agent result",
+        "description": "Specialist result returned by policy_or_billing_agent.",
+        "parts": [
+          {
+            "kind": "text",
+            "text": "The product is still under standard warranty until 2027-03-29. A duplicate-charge issue appears on order ORD-1002 with status 'under_review'."
+          },
+          {
+            "kind": "data",
+            "data": {
+              "billing": [
+                {
+                  "payment_id": "PAY-3001",
+                  "customer_id": "CUST-002",
+                  "order_id": "ORD-1002",
+                  "issue_type": "duplicate_charge",
+                  "amount": 249.99,
+                  "status": "under_review"
+                }
+              ],
+              "warranty": [
+                {
+                  "warranty_id": "WAR-7001",
+                  "customer_id": "CUST-002",
+                  "product": "HomeSensor Pro",
+                  "expires_on": "2027-03-29",
+                  "coverage": "standard"
+                }
+              ],
+              "policy": {
+                "policy_type": "warranty",
+                "document": "warranty_rules.md",
+                "content": "# Warranty Rules\n\nStandard warranty covers manufacturing defects for one year from delivery. If a product is still covered, the customer is eligible for repair, replacement, or approved return based on issue severity and stock availability.\n"
+              }
+            }
+          }
+        ],
+        "metadata": {
+          "agentId": "policy_or_billing_agent",
+          "confidence": 0.95,
+          "status": "completed"
+        }
+      },
+      "append": false,
+      "lastChunk": true,
+      "metadata": {
+        "protocolVersion": "1.0",
+        "transport": "JSONRPC"
+      }
+    }
+  },
+  {
+    "index": 50,
+    "event_type": "triage_merge",
+    "timestamp_ms": 19.825,
+    "ticket_id": "TICKET-1006",
+    "contributors": [
+      "customer_data_agent",
+      "documentation_agent",
+      "policy_or_billing_agent"
+    ],
+    "final_answer": "Triage summary for TICKET-1006: The best troubleshooting guidance comes from setup_guide.md: restart the device, reconnect to 2.4 GHz Wi-Fi, and retry pairing. The product is still under standard warranty until 2027-03-29. Internal contributions: customer_data_agent: supplied billing, customer, orders, warranty | documentation_agent: supplied docs | policy_or_billing_agent: supplied billing, policy, warranty"
+  }
+]

@@ -1,0 +1,184 @@
+<section id="control-panel-shell" class="control-panel">
+  <div class="panel-head">
+    <h2>Run Comparison</h2>
+    <p>Choose a built-in scenario or submit your own ticket.</p>
+  </div>
+  <form
+    id="run-form"
+    class="run-form profile-dynamic-form"
+    hx-post="/legacy/run"
+    hx-target="#results-panel"
+    hx-swap="innerHTML"
+  >
+    <label>
+      <span>Config Profile</span>
+      <select
+        id="profile-select"
+        name="profile"
+        hx-get="/legacy/controls"
+        hx-include="#run-form"
+        hx-target="#control-panel-shell"
+        hx-select="#control-panel-shell"
+        hx-swap="outerHTML"
+      >
+        {% for option in profile_options %}
+        <option value="{{ option.name }}" {% if selected.profile == option.name %}selected{% endif %}>{{ option.name }} - {{ option.description }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <div class="metric-pills profile-preview-pills">
+      <span>Effective runtime: {{ effective_profile.runtime }}</span>
+      <span>Effective transport: {{ effective_profile.mcp_transport }}</span>
+      <span>External logs: {{ "on" if effective_profile.export_logs else "off" }}</span>
+    </div>
+    <label>
+      <span>Scenario</span>
+      <select name="scenario">
+        {% for option in scenario_options %}
+        <option value="{{ option.key }}" {% if selected.scenario == option.key %}selected{% endif %}>{{ option.label }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>
+      <span>Mode</span>
+      <select name="mode">
+        {% for option in mode_options %}
+        <option value="{{ option }}" {% if selected.mode == option %}selected{% endif %}>{{ option|upper }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>
+      <span>Runtime Override</span>
+      <select
+        id="runtime-select"
+        name="runtime"
+        hx-get="/legacy/controls"
+        hx-include="#run-form"
+        hx-target="#control-panel-shell"
+        hx-select="#control-panel-shell"
+        hx-swap="outerHTML"
+      >
+        <option value="" {% if not selected.runtime %}selected{% endif %}>Profile default ({{ effective_profile.runtime }})</option>
+        {% for option in runtime_options %}
+        <option value="{{ option }}" {% if selected.runtime == option %}selected{% endif %}>{{ option }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>
+      <span>MCP Transport Override</span>
+      <select
+        id="transport-select"
+        name="mcp_transport"
+        hx-get="/legacy/controls"
+        hx-include="#run-form"
+        hx-target="#control-panel-shell"
+        hx-select="#control-panel-shell"
+        hx-swap="outerHTML"
+      >
+        <option value="" {% if not selected.mcp_transport %}selected{% endif %}>Profile default ({{ effective_profile.mcp_transport }})</option>
+        {% for option in transport_options %}
+        <option value="{{ option }}" {% if selected.mcp_transport == option %}selected{% endif %}>{{ option }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>
+      <span>Custom Query</span>
+      <textarea name="query" rows="4" placeholder="Leave blank to use the selected scenario.">{{ selected.query }}</textarea>
+    </label>
+    <label>
+      <span>Customer ID</span>
+      <input type="text" name="customer_id" value="{{ selected.customer_id }}" placeholder="Optional for custom tickets" />
+    </label>
+    <div class="failure-panel">
+      <div class="panel-head compact">
+        <h3>Failure Toggles</h3>
+        <p>Simulate partial outages or bad payloads for resilience demos.</p>
+      </div>
+      <label class="checkbox-row">
+        <input type="checkbox" name="db_down" value="1" {% if selected.db_down %}checked{% endif %} />
+        <span>Database down</span>
+      </label>
+      <label class="checkbox-row">
+        <input type="checkbox" name="docs_timeout" value="1" {% if selected.docs_timeout %}checked{% endif %} />
+        <span>Docs timeout</span>
+      </label>
+      <label class="checkbox-row">
+        <input type="checkbox" name="malformed_task" value="1" {% if selected.malformed_task %}checked{% endif %} />
+        <span>Malformed policy task</span>
+      </label>
+      <label>
+        <span>Disable Specialist</span>
+        <select name="disable_agent" multiple size="3">
+          {% for option in agent_options %}
+          <option value="{{ option }}" {% if option in selected.disable_agent %}selected{% endif %}>{{ option }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </div>
+    <label class="checkbox-row">
+      <input type="checkbox" name="save_report" value="1" {% if selected.save_report %}checked{% endif %} />
+      <span>Save report to artifacts</span>
+    </label>
+    <label class="checkbox-row">
+      <input type="checkbox" name="export_logs" value="1" {% if selected.export_logs %}checked{% endif %} />
+      <span>Export structured NDJSON logs</span>
+    </label>
+    <button type="submit" class="primary-btn">Run Demo</button>
+  </form>
+  <div class="saved-reports">
+    <div class="panel-head compact">
+      <h3>Saved Report Trends</h3>
+      <p><button class="report-chip" hx-get="/legacy/trends" hx-target="#results-panel" hx-swap="innerHTML" type="button">Open Trend View</button></p>
+      <p>Cross-run patterns from the reports you have already saved.</p>
+    </div>
+    {% if report_trends.total_reports %}
+    <div class="metric-pills">
+      <span>{{ report_trends.total_reports }} saved reports</span>
+      <span>{{ report_trends.average_totals.tool_calls }} avg tool calls</span>
+      <span>{{ report_trends.average_totals.a2a_messages }} avg A2A messages</span>
+    </div>
+    <div class="failure-box">
+      {% for note in report_trends.narrative %}
+      <p>{{ note }}</p>
+      {% endfor %}
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Mode</th>
+            <th>Avg Overall</th>
+            <th>Avg Latency</th>
+            <th>Recommended</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for trend in report_trends.mode_trends[:4] %}
+          <tr>
+            <td>{{ trend.mode }}</td>
+            <td>{{ trend.avg_overall_score }}</td>
+            <td>{{ trend.avg_latency_ms }} ms</td>
+            <td>{{ trend.recommended_count }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p class="muted">No saved reports yet.</p>
+    {% endif %}
+  </div>
+  <div class="saved-reports">
+    <div class="panel-head compact">
+      <h3>Saved Reports</h3>
+      <p>Reload previous runs for presentation or review.</p>
+    </div>
+    <div class="report-list">
+      {% for report in saved_reports %}
+      <button class="report-chip" hx-get="/legacy/reports/{{ report.name }}" hx-target="#results-panel" hx-swap="innerHTML" type="button">{{ report.name }}</button>
+      {% else %}
+      <p class="muted">No saved reports yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>

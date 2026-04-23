@@ -1,0 +1,14 @@
+# Normalize line endings: store LF in repo, checkout native on Windows, LF on Mac/Linux
+* text=auto eol=lf
+
+# Binaries — no line-ending conversion
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg text eol=lf
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary

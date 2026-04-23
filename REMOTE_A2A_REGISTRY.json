@@ -1,0 +1,7 @@
+﻿{
+  "agents": {
+    "customer_data": "http://127.0.0.1:9101",
+    "documentation": "http://127.0.0.1:9102",
+    "policy_billing": "http://127.0.0.1:9103"
+  }
+}

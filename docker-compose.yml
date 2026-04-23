@@ -1,0 +1,60 @@
+name: a2a-vs-mcp-phase6
+
+services:
+  web:
+    image: a2a-vs-mcp-demo:phase6
+    build: .
+    ports:
+      - "8008:8008"
+    environment:
+      A2A_VS_MCP_PROFILE: demo
+      A2A_TRANSPORT: remote
+      MCP_TRANSPORT: http
+      REMOTE_A2A_CUSTOMER_URL: http://a2a-customer-agent:9101
+      REMOTE_A2A_DOCUMENTATION_URL: http://a2a-documentation-agent:9102
+      REMOTE_A2A_POLICY_URL: http://a2a-policy-agent:9103
+    depends_on:
+      a2a-customer-agent:
+        condition: service_healthy
+      a2a-documentation-agent:
+        condition: service_healthy
+      a2a-policy-agent:
+        condition: service_healthy
+    volumes:
+      - ./artifacts:/app/artifacts
+
+  a2a-customer-agent:
+    image: a2a-vs-mcp-demo:phase6
+    build: .
+    command: ["python", "-m", "a2a_vs_mcp.a2a.remote_server", "--role", "customer_data", "--host", "0.0.0.0", "--port", "9101", "--public-url", "http://a2a-customer-agent:9101", "--project-root", "/app"]
+    ports:
+      - "9101:9101"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:9101/health', timeout=2).read()"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+  a2a-documentation-agent:
+    image: a2a-vs-mcp-demo:phase6
+    build: .
+    command: ["python", "-m", "a2a_vs_mcp.a2a.remote_server", "--role", "documentation", "--host", "0.0.0.0", "--port", "9102", "--public-url", "http://a2a-documentation-agent:9102", "--project-root", "/app"]
+    ports:
+      - "9102:9102"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:9102/health', timeout=2).read()"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+  a2a-policy-agent:
+    image: a2a-vs-mcp-demo:phase6
+    build: .
+    command: ["python", "-m", "a2a_vs_mcp.a2a.remote_server", "--role", "policy_billing", "--host", "0.0.0.0", "--port", "9103", "--public-url", "http://a2a-policy-agent:9103", "--project-root", "/app"]
+    ports:
+      - "9103:9103"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:9103/health', timeout=2).read()"]
+      interval: 5s
+      timeout: 3s
+      retries: 12

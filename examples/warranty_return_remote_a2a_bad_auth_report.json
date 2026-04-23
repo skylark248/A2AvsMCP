@@ -1,0 +1,222 @@
+[
+  {
+    "mode": "a2a",
+    "runtime": "mock",
+    "ticket": {
+      "ticket_id": "TICKET-1004",
+      "customer_id": "CUST-002",
+      "query": "I want to return my HomeSensor Pro while it is still under warranty.",
+      "scenario": "warranty_return",
+      "title": "Warranty Return Request",
+      "difficulty": "standard",
+      "tags": [
+        "warranty",
+        "policy"
+      ]
+    },
+    "final_answer": "No specialist was able to complete this ticket. Check the trace for the failure path.",
+    "trace": [
+      {
+        "index": 1,
+        "event_type": "ticket_received",
+        "timestamp_ms": 0.032,
+        "ticket": {
+          "ticket_id": "TICKET-1004",
+          "customer_id": "CUST-002",
+          "query": "I want to return my HomeSensor Pro while it is still under warranty.",
+          "scenario": "warranty_return",
+          "title": "Warranty Return Request",
+          "difficulty": "standard",
+          "tags": [
+            "warranty",
+            "policy"
+          ]
+        },
+        "failure_config": {
+          "db_down": false,
+          "docs_timeout": false,
+          "unavailable_agents": [],
+          "malformed_task": false,
+          "remote_a2a_timeout": false,
+          "remote_a2a_bad_auth": true,
+          "remote_a2a_missing_capability": false,
+          "remote_a2a_malformed_response": false,
+          "remote_a2a_task_failure": false
+        },
+        "mcp_transport": "http",
+        "a2a_transport": "remote",
+        "profile": {
+          "name": "demo",
+          "runtime": "mock",
+          "mcp_transport": "http",
+          "save_report": true,
+          "export_logs": true,
+          "description": "Presentation-friendly defaults with realistic transport and persisted outputs.",
+          "a2a_transport": "remote"
+        },
+        "user_id": "default"
+      },
+      {
+        "index": 2,
+        "event_type": "runtime_config",
+        "timestamp_ms": 0.052,
+        "agent": "triage_agent",
+        "runtime": "mock",
+        "llm_enabled": false,
+        "llm_model": null,
+        "failure_config": {
+          "db_down": false,
+          "docs_timeout": false,
+          "unavailable_agents": [],
+          "malformed_task": false,
+          "remote_a2a_timeout": false,
+          "remote_a2a_bad_auth": true,
+          "remote_a2a_missing_capability": false,
+          "remote_a2a_malformed_response": false,
+          "remote_a2a_task_failure": false
+        }
+      },
+      {
+        "index": 3,
+        "event_type": "a2a_remote_failure",
+        "timestamp_ms": 0.567,
+        "role": "customer_data",
+        "endpoint": "http://127.0.0.1:9101",
+        "error": "Simulated remote A2A authentication failure.",
+        "stage": "auth",
+        "protocolVersion": "1.0",
+        "binding": "a2a-vs-mcp-demo-jsonrpc",
+        "bindingVersion": "1",
+        "officialSdkAvailable": false,
+        "sdkNote": "Official a2a-sdk is not installed. Remote A2A is using the versioned demo HTTP binding."
+      },
+      {
+        "index": 4,
+        "event_type": "a2a_remote_failure",
+        "timestamp_ms": 0.921,
+        "role": "documentation",
+        "endpoint": "http://127.0.0.1:9102",
+        "error": "Simulated remote A2A authentication failure.",
+        "stage": "auth",
+        "protocolVersion": "1.0",
+        "binding": "a2a-vs-mcp-demo-jsonrpc",
+        "bindingVersion": "1",
+        "officialSdkAvailable": false,
+        "sdkNote": "Official a2a-sdk is not installed. Remote A2A is using the versioned demo HTTP binding."
+      },
+      {
+        "index": 5,
+        "event_type": "a2a_remote_failure",
+        "timestamp_ms": 1.219,
+        "role": "policy_billing",
+        "endpoint": "http://127.0.0.1:9103",
+        "error": "Simulated remote A2A authentication failure.",
+        "stage": "auth",
+        "protocolVersion": "1.0",
+        "binding": "a2a-vs-mcp-demo-jsonrpc",
+        "bindingVersion": "1",
+        "officialSdkAvailable": false,
+        "sdkNote": "Official a2a-sdk is not installed. Remote A2A is using the versioned demo HTTP binding."
+      },
+      {
+        "index": 6,
+        "event_type": "agent_reasoning",
+        "timestamp_ms": 1.319,
+        "agent": "triage_agent",
+        "issue_type": "warranty_return"
+      },
+      {
+        "index": 7,
+        "event_type": "triage_warning",
+        "timestamp_ms": 1.33,
+        "capability": "customer_data",
+        "error": "\"No remote agent registered for capability 'customer_data'\"",
+        "ticket_id": "TICKET-1004"
+      },
+      {
+        "index": 8,
+        "event_type": "triage_warning",
+        "timestamp_ms": 1.335,
+        "capability": "policy_billing",
+        "error": "\"No remote agent registered for capability 'policy_billing'\"",
+        "ticket_id": "TICKET-1004"
+      },
+      {
+        "index": 9,
+        "event_type": "triage_merge",
+        "timestamp_ms": 1.338,
+        "ticket_id": "TICKET-1004",
+        "contributors": [],
+        "final_answer": "No specialist was able to complete this ticket. Check the trace for the failure path."
+      },
+      {
+        "index": 10,
+        "event_type": "comparison_report",
+        "timestamp_ms": 2.166,
+        "metrics": {
+          "mode": "a2a",
+          "latency_ms": 2.145,
+          "tool_calls": 0,
+          "a2a_messages": 3,
+          "agents_involved": [
+            "triage_agent"
+          ],
+          "complexity": "high",
+          "strengths": [
+            "Shows hosted agent discovery",
+            "Makes the agent network boundary explicit"
+          ],
+          "weaknesses": [
+            "Requires remote specialist services",
+            "More network and protocol failure modes"
+          ],
+          "retries": 0,
+          "failures": 5
+        },
+        "trace_file": "D:\\A2A vs MCP\\artifacts\\traces\\TICKET-1004_a2a.json",
+        "external_log_file": "D:\\A2A vs MCP\\artifacts\\logs\\TICKET-1004_a2a.ndjson",
+        "failures": [
+          "\"No remote agent registered for capability 'customer_data'\"",
+          "\"No remote agent registered for capability 'policy_billing'\"",
+          "Simulated remote A2A authentication failure.",
+          "Simulated remote A2A authentication failure.",
+          "Simulated remote A2A authentication failure."
+        ],
+        "a2a_transport": "remote"
+      }
+    ],
+    "metrics": {
+      "mode": "a2a",
+      "latency_ms": 2.145,
+      "tool_calls": 0,
+      "a2a_messages": 3,
+      "agents_involved": [
+        "triage_agent"
+      ],
+      "complexity": "high",
+      "strengths": [
+        "Shows hosted agent discovery",
+        "Makes the agent network boundary explicit"
+      ],
+      "weaknesses": [
+        "Requires remote specialist services",
+        "More network and protocol failure modes"
+      ],
+      "retries": 0,
+      "failures": 5
+    },
+    "tools_used": [],
+    "agents_used": [
+      "triage_agent"
+    ],
+    "failures": [
+      "\"No remote agent registered for capability 'customer_data'\"",
+      "\"No remote agent registered for capability 'policy_billing'\"",
+      "Simulated remote A2A authentication failure.",
+      "Simulated remote A2A authentication failure.",
+      "Simulated remote A2A authentication failure."
+    ],
+    "external_log_path": "D:\\A2A vs MCP\\artifacts\\logs\\TICKET-1004_a2a.ndjson",
+    "a2a_transport": "remote"
+  }
+]

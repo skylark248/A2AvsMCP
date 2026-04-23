@@ -1,0 +1,57 @@
+[
+  {
+    "id": "quick_comparison",
+    "title": "Quick Four-Mode Comparison",
+    "description": "A short happy-path run for explaining baseline, MCP, A2A, and hybrid differences.",
+    "scenario": "order_status",
+    "mode": "all",
+    "profile": "demo",
+    "runtime": "mock",
+    "mcp_transport": "in_process",
+    "failure_toggles": []
+  },
+  {
+    "id": "mcp_transport_story",
+    "title": "MCP Transport Boundary",
+    "description": "Shows a docs-heavy support case through the MCP tool boundary.",
+    "scenario": "setup_error",
+    "mode": "mcp",
+    "profile": "demo",
+    "runtime": "mock",
+    "mcp_transport": "http",
+    "failure_toggles": []
+  },
+  {
+    "id": "a2a_delegation_story",
+    "title": "A2A Specialist Delegation",
+    "description": "Shows triage and specialist handoffs without MCP tool usage.",
+    "scenario": "double_charge",
+    "mode": "a2a",
+    "profile": "demo",
+    "runtime": "mock",
+    "mcp_transport": "in_process",
+    "failure_toggles": []
+  },
+  {
+    "id": "hybrid_enterprise_story",
+    "title": "Hybrid Enterprise Workflow",
+    "description": "Combines A2A delegation with MCP-backed tools for a multi-step enterprise support case.",
+    "scenario": "enterprise_setup_replacement",
+    "mode": "hybrid",
+    "profile": "demo",
+    "runtime": "mock",
+    "mcp_transport": "http",
+    "failure_toggles": []
+  },
+  {
+    "id": "resilience_failure_story",
+    "title": "Failure and Recovery Narrative",
+    "description": "Uses a database outage to make failures, retries, and fallback behavior visible.",
+    "scenario": "delay_and_billing",
+    "mode": "all",
+    "profile": "demo",
+    "runtime": "mock",
+    "mcp_transport": "in_process",
+    "failure_toggles": ["db_down"]
+  }
+]

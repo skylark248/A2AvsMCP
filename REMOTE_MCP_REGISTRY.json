@@ -1,0 +1,9 @@
+﻿[
+  {
+    "id": "local_example",
+    "label": "Local example endpoints",
+    "db_url": "http://127.0.0.1:9001/mcp",
+    "docs_url": "http://127.0.0.1:9002/mcp",
+    "enabled": true
+  }
+]

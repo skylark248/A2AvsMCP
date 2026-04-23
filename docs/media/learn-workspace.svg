@@ -1,0 +1,35 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-label="Guided learning workspace screenshot mockup">
+  <rect width="1200" height="680" fill="#f3efe7"/>
+  <rect x="36" y="32" width="1128" height="76" rx="8" fill="#fffdfa" stroke="#d8d0c2"/>
+  <text x="68" y="64" font-family="Segoe UI, Arial" font-size="14" fill="#b85c38" letter-spacing="3">PROTOCOL LEARNING LAB</text>
+  <text x="68" y="91" font-family="Segoe UI, Arial" font-size="25" font-weight="700" fill="#17475f">A2A vs MCP Demo Platform</text>
+  <text x="66" y="160" font-family="Segoe UI, Arial" font-size="17" fill="#b85c38" letter-spacing="3">LEARN</text>
+  <text x="66" y="198" font-family="Segoe UI, Arial" font-size="38" font-weight="700" fill="#17475f">MCP answers tool access. A2A answers agent collaboration.</text>
+  <text x="66" y="232" font-family="Segoe UI, Arial" font-size="18" fill="#5b6b7c">Run one support ticket through baseline, MCP, A2A-style collaboration, and hybrid lessons.</text>
+  <rect x="66" y="262" width="1068" height="54" rx="8" fill="#e8f2f5" stroke="#7aa9b8"/>
+  <text x="86" y="295" font-family="Segoe UI, Arial" font-size="17" fill="#17475f">MCP uses official SDK servers and clients. A2A is modeled as an educational task lifecycle broker.</text>
+  <g font-family="Segoe UI, Arial">
+    <rect x="66" y="346" width="250" height="150" rx="8" fill="#fffdfa" stroke="#17475f"/>
+    <text x="88" y="386" font-size="14" fill="#17475f" font-weight="700">BASELINE</text>
+    <text x="88" y="420" font-size="21" fill="#102033" font-weight="700">One agent</text>
+    <text x="88" y="452" font-size="15" fill="#5b6b7c">Simple answer path, no protocol boundary.</text>
+    <rect x="340" y="346" width="250" height="150" rx="8" fill="#fffdfa" stroke="#17475f"/>
+    <text x="362" y="386" font-size="14" fill="#17475f" font-weight="700">MCP</text>
+    <text x="362" y="420" font-size="21" fill="#102033" font-weight="700">Structured tools</text>
+    <text x="362" y="452" font-size="15" fill="#5b6b7c">Tool discovery, calls, transport, fallback.</text>
+    <rect x="614" y="346" width="250" height="150" rx="8" fill="#fffdfa" stroke="#17475f"/>
+    <text x="636" y="386" font-size="14" fill="#17475f" font-weight="700">A2A</text>
+    <text x="636" y="420" font-size="21" fill="#102033" font-weight="700">Specialists</text>
+    <text x="636" y="452" font-size="15" fill="#5b6b7c">Task status, retry, result artifacts.</text>
+    <rect x="888" y="346" width="250" height="150" rx="8" fill="#17475f" stroke="#17475f"/>
+    <text x="910" y="386" font-size="14" fill="#f2c6b6" font-weight="700">HYBRID</text>
+    <text x="910" y="420" font-size="21" fill="#fffdfa" font-weight="700">Agents + tools</text>
+    <text x="910" y="452" font-size="15" fill="#d7e6eb">A2A coordination plus MCP evidence.</text>
+  </g>
+  <rect x="66" y="536" width="520" height="88" rx="8" fill="#fffdfa" stroke="#d8d0c2"/>
+  <text x="88" y="570" font-family="Segoe UI, Arial" font-size="18" font-weight="700" fill="#17475f">Result Lens</text>
+  <text x="88" y="600" font-family="Segoe UI, Arial" font-size="15" fill="#5b6b7c">Trace events, tool calls, A2A messages, failures, and customer answer.</text>
+  <rect x="614" y="536" width="520" height="88" rx="8" fill="#fffdfa" stroke="#d8d0c2"/>
+  <text x="636" y="570" font-family="Segoe UI, Arial" font-size="18" font-weight="700" fill="#17475f">Comparison Table</text>
+  <text x="636" y="600" font-family="Segoe UI, Arial" font-size="15" fill="#5b6b7c">What problem each protocol solves and what to inspect in the trace.</text>
+</svg>

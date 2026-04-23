@@ -1,0 +1,23 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-label="Trace comparison screenshot mockup">
+  <rect width="1200" height="680" fill="#f3efe7"/>
+  <text x="64" y="74" font-family="Segoe UI, Arial" font-size="38" font-weight="700" fill="#17475f">Trace Explorer: MCP vs A2A signals</text>
+  <text x="64" y="110" font-family="Segoe UI, Arial" font-size="18" fill="#5b6b7c">The same ticket shows different protocol evidence depending on mode.</text>
+  <g font-family="Segoe UI, Arial">
+    <rect x="64" y="150" width="500" height="430" rx="8" fill="#fffdfa" stroke="#d8d0c2"/>
+    <text x="92" y="192" font-size="24" font-weight="700" fill="#17475f">MCP mode</text>
+    <circle cx="110" cy="244" r="10" fill="#2d6f7d"/><text x="135" y="250" font-size="17" fill="#102033">tool_discovery: docs and database servers</text>
+    <circle cx="110" cy="304" r="10" fill="#2d6f7d"/><text x="135" y="310" font-size="17" fill="#102033">tool_call: get_customer_profile</text>
+    <circle cx="110" cy="364" r="10" fill="#2d6f7d"/><text x="135" y="370" font-size="17" fill="#102033">tool_call: search_docs</text>
+    <circle cx="110" cy="424" r="10" fill="#b85c38"/><text x="135" y="430" font-size="17" fill="#102033">comparison_report: tool boundary story</text>
+    <rect x="92" y="482" width="420" height="54" rx="8" fill="#e8f2f5"/>
+    <text x="112" y="516" font-size="17" fill="#17475f">MCP is visible through tool contracts and transport.</text>
+    <rect x="636" y="150" width="500" height="430" rx="8" fill="#fffdfa" stroke="#d8d0c2"/>
+    <text x="664" y="192" font-size="24" font-weight="700" fill="#17475f">A2A / Hybrid mode</text>
+    <circle cx="682" cy="244" r="10" fill="#17475f"/><text x="707" y="250" font-size="17" fill="#102033">agent_register: Agent Card with skills</text>
+    <circle cx="682" cy="304" r="10" fill="#17475f"/><text x="707" y="310" font-size="17" fill="#102033">message/send: user role and data part</text>
+    <circle cx="682" cy="364" r="10" fill="#17475f"/><text x="707" y="370" font-size="17" fill="#102033">status-update: submitted to completed</text>
+    <circle cx="682" cy="424" r="10" fill="#b85c38"/><text x="707" y="430" font-size="17" fill="#102033">artifact-update: specialist result</text>
+    <rect x="664" y="482" width="420" height="54" rx="8" fill="#e8f2f5"/>
+    <text x="684" y="516" font-size="17" fill="#17475f">A2A is visible through task lifecycle and artifacts.</text>
+  </g>
+</svg>

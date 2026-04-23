@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="layout-grid">
+  {% include "_control_panel.html" %}
+  <section id="results-panel" class="results-panel">
+    {% include "_results.html" %}
+  </section>
+</div>
+{% endblock %}

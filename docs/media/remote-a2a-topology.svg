@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Remote A2A Topology</title>
+  <desc id="desc">Diagram showing the run workspace or CLI calling DemoPlatform, which uses a remote A2A broker to discover hosted specialist Agent Cards and send tasks to three HTTP specialist services.</desc>
+  <rect width="960" height="540" fill="#f7fafc"/>
+  <text x="48" y="54" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#102033">Hosted Remote A2A Demo Path</text>
+  <text x="48" y="86" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#425466">The local broker remains the default. Remote HTTP makes Agent Card discovery and network task exchange visible.</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#2563eb"/>
+    </marker>
+    <style>
+      .box { fill: #ffffff; stroke: #94a3b8; stroke-width: 2; rx: 8; }
+      .primary { fill: #eff6ff; stroke: #2563eb; }
+      .service { fill: #ecfdf5; stroke: #0f766e; }
+      .mcp { fill: #fff7ed; stroke: #c2410c; }
+      .label { font-family: Segoe UI, Arial, sans-serif; font-size: 18px; font-weight: 700; fill: #102033; }
+      .small { font-family: Segoe UI, Arial, sans-serif; font-size: 13px; fill: #425466; }
+      .arrow { stroke: #2563eb; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+      .dash { stroke: #c2410c; stroke-width: 2.5; fill: none; stroke-dasharray: 8 6; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="box primary" x="48" y="148" width="190" height="86" rx="8"/>
+  <text class="label" x="72" y="184">React UI / CLI</text>
+  <text class="small" x="72" y="209">a2a_transport=remote</text>
+
+  <rect class="box primary" x="310" y="148" width="190" height="86" rx="8"/>
+  <text class="label" x="338" y="184">DemoPlatform</text>
+  <text class="small" x="338" y="209">scenario + trace context</text>
+
+  <rect class="box primary" x="572" y="148" width="220" height="86" rx="8"/>
+  <text class="label" x="600" y="184">Remote A2A Broker</text>
+  <text class="small" x="600" y="209">discover, route, send, trace</text>
+
+  <path class="arrow" d="M238 191 H300"/>
+  <path class="arrow" d="M500 191 H562"/>
+
+  <rect class="box service" x="92" y="330" width="220" height="104" rx="8"/>
+  <text class="label" x="118" y="366">Customer Agent</text>
+  <text class="small" x="118" y="392">http://127.0.0.1:9101</text>
+  <text class="small" x="118" y="414">customer/order evidence</text>
+
+  <rect class="box service" x="370" y="330" width="220" height="104" rx="8"/>
+  <text class="label" x="396" y="366">Docs Agent</text>
+  <text class="small" x="396" y="392">http://127.0.0.1:9102</text>
+  <text class="small" x="396" y="414">setup/troubleshooting evidence</text>
+
+  <rect class="box service" x="648" y="330" width="220" height="104" rx="8"/>
+  <text class="label" x="674" y="366">Policy Agent</text>
+  <text class="small" x="674" y="392">http://127.0.0.1:9103</text>
+  <text class="small" x="674" y="414">billing/warranty policy</text>
+
+  <path class="arrow" d="M640 234 C565 278, 420 288, 228 326"/>
+  <path class="arrow" d="M682 234 C620 278, 550 296, 502 326"/>
+  <path class="arrow" d="M724 234 C760 280, 775 300, 778 326"/>
+
+  <rect class="box mcp" x="228" y="468" width="504" height="42" rx="8"/>
+  <text class="small" x="258" y="494">Hybrid remote specialists can call MCP-backed tools and promote those tool events into the main trace.</text>
+  <path class="dash" d="M202 434 V464 H360"/>
+  <path class="dash" d="M480 434 V464"/>
+  <path class="dash" d="M758 434 V464 H600"/>
+</svg>
