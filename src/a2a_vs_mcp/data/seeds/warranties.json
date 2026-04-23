@@ -1,0 +1,30 @@
+[
+  {
+    "warranty_id": "WAR-7001",
+    "customer_id": "CUST-002",
+    "product": "HomeSensor Pro",
+    "expires_on": "2027-03-29",
+    "coverage": "standard"
+  },
+  {
+    "warranty_id": "WAR-7002",
+    "customer_id": "CUST-003",
+    "product": "HomeSensor Pro",
+    "expires_on": "2027-03-18",
+    "coverage": "premium"
+  },
+  {
+    "warranty_id": "WAR-7003",
+    "customer_id": "CUST-004",
+    "product": "SmartHub Mini",
+    "expires_on": "2026-11-25",
+    "coverage": "standard"
+  },
+  {
+    "warranty_id": "WAR-7004",
+    "customer_id": "CUST-001",
+    "product": "SmartHub Mini",
+    "expires_on": "2027-04-01",
+    "coverage": "premium"
+  }
+]

@@ -25,6 +25,12 @@ class ScenariosResponse(BaseModel):
     scenarios: list[ScenarioOptionResponse]
 
 
+class TalkingPointResponse(BaseModel):
+    headline: str
+    sentence: str
+    callout: str
+
+
 class TicketResponse(BaseModel):
     ticket_id: str
     customer_id: str
@@ -33,6 +39,7 @@ class TicketResponse(BaseModel):
     title: str | None = ""
     difficulty: str | None = "standard"
     tags: list[str] = Field(default_factory=list)
+    talking_point: TalkingPointResponse | None = None
 
 
 class TraceEventResponse(BaseModel):
@@ -52,6 +59,13 @@ class TraceEventResponse(BaseModel):
     transport: str | None = None
     requested_transport: str | None = None
     error: str | None = None
+    # Phase 2 additions — these fields pass through via extra="allow" even without
+    # explicit declaration, but are listed here for documentation and IDE completion.
+    step_index: int | None = None
+    phase: str | None = None
+    parallel_batch_id: str | None = None
+    started_at: int | None = None
+    completed_at: int | None = None
 
 
 class ComparisonMetricsResponse(BaseModel):

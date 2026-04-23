@@ -23,6 +23,7 @@ class SupportTicket:
     title: str = ""
     difficulty: str = "standard"
     tags: list[str] = field(default_factory=list)
+    talking_point: dict | None = None
 
 
 @dataclass

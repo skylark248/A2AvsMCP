@@ -1,0 +1,170 @@
+[
+  {
+    "scenario": "order_status",
+    "ticket_id": "TICKET-1001",
+    "customer_id": "CUST-001",
+    "title": "Shipment Status Check",
+    "difficulty": "starter",
+    "tags": ["order", "status"],
+    "query": "Where is my order ORD-1001? I need the latest delivery status.",
+    "talking_point": {
+      "headline": "One agent, one tool, one answer",
+      "sentence": "MCP calls get_order_history directly; A2A routes through a specialist — same data, different protocol path.",
+      "callout": "Notice the single tool_call vs task_submit in the trace."
+    }
+  },
+  {
+    "scenario": "double_charge",
+    "ticket_id": "TICKET-1002",
+    "customer_id": "CUST-002",
+    "title": "Duplicate Charge Review",
+    "difficulty": "starter",
+    "tags": ["billing", "payments"],
+    "query": "I was charged twice for order ORD-1002. Please check my payment history.",
+    "talking_point": {
+      "headline": "Billing error caught by dedicated specialist",
+      "sentence": "MCP queries the billing tool; A2A hands the ticket to PolicyBillingAgent — both resolve the duplicate charge.",
+      "callout": "Compare round-trip count between modes."
+    }
+  },
+  {
+    "scenario": "setup_error",
+    "ticket_id": "TICKET-1003",
+    "customer_id": "CUST-001",
+    "title": "Setup Error Triage",
+    "difficulty": "starter",
+    "tags": ["troubleshooting", "docs"],
+    "query": "My SmartHub Mini setup is failing with error code X123. What should I do?",
+    "talking_point": {
+      "headline": "Docs retrieved through two different channels",
+      "sentence": "MCP calls search_docs directly; A2A asks DocumentationAgent — the trace shows protocol overhead per lookup.",
+      "callout": "Step index rises with each tool call in MCP mode."
+    }
+  },
+  {
+    "scenario": "warranty_return",
+    "ticket_id": "TICKET-1004",
+    "customer_id": "CUST-002",
+    "title": "Warranty Return Request",
+    "difficulty": "standard",
+    "tags": ["warranty", "policy"],
+    "query": "I want to return my HomeSensor Pro while it is still under warranty.",
+    "talking_point": {
+      "headline": "Policy lookup, two protocol paths",
+      "sentence": "MCP sequences tool calls; A2A delegates to PolicyBillingAgent — both confirm warranty coverage.",
+      "callout": "Watch how agents_used count differs between modes."
+    }
+  },
+  {
+    "scenario": "delay_and_billing",
+    "ticket_id": "TICKET-1005",
+    "customer_id": "CUST-002",
+    "title": "Delay and Billing Escalation",
+    "difficulty": "standard",
+    "tags": ["billing", "delivery", "multi-step"],
+    "query": "My order ORD-1002 was delayed and I was charged twice. I need both the payment review and delivery explanation.",
+    "talking_point": {
+      "headline": "Two concerns, one multi-step resolution",
+      "sentence": "MCP chains delivery and billing tools; A2A sequences two specialists — parallel capability available only in A2A.",
+      "callout": "Step index shows the chained call depth."
+    }
+  },
+  {
+    "scenario": "setup_and_warranty",
+    "ticket_id": "TICKET-1006",
+    "customer_id": "CUST-002",
+    "title": "Setup Failure with Warranty Concern",
+    "difficulty": "standard",
+    "tags": ["troubleshooting", "warranty", "multi-step"],
+    "query": "My HomeSensor Pro setup keeps failing and I want a warranty replacement if this defect continues.",
+    "talking_point": {
+      "headline": "Docs and warranty in one coordinated pass",
+      "sentence": "MCP makes sequential tool calls; A2A routes to Documentation then PolicyBilling — same result, visible handoff structure.",
+      "callout": "Compare agent_handoff events in the trace."
+    }
+  },
+  {
+    "scenario": "expired_return_active_warranty",
+    "ticket_id": "TICKET-1007",
+    "customer_id": "CUST-002",
+    "title": "Expired Return but Active Warranty",
+    "difficulty": "standard",
+    "tags": ["policy", "warranty", "edge-case"],
+    "query": "My return window is over, but the HomeSensor Pro is still under warranty. Can I still get support or a replacement?",
+    "talking_point": {
+      "headline": "Edge case: expired return, active warranty",
+      "sentence": "Policy logic runs the same path regardless of mode — the trace reveals where the decision point lives.",
+      "callout": "Look for the policy decision in tool_call vs task_submit events."
+    }
+  },
+  {
+    "scenario": "enterprise_delay_refund",
+    "ticket_id": "TICKET-1008",
+    "customer_id": "CUST-003",
+    "title": "Enterprise Delay and Refund",
+    "difficulty": "advanced",
+    "tags": ["delivery", "billing", "enterprise"],
+    "query": "Our SmartHub Mini order ORD-1003 is delayed, and I also see a duplicate charge on the same order. I need a status update and refund guidance.",
+    "talking_point": {
+      "headline": "Enterprise escalation, sequential resolution",
+      "sentence": "MCP calls delivery then billing tools; A2A sequences specialists — enterprise complexity without parallelism.",
+      "callout": "Agents used count reflects A2A coordination overhead."
+    }
+  },
+  {
+    "scenario": "enterprise_setup_replacement",
+    "ticket_id": "TICKET-1009",
+    "customer_id": "CUST-003",
+    "title": "Enterprise Setup and Replacement Review",
+    "difficulty": "advanced",
+    "tags": ["troubleshooting", "warranty", "enterprise", "multi-step"],
+    "query": "Our HomeSensor Pro deployment keeps failing during setup with error code X123, and we may need a warranty replacement for order ORD-1004 if the defect persists.",
+    "talking_point": {
+      "headline": "Setup failure triggers warranty replacement check",
+      "sentence": "MCP chains troubleshooting and warranty tools; A2A hands off across two specialists for the same outcome.",
+      "callout": "Compare trace depth between MCP tool calls and A2A handoffs."
+    }
+  },
+  {
+    "scenario": "invoice_and_warranty_followup",
+    "ticket_id": "TICKET-1010",
+    "customer_id": "CUST-004",
+    "title": "Invoice and Warranty Follow-up",
+    "difficulty": "advanced",
+    "tags": ["billing", "warranty", "history"],
+    "query": "I need help with a billing adjustment for order ORD-1005, and I also want to confirm whether my SmartHub Mini is still under warranty before I request service.",
+    "talking_point": {
+      "headline": "Billing history meets warranty lookup",
+      "sentence": "MCP sequences invoice and warranty tools; A2A coordinates PolicyBilling and CustomerData specialists.",
+      "callout": "Notice how A2A structures multi-domain lookups differently from MCP."
+    }
+  },
+  {
+    "scenario": "device_failure_warranty_refund",
+    "ticket_id": "TICKET-1011",
+    "customer_id": "CUST-001",
+    "title": "Device Failure: Warranty + Refund",
+    "difficulty": "advanced",
+    "tags": ["warranty", "troubleshooting", "policy", "multi-step"],
+    "query": "My SmartHome Hub failed after 6 months — it's still under warranty but I want a refund, not a replacement. Can you check my order history, find the troubleshooting steps, and confirm what your return policy covers?",
+    "talking_point": {
+      "headline": "Three agents, one chained investigation",
+      "sentence": "MCP makes 4 sequential tool calls; A2A hands off across 3 specialists — same result, visible protocol difference.",
+      "callout": "Watch step_index climb in the trace."
+    }
+  },
+  {
+    "scenario": "vip_parallel_escalation",
+    "ticket_id": "TICKET-1012",
+    "customer_id": "CUST-003",
+    "title": "VIP Parallel Escalation",
+    "difficulty": "advanced",
+    "tags": ["enterprise", "parallel_investigation", "escalation"],
+    "query": "This is an urgent VIP escalation. Our enterprise account is experiencing a critical issue — I need an immediate full investigation across order status, documentation, and billing simultaneously. Please escalate to all specialists at once.",
+    "talking_point": {
+      "headline": "Three specialists, one simultaneous dispatch",
+      "sentence": "A2A sends all three specialists at once; MCP calls tools one by one — the swimlane shows the difference instantly.",
+      "callout": "Overlapping timestamps in the trace = parallel execution."
+    }
+  }
+]
