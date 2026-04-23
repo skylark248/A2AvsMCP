@@ -327,6 +327,22 @@ class DemoModeTests(unittest.TestCase):
         self.assertIn("troubleshooting guidance", result.final_answer)
         self.assertIn("warranty", result.final_answer)
 
+    def test_scen03_talking_point_on_ticket(self) -> None:
+        """SCEN-03: device_failure_warranty_refund ticket carries talking_point from seed."""
+        ticket = self.platform.get_ticket("device_failure_warranty_refund", None, None)
+        self.assertIsNotNone(ticket.talking_point, "talking_point must not be None for device_failure_warranty_refund")
+        self.assertIn("headline", ticket.talking_point)
+        self.assertIn("sentence", ticket.talking_point)
+        self.assertIn("callout", ticket.talking_point)
+
+    def test_scen03_talking_point_on_vip_ticket(self) -> None:
+        """SCEN-03: vip_parallel_escalation ticket carries talking_point from seed."""
+        ticket = self.platform.get_ticket("vip_parallel_escalation", None, None)
+        self.assertIsNotNone(ticket.talking_point, "talking_point must not be None for vip_parallel_escalation")
+        self.assertIn("headline", ticket.talking_point)
+        self.assertIn("sentence", ticket.talking_point)
+        self.assertIn("callout", ticket.talking_point)
+
     def test_failure_toggle_records_db_outage(self) -> None:
         ticket = self.platform.get_ticket("double_charge", None, None)
         result = self.platform.run("mcp", ticket, failure_config=FailureConfig(db_down=True))
