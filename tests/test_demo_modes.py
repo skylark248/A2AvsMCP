@@ -429,6 +429,30 @@ class DemoModeTests(unittest.TestCase):
                         process.kill()
                         process.wait(timeout=5)
 
+    def test_scen02_parallel_emits_shared_batch_id(self) -> None:
+        """SCEN-02: all task_submit events for vip_parallel_escalation share one parallel_batch_id."""
+        ticket = self.platform.get_ticket("vip_parallel_escalation", None, None)
+        result = self.platform.run("a2a", ticket)
+        submits = [e for e in result.trace if e["event_type"] == "task_submit"]
+        self.assertGreater(len(submits), 0, "Expected task_submit events in a2a parallel run")
+        batch_ids = {e.get("parallel_batch_id") for e in submits}
+        self.assertEqual(len(batch_ids), 1, f"All task_submit events must share one batch_id, got: {batch_ids}")
+        self.assertIsNotNone(list(batch_ids)[0], "parallel_batch_id must not be None")
+
+    def test_scen02_parallel_produces_no_failures(self) -> None:
+        """SCEN-02: zero task_failed events under mock runtime for vip_parallel_escalation."""
+        ticket = self.platform.get_ticket("vip_parallel_escalation", None, None)
+        result = self.platform.run("a2a", ticket)
+        failures = [e for e in result.trace if e["event_type"] == "task_failed"]
+        self.assertEqual(len(failures), 0, f"Expected no task_failed events, got {len(failures)}: {failures}")
+
+    def test_scen02_parallel_triggers_three_specialists(self) -> None:
+        """SCEN-02: exactly 3 task_submit events — one per specialist — in vip_parallel_escalation a2a trace."""
+        ticket = self.platform.get_ticket("vip_parallel_escalation", None, None)
+        result = self.platform.run("a2a", ticket)
+        submits = [e for e in result.trace if e["event_type"] == "task_submit"]
+        self.assertGreaterEqual(len(submits), 3, f"Expected >= 3 task_submit events, got {len(submits)}")
+
     def _open_port(self) -> int:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             sock.bind(("127.0.0.1", 0))
