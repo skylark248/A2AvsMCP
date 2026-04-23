@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 3 planned — 4 plans in 2 waves, verification passed. Ready for /gsd-execute-phase 3
-last_updated: "2026-04-23T06:00:00.000Z"
+stopped_at: "Completed 03-02-PLAN.md — SCEN-02 parallel dispatch implemented, 46/46 tests passing"
+last_updated: "2026-04-23T16:09:05Z"
 last_activity: 2026-04-23
 progress:
   total_phases: 5
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-04-22)
 ## Current Position
 
 Phase: 3 of 5 (New Scenarios)
-Plan: 1 of 4 in current phase (03-01 complete)
+Plan: 2 of 4 in current phase (03-02 complete)
 Status: Executing — Wave 1 in progress
 Last activity: 2026-04-23
 
@@ -69,6 +69,7 @@ Recent decisions affecting current work:
 - 02-03: handler.handle_task() (not handle()) is the broker handler protocol — matched FlakyHandler in existing test suite
 - 03-01: TalkingPointResponse uses required str fields (not Optional) — seed data always provides all three keys; None handled at TicketResponse level
 - 03-01: TICKET-1011 has no parallel_investigation tag — multi-step chained scenario; parallel_investigation reserved for TICKET-1012 to trigger 03-02 dispatch branch
+- 03-02: Tag check inserted as first line of resolve_with_broker() before intent classification — deterministic, crash-safe (D-06); _merge() used with issue_type='parallel_investigation'
 
 ### Pending Todos
 

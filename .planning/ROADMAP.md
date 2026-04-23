@@ -63,7 +63,7 @@ Plans:
 **Plans**: 4 plans
 Plans:
 - [x] 03-01-PLAN.md — Seed data + schema layer (SupportTicket.talking_point, TalkingPointResponse, scenarios.json 12 entries, warranties.json WAR-7004, SCEN-03 pytest)
-- [ ] 03-02-PLAN.md — TriageAgent parallel dispatch (_resolve_parallel, send_tasks_parallel branch, SCEN-02 pytest)
+- [x] 03-02-PLAN.md — TriageAgent parallel dispatch (_resolve_parallel, send_tasks_parallel branch, SCEN-02 pytest)
 - [ ] 03-03-PLAN.md — SCEN-01 pytest validation (all 4 modes, 3+ a2a handoffs, 4+ mcp tool calls)
 - [ ] 03-04-PLAN.md — Frontend types + TalkingPointCard UI (api.generated.ts TalkingPointCard interface, RunWorkspacePage.tsx Paper + protocolColor + render)
 
