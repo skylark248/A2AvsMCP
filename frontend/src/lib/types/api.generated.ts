@@ -270,6 +270,12 @@ export interface TelemetrySnapshotResponse {
   a2a_transport_counts?: Record<string, number>;
 }
 
+export interface TalkingPointCard {
+  headline: string;
+  sentence: string;
+  callout: string;
+}
+
 export interface TicketResponse {
   ticket_id: string;
   customer_id: string;
@@ -278,6 +284,8 @@ export interface TicketResponse {
   title?: string | null;
   difficulty?: string | null;
   tags?: Array<string>;
+  // Phase 3: per-scenario talking point for presenter card (manually patched — re-running generator will include this after api_schemas.py TalkingPointResponse is registered)
+  talking_point?: TalkingPointCard | null;
 }
 
 export interface TraceEventResponse {
