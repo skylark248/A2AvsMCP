@@ -183,6 +183,113 @@ class DemoModeTests(unittest.TestCase):
         artifact_event = next(event for event in result.trace if event.get("event_type") == "a2a_task_artifact")
         self.assertEqual(artifact_event["a2a_artifact_event"]["kind"], "artifact-update")
         self.assertEqual(artifact_event["a2a_artifact_event"]["artifact"]["parts"][0]["kind"], "text")
+
+    def test_trace_enrichment_phase_field_on_all_events(self) -> None:
+        """Every trace event carries a 'phase' field valued 'discovery' or 'execution' (TRACE-03)."""
+        ticket = self.platform.get_ticket("order_status", None, None)
+        result = self.platform.run("mcp", ticket)
+        valid_phases = {"discovery", "execution"}
+        for event in result.trace:
+            self.assertIn(
+                "phase", event,
+                msg=f"Event {event['event_type']} missing 'phase' field"
+            )
+            self.assertIn(
+                event["phase"], valid_phases,
+                msg=f"Event {event['event_type']} has invalid phase={event['phase']!r}"
+            )
+
+    def test_trace_enrichment_step_index_on_tool_calls(self) -> None:
+        """tool_call events carry sequential step_index; non-action events do not (TRACE-01)."""
+        ticket = self.platform.get_ticket("order_status", None, None)
+        result = self.platform.run("mcp", ticket)
+        tool_call_events = [e for e in result.trace if e["event_type"] == "tool_call"]
+        self.assertGreater(len(tool_call_events), 0, "Expected at least one tool_call event in mcp mode")
+        step_indices = [e["step_index"] for e in tool_call_events]
+        # step_index must be present on all tool_call events
+        for idx, event in enumerate(tool_call_events):
+            self.assertIn("step_index", event, msg=f"tool_call event #{idx} missing step_index")
+            self.assertIsInstance(event["step_index"], int)
+        # step_index must be sequential starting at 1
+        self.assertEqual(step_indices, list(range(1, len(step_indices) + 1)),
+            msg=f"step_index not sequential: {step_indices}")
+        # non-action events must NOT have step_index
+        non_action_types = {"a2a_message", "task_status", "agent_reasoning", "agent_register"}
+        for event in result.trace:
+            if event["event_type"] in non_action_types:
+                self.assertNotIn(
+                    "step_index", event,
+                    msg=f"Event type '{event['event_type']}' should not have step_index"
+                )
+
+    def test_send_tasks_parallel_emits_batch_fields(self) -> None:
+        """send_tasks_parallel() emits task_submit events with parallel_batch_id and timing (TRACE-02, TRACE-04)."""
+        trace = TraceRecorder(mode="a2a", runtime="mock", task_id="parallel-test")
+        broker = A2ABroker(trace, max_retries=0, timeout_ms=5000)
+        self.assertEqual(broker.timeout_ms, 5000, "timeout_ms default must be 5000 (TRACE-04)")
+
+        # Register two fake specialist handlers
+        class AgentAHandler:
+            def handle_task(self, message: A2AMessage) -> AgentResult:
+                return AgentResult(agent_id="agent_a", summary="agent_a done", details={})
+
+        class AgentBHandler:
+            def handle_task(self, message: A2AMessage) -> AgentResult:
+                return AgentResult(agent_id="agent_b", summary="agent_b done", details={})
+
+        card_a = AgentCard(agent_id="agent_a", name="Agent A", capabilities=["cap_a"], description="test agent a")
+        card_b = AgentCard(agent_id="agent_b", name="Agent B", capabilities=["cap_b"], description="test agent b")
+        broker.register(card_a, AgentAHandler())
+        broker.register(card_b, AgentBHandler())
+
+        msg_a = A2AMessage(
+            message_type="task_request",
+            sender_agent="triage",
+            target_agent="agent_a",
+            capability="cap_a",
+            payload={"query": "do cap_a"},
+            task_id="task-a",
+        )
+        msg_b = A2AMessage(
+            message_type="task_request",
+            sender_agent="triage",
+            target_agent="agent_b",
+            capability="cap_b",
+            payload={"query": "do cap_b"},
+            task_id="task-b",
+        )
+
+        results = broker.send_tasks_parallel([msg_a, msg_b])
+        self.assertEqual(len(results), 2)
+
+        # Verify task_submit events
+        submit_events = [e for e in trace.events if e["event_type"] == "task_submit"]
+        self.assertEqual(len(submit_events), 2, "Expected 2 task_submit events from 2 parallel tasks")
+
+        # All share same batch_id
+        batch_ids = {e["parallel_batch_id"] for e in submit_events}
+        self.assertEqual(len(batch_ids), 1, "All task_submit events must share the same parallel_batch_id")
+        batch_id = batch_ids.pop()
+        self.assertEqual(len(batch_id), 12, f"parallel_batch_id must be 12 hex chars, got: {batch_id!r}")
+
+        # step_index present on all task_submit events
+        for event in submit_events:
+            self.assertIn("step_index", event, "task_submit event missing step_index")
+            self.assertIsInstance(event["step_index"], int)
+
+        # started_at present and is a positive epoch ms int
+        for event in submit_events:
+            self.assertIn("started_at", event)
+            self.assertGreater(event["started_at"], 0)
+
+        # task_complete events carry completed_at >= started_at
+        complete_events = [e for e in trace.events if e["event_type"] == "task_complete"]
+        self.assertEqual(len(complete_events), 2)
+        for event in complete_events:
+            self.assertIn("completed_at", event)
+            self.assertIn("started_at", event)
+            self.assertGreaterEqual(event["completed_at"], event["started_at"])
+
     def test_triage_deduplicates_overlapping_summaries(self) -> None:
         ticket = self.platform.get_ticket("warranty_return", None, None)
         result = self.platform.run("hybrid", ticket)
