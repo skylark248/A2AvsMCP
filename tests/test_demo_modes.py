@@ -666,6 +666,60 @@ class A2ABrokerParallelTests(unittest.TestCase):
         self.assertIn(2, step_indices)
 
 
+class Scen01Tests(unittest.TestCase):
+    """SCEN-01: device_failure_warranty_refund — multi-step warranty+refund ticket."""
+
+    def setUp(self) -> None:
+        self.platform = DemoPlatform(PROJECT_ROOT, runtime="mock")
+
+    def test_scen01_all_modes_produce_final_answer(self) -> None:
+        """SCEN-01: device_failure_warranty_refund runs all 4 modes without error and returns non-empty answers."""
+        ticket = self.platform.get_ticket("device_failure_warranty_refund", None, None)
+        for mode in ("baseline", "mcp", "a2a", "hybrid"):
+            with self.subTest(mode=mode):
+                result = self.platform.run(mode, ticket)
+                self.assertTrue(
+                    result.final_answer,
+                    f"Mode '{mode}' returned empty final_answer for device_failure_warranty_refund",
+                )
+
+    def test_scen01_a2a_triggers_specialists(self) -> None:
+        """SCEN-01: A2A sequential mode dispatches >= 2 specialist task_request messages.
+
+        device_failure_warranty_refund tags are ["warranty", "troubleshooting", "policy", "multi-step"]
+        with NO "parallel_investigation" tag, so TriageAgent uses the sequential resolve_with_broker()
+        path (send_task, not send_tasks_parallel). Sequential dispatch emits 'a2a_message' events with
+        message_type="task_request" — not "task_submit" events (those are parallel-only).
+
+        MockReasoner classifies the query as issue_type="warranty_return" (needs_data=True,
+        needs_docs=False, needs_policy=True), so exactly 2 specialists fire:
+        customer_data + policy_billing. Assertion is >= 2, not >= 3, because needs_docs=False
+        (no "failing"/"error"/"setup" keyword match in "failed after 6 months — warranty refund").
+        """
+        ticket = self.platform.get_ticket("device_failure_warranty_refund", None, None)
+        result = self.platform.run("a2a", ticket)
+        task_requests = [
+            e for e in result.trace
+            if e["event_type"] == "a2a_message" and e.get("message_type") == "task_request"
+        ]
+        self.assertGreaterEqual(
+            len(task_requests),
+            2,
+            f"Expected >= 2 task_request events for a2a multi-step sequential dispatch, got {len(task_requests)}",
+        )
+
+    def test_scen01_mcp_makes_sequential_tool_calls(self) -> None:
+        """SCEN-01: MCP mode produces >= 4 tool_call events — sequential tool calls for warranty+refund ticket."""
+        ticket = self.platform.get_ticket("device_failure_warranty_refund", None, None)
+        result = self.platform.run("mcp", ticket)
+        tool_calls = [e for e in result.trace if e["event_type"] == "tool_call"]
+        self.assertGreaterEqual(
+            len(tool_calls),
+            4,
+            f"Expected >= 4 tool_call events for mcp multi-step, got {len(tool_calls)}",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
 
