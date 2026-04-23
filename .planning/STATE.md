@@ -25,9 +25,9 @@ See: .planning/PROJECT.md (updated 2026-04-22)
 
 ## Current Position
 
-Phase: 2 of 5 (Backend Trace Enrichment)
-Plan: 3 of 3 in current phase (02-03 complete — Phase 2 DONE)
-Status: Executing — ready for Phase 3
+Phase: 3 of 5 (New Scenarios)
+Plan: 1 of 4 in current phase (03-01 complete)
+Status: Executing — Wave 1 in progress
 Last activity: 2026-04-23
 
 Progress: [██████░░░░] 60%
@@ -67,6 +67,8 @@ Recent decisions affecting current work:
 - 02-02: api.generated.ts manually patched with `| null` pattern; comment documents regeneration path after api_schemas.py is updated
 - 02-03: Tests pass at RED commit — Plan 01 pre-implemented enrichment fields; test methods serve as regression guards for TRACE-01/02/03/04
 - 02-03: handler.handle_task() (not handle()) is the broker handler protocol — matched FlakyHandler in existing test suite
+- 03-01: TalkingPointResponse uses required str fields (not Optional) — seed data always provides all three keys; None handled at TicketResponse level
+- 03-01: TICKET-1011 has no parallel_investigation tag — multi-step chained scenario; parallel_investigation reserved for TICKET-1012 to trigger 03-02 dispatch branch
 
 ### Pending Todos
 
@@ -89,5 +91,5 @@ None — Phase 2 complete. TRACE-05 delivered; timeout_ms=5000 in A2ABroker conf
 ## Session Continuity
 
 Last session: 2026-04-23
-Stopped at: Completed 02-03-PLAN.md — Three-tier TraceExplorer UI + Phase 2 pytest assertions. Phase 2 fully complete. Ready for Phase 3.
-Resume file: .planning/phases/03-new-scenarios/ (Phase 3 plans)
+Stopped at: Completed 03-01-PLAN.md — Seed data + schema layer. SupportTicket.talking_point, TalkingPointResponse, 12-entry scenarios.json, WAR-7004, SCEN-03 pytest passing (43/43).
+Resume file: .planning/phases/03-new-scenarios/03-02-PLAN.md
