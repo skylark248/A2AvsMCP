@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Demo Stability Foundation** - All four modes run reliably without an API key; test harness in place
 - [x] **Phase 2: Backend Trace Enrichment** - Trace events carry the data contract all frontend components require
 - [x] **Phase 3: New Scenarios** - Multi-step and parallel-agent scenarios expose protocol depth visibly
-- [ ] **Phase 4: Comparison UI** - Side-by-side visualization makes protocol differences unmissable at a glance
+- [x] **Phase 4: Comparison UI** - Side-by-side visualization makes protocol differences unmissable at a glance
 - [ ] **Phase 5: Presentation Polish** - Talking-point cards, glossary popovers, and failure-mode walkthrough complete demo day readiness
 
 ## Phase Details
@@ -83,7 +83,7 @@ Plans:
 - [x] 04-01-PLAN.md — eventColors.ts color system + UI-05 dependency installation + hardcoded color migration
 - [x] 04-02-PLAN.md — Outcome metrics chips (elapsed time, round-trips, agent count) on result cards
 - [x] 04-03-PLAN.md — ParallelAgentTimeline swimlane component + result card integration
-- [ ] 04-04-PLAN.md — CompareTracesPanel with synchronized dual TraceExplorer + ComparePage integration
+- [x] 04-04-PLAN.md — CompareTracesPanel with synchronized dual TraceExplorer + ComparePage integration
 
 ### Phase 5: Presentation Polish
 **Goal**: The demo is ready for a mixed audience — talking-point cards guide narration, glossary popovers remove jargon friction, the real-LLM path is clearly surfaced, and failure modes are selectable for a deeper technical walkthrough
@@ -107,5 +107,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 1. Demo Stability Foundation | 2/2 | Complete | 2026-04-22 |
 | 2. Backend Trace Enrichment | 3/3 | Complete | 2026-04-23 |
 | 3. New Scenarios | 4/4 | Complete | 2026-04-23 |
-| 4. Comparison UI | 3/4 | Executing | - |
+| 4. Comparison UI | 4/4 | Complete | 2026-04-26 |
 | 5. Presentation Polish | 0/TBD | Not started | - |

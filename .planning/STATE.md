@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: "Completed 04-03-PLAN.md — ParallelAgentTimeline swimlane in result cards"
-last_updated: "2026-04-26T19:33:30Z"
+stopped_at: "Completed 04-04-PLAN.md — Phase 4 complete, CompareTracesPanel integrated"
+last_updated: "2026-04-26T19:38:30Z"
 last_activity: 2026-04-26
 progress:
   total_phases: 5
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 4
-  completed_plans: 3
-  percent: 80
+  completed_plans: 4
+  percent: 100
 ---
 
 # Project State
@@ -26,29 +26,29 @@ See: .planning/PROJECT.md (updated 2026-04-22)
 ## Current Position
 
 Phase: 4 of 5 (Comparison UI)
-Plan: 3 of 4 in current phase (04-03 complete)
-Status: Executing Phase 4 — swimlane timeline done, ready for Plan 04
+Plan: 4 of 4 in current phase (04-04 complete — Phase 4 done)
+Status: Phase 4 complete — ready for Phase 5 planning
 Last activity: 2026-04-26
 
-Progress: [████████░░] 80%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 3
-- Average duration: 2m 18s
-- Total execution time: 6m 53s
+- Total plans completed: 4
+- Average duration: 2m 13s
+- Total execution time: 8m 54s
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 04 | 3 | 6m 53s | 2m 18s |
+| 04 | 4 | 8m 54s | 2m 13s |
 
 **Recent Trend:**
 
-- Last 5 plans: 04-01 (3m 46s), 04-02 (0m 56s), 04-03 (2m 11s)
+- Last 5 plans: 04-01 (3m 46s), 04-02 (0m 56s), 04-03 (2m 11s), 04-04 (2m 01s)
 - Trend: accelerating
 
 *Updated after each plan completion*
@@ -81,6 +81,8 @@ Recent decisions affecting current work:
 - 04-02: Latency chip moved from header row to metrics row with protocol color per D-01
 - 04-03: Used non-null assertion for stepEvents[0] guarded by length check for TS strict safety
 - 04-03: Used untyped formatter/labelFormatter params to satisfy recharts v3 strict generic types
+- 04-04: Kept ProtocolEnvelopeDrawer + envelopeEvent state even though ModeColumn (sole setter) removed — future enhancement will wire event selection through CompareTracesPanel
+- 04-04: Removed Box import from ComparePage after ModeColumn deletion left it unused
 
 ### Pending Todos
 
@@ -103,5 +105,5 @@ None — Phase 2 complete. TRACE-05 delivered; timeout_ms=5000 in A2ABroker conf
 ## Session Continuity
 
 Last session: 2026-04-26
-Stopped at: Completed 04-03-PLAN.md — ParallelAgentTimeline swimlane in result cards
-Resume file: .planning/phases/04-comparison-ui/04-04-PLAN.md
+Stopped at: Completed 04-04-PLAN.md — Phase 4 complete, CompareTracesPanel integrated
+Resume file: Phase 5 planning next
