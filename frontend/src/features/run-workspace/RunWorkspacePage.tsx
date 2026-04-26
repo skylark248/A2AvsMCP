@@ -864,27 +864,30 @@ export function RunWorkspacePage() {
                                         {item.mcp_transport ? (
                                           <Chip label={item.mcp_transport} size="small" variant="outlined" color="default" />
                                         ) : null}
-                                        <Chip label={`${item.metrics.latency_ms} ms`} size="small" />
                                       </Stack>
+                                    </Stack>
+                                    {/* D-01: Outcome metrics chips — below mode header, above final answer */}
+                                    <Stack direction="row" spacing={0.5} alignItems="center">
+                                      <Chip
+                                        label={`${item.metrics.latency_ms}ms`}
+                                        size="small"
+                                        sx={{ bgcolor: getProtocolColor(item.mode), color: "#fff" }}
+                                      />
+                                      <Chip
+                                        label={`${item.metrics.tool_calls + item.metrics.a2a_messages} round-trips`}
+                                        size="small"
+                                        variant="outlined"
+                                      />
+                                      <Chip
+                                        label={`${item.metrics.agents_involved.length} agents`}
+                                        size="small"
+                                        variant="outlined"
+                                      />
                                     </Stack>
                                     <Typography variant="body2" sx={{ color: "text.secondary" }}>
                                       {item.final_answer}
                                     </Typography>
                                     <Divider />
-                                    <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
-                                      <Chip label={`${item.metrics.tool_calls} tools`} size="small" />
-                                      <Chip label={`${item.metrics.a2a_messages} A2A`} size="small" />
-                                      <Chip label={`${item.metrics.failures} failures`} size="small" />
-                                      <Chip
-                                        label={item.metrics.complexity}
-                                        size="small"
-                                        color="secondary"
-                                        variant="outlined"
-                                      />
-                                      {item.a2a_transport ? (
-                                        <Chip label={`A2A ${item.a2a_transport}`} size="small" variant="outlined" />
-                                      ) : null}
-                                    </Stack>
                                     {item.ticket?.talking_point ? (
                                       <Paper
                                         elevation={0}
