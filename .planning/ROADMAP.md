@@ -95,7 +95,11 @@ Plans:
   3. The real-LLM toggle is visually prominent and the trace explorer shows a latency expectation badge when OpenAI runtime is active
   4. `FailureConfig` failure paths are selectable in the UI and their outcomes appear visibly in the trace, enabling a failure-mode walkthrough without code changes
 **UI hint**: yes
-**Plans**: [To be planned]
+**Plans**: 3 plans
+Plans:
+- [ ] 05-01-PLAN.md — Glossary system: glossaryTerms.ts static data map (17 terms) + GlossaryTerm.tsx component (dotted underline + MUI Tooltip)
+- [ ] 05-02-PLAN.md — TraceExplorer runtime indicators: runtime prop, latency badge Chip, LLM Alert banner + CompareTracesPanel runtime threading
+- [ ] 05-03-PLAN.md — RunWorkspacePage + ComparePage: role-first phrasing, GlossaryTerm wrappers, runtime Chip, failure summary chips
 
 ## Progress
 
@@ -108,4 +112,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 2. Backend Trace Enrichment | 3/3 | Complete | 2026-04-23 |
 | 3. New Scenarios | 4/4 | Complete | 2026-04-23 |
 | 4. Comparison UI | 4/4 | Complete | 2026-04-26 |
-| 5. Presentation Polish | 0/TBD | Not started | - |
+| 5. Presentation Polish | 0/3 | Not started | - |
