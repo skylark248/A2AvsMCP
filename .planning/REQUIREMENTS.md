@@ -30,7 +30,7 @@
 ### Comparison UI
 
 - [x] **UI-01**: Result card displays outcome metrics — elapsed time, round-trip count, and agent count — as first-class visible elements
-- [ ] **UI-02**: `ParallelAgentTimeline` component built — swimlane timeline showing parallel A2A agent execution from `parallel_batch_id` events
+- [x] **UI-02**: `ParallelAgentTimeline` component built — swimlane timeline showing parallel A2A agent execution from `parallel_batch_id` events
 - [ ] **UI-03**: `CompareTracesPanel` component built — two synchronized trace explorer instances shown side-by-side for direct mode comparison
 - [ ] **UI-04**: `eventColors.ts` created as single source of truth for event-type color constants across all trace components
 - [ ] **UI-05**: Frontend dependencies added — `@xyflow/react`, `recharts`, `react-syntax-highlighter`, `motion`
@@ -91,7 +91,7 @@
 | SCEN-02 | Phase 3 | New Scenarios | Pending |
 | SCEN-03 | Phase 3 | New Scenarios | Pending |
 | UI-01 | Phase 4 | Comparison UI | Complete |
-| UI-02 | Phase 4 | Comparison UI | Pending |
+| UI-02 | Phase 4 | Comparison UI | Complete |
 | UI-03 | Phase 4 | Comparison UI | Pending |
 | UI-04 | Phase 4 | Comparison UI | Pending |
 | UI-05 | Phase 4 | Comparison UI | Pending |

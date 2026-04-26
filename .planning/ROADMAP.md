@@ -82,7 +82,7 @@ Plans:
 Plans:
 - [x] 04-01-PLAN.md — eventColors.ts color system + UI-05 dependency installation + hardcoded color migration
 - [x] 04-02-PLAN.md — Outcome metrics chips (elapsed time, round-trips, agent count) on result cards
-- [ ] 04-03-PLAN.md — ParallelAgentTimeline swimlane component + result card integration
+- [x] 04-03-PLAN.md — ParallelAgentTimeline swimlane component + result card integration
 - [ ] 04-04-PLAN.md — CompareTracesPanel with synchronized dual TraceExplorer + ComparePage integration
 
 ### Phase 5: Presentation Polish
@@ -107,5 +107,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 1. Demo Stability Foundation | 2/2 | Complete | 2026-04-22 |
 | 2. Backend Trace Enrichment | 3/3 | Complete | 2026-04-23 |
 | 3. New Scenarios | 4/4 | Complete | 2026-04-23 |
-| 4. Comparison UI | 2/4 | Executing | - |
+| 4. Comparison UI | 3/4 | Executing | - |
 | 5. Presentation Polish | 0/TBD | Not started | - |
