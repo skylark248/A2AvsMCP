@@ -80,10 +80,10 @@ Plans:
 **UI hint**: yes
 **Plans**: 4 plans
 Plans:
-- [ ] 03-01-PLAN.md — Seed data + schema layer (SupportTicket.talking_point, TalkingPointResponse, scenarios.json 12 entries, warranties.json WAR-7004, SCEN-03 pytest)
-- [ ] 03-02-PLAN.md — TriageAgent parallel dispatch (_resolve_parallel, send_tasks_parallel branch, SCEN-02 pytest)
-- [ ] 03-03-PLAN.md — SCEN-01 pytest validation (all 4 modes, 3+ a2a handoffs, 4+ mcp tool calls)
-- [ ] 03-04-PLAN.md — Frontend types + TalkingPointCard UI (api.generated.ts TalkingPointCard interface, RunWorkspacePage.tsx Paper + protocolColor + render)
+- [ ] 04-01-PLAN.md — eventColors.ts color system + UI-05 dependency installation + hardcoded color migration
+- [ ] 04-02-PLAN.md — Outcome metrics chips (elapsed time, round-trips, agent count) on result cards
+- [ ] 04-03-PLAN.md — ParallelAgentTimeline swimlane component + result card integration
+- [ ] 04-04-PLAN.md — CompareTracesPanel with synchronized dual TraceExplorer + ComparePage integration
 
 ### Phase 5: Presentation Polish
 **Goal**: The demo is ready for a mixed audience — talking-point cards guide narration, glossary popovers remove jargon friction, the real-LLM path is clearly surfaced, and failure modes are selectable for a deeper technical walkthrough
@@ -95,12 +95,7 @@ Plans:
   3. The real-LLM toggle is visually prominent and the trace explorer shows a latency expectation badge when OpenAI runtime is active
   4. `FailureConfig` failure paths are selectable in the UI and their outcomes appear visibly in the trace, enabling a failure-mode walkthrough without code changes
 **UI hint**: yes
-**Plans**: 4 plans
-Plans:
-- [ ] 03-01-PLAN.md — Seed data + schema layer (SupportTicket.talking_point, TalkingPointResponse, scenarios.json 12 entries, warranties.json WAR-7004, SCEN-03 pytest)
-- [ ] 03-02-PLAN.md — TriageAgent parallel dispatch (_resolve_parallel, send_tasks_parallel branch, SCEN-02 pytest)
-- [ ] 03-03-PLAN.md — SCEN-01 pytest validation (all 4 modes, 3+ a2a handoffs, 4+ mcp tool calls)
-- [ ] 03-04-PLAN.md — Frontend types + TalkingPointCard UI (api.generated.ts TalkingPointCard interface, RunWorkspacePage.tsx Paper + protocolColor + render)
+**Plans**: [To be planned]
 
 ## Progress
 
@@ -112,5 +107,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 1. Demo Stability Foundation | 2/2 | Complete | 2026-04-22 |
 | 2. Backend Trace Enrichment | 3/3 | Complete | 2026-04-23 |
 | 3. New Scenarios | 4/4 | Complete | 2026-04-23 |
-| 4. Comparison UI | 0/TBD | Not started | - |
+| 4. Comparison UI | 0/4 | Planning complete | - |
 | 5. Presentation Polish | 0/TBD | Not started | - |
