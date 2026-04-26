@@ -1,21 +1,14 @@
 import CompareArrowsOutlinedIcon from "@mui/icons-material/CompareArrowsOutlined";
-import HubOutlinedIcon from "@mui/icons-material/HubOutlined";
-import PrecisionManufacturingOutlinedIcon from "@mui/icons-material/PrecisionManufacturingOutlined";
-import RouteOutlinedIcon from "@mui/icons-material/RouteOutlined";
-import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 import {
   Alert,
-  Box,
   Card,
   CardContent,
-  Chip,
   FormControl,
   Grid,
   InputLabel,
   MenuItem,
   Select,
   Stack,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
@@ -24,141 +17,10 @@ import { useSearchParams } from "react-router-dom";
 import { ProtocolEnvelopeDrawer } from "../../components/traces/ProtocolEnvelopeDrawer";
 import { ContentCardSkeleton, FilterCardSkeleton } from "../../components/loading/LoadingSkeletons";
 import { fetchReportDetail, fetchReports } from "../../lib/api/client";
-import { getProtocolColor, eventBorderColor } from "../../lib/trace/eventColors";
-import { isA2AEvent, isTraceFailureEvent, traceEventProtocol, traceEventTone, traceLabel } from "../../lib/trace/utils";
 import type { ReportSummary, RunResult, TraceEvent } from "../../lib/types/api";
+import { CompareTracesPanel } from "./CompareTracesPanel";
 
 const MODE_ORDER = ["baseline", "mcp", "a2a", "hybrid"] as const;
-
-const BASELINE_ICON = { icon: <RouteOutlinedIcon fontSize="small" />, protocol: "No protocol" };
-
-const MODE_ICONS: Record<string, { icon: React.ReactNode; protocol: string }> = {
-  baseline: BASELINE_ICON,
-  mcp: { icon: <PrecisionManufacturingOutlinedIcon fontSize="small" />, protocol: "MCP" },
-  a2a: { icon: <HubOutlinedIcon fontSize="small" />, protocol: "A2A" },
-  hybrid: { icon: <AccountTreeOutlinedIcon fontSize="small" />, protocol: "A2A + MCP" },
-};
-
-function getModeIcon(mode: string) {
-  return MODE_ICONS[mode] ?? BASELINE_ICON;
-}
-
-function MiniEventRow({
-  event,
-  onSelect,
-}: {
-  event: TraceEvent;
-  onSelect: (event: TraceEvent) => void;
-}) {
-  const tone = traceEventTone(event);
-  const proto = traceEventProtocol(event);
-  const borderColor = eventBorderColor(event);
-
-  return (
-    <Tooltip
-      title={`${traceLabel(event)} · ${proto} · click to inspect envelope`}
-      placement="left"
-      arrow
-    >
-      <Box
-        onClick={() => onSelect(event)}
-        sx={{
-          borderLeft: `3px solid ${borderColor}`,
-          pl: 1,
-          py: 0.4,
-          cursor: "pointer",
-          borderRadius: "0 4px 4px 0",
-          "&:hover": { background: "rgba(0,0,0,0.04)" },
-        }}
-      >
-        <Stack direction="row" spacing={0.75} alignItems="center" flexWrap="wrap" useFlexGap>
-          <Chip
-            label={traceLabel(event)}
-            size="small"
-            color={
-              tone === "error"
-                ? "error"
-                : tone === "warning"
-                  ? "warning"
-                  : tone === "success"
-                    ? "success"
-                    : "default"
-            }
-            sx={{ fontSize: "0.65rem", height: 18 }}
-          />
-          <Chip
-            label={proto}
-            size="small"
-            variant="outlined"
-            sx={{ fontSize: "0.65rem", height: 18 }}
-          />
-          {isTraceFailureEvent(event) && (
-            <Typography variant="caption" sx={{ color: "error.main", fontSize: "0.65rem" }}>
-              {String(event.error ?? "failure")}
-            </Typography>
-          )}
-        </Stack>
-      </Box>
-    </Tooltip>
-  );
-}
-
-function ModeColumn({
-  result,
-  onSelectEvent,
-}: {
-  result: RunResult;
-  onSelectEvent: (event: TraceEvent) => void;
-}) {
-  const modeIcon = getModeIcon(result.mode);
-  const modeColor = getProtocolColor(result.mode);
-  const toolCalls = result.trace.filter((e) => e.event_type === "tool_call").length;
-  const a2aMessages = result.trace.filter(isA2AEvent).length;
-  const failures = result.trace.filter(isTraceFailureEvent).length;
-
-  return (
-    <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-      <CardContent sx={{ pb: 1 }}>
-        <Stack spacing={1}>
-          <Stack direction="row" spacing={0.75} alignItems="center">
-            <Box sx={{ color: modeColor }}>{modeIcon.icon}</Box>
-            <Typography variant="h6" sx={{ color: modeColor, textTransform: "uppercase", fontSize: "0.85rem" }}>
-              {result.mode}
-            </Typography>
-          </Stack>
-          <Typography variant="caption" sx={{ color: "text.secondary" }}>
-            {modeIcon.protocol}
-          </Typography>
-          <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap>
-            <Chip label={`${result.trace.length} events`} size="small" />
-            {toolCalls > 0 && <Chip label={`${toolCalls} tool calls`} size="small" variant="outlined" />}
-            {a2aMessages > 0 && <Chip label={`${a2aMessages} A2A msgs`} size="small" variant="outlined" />}
-            {failures > 0 && <Chip label={`${failures} failures`} size="small" color="error" variant="outlined" />}
-          </Stack>
-        </Stack>
-      </CardContent>
-
-      <Box sx={{ borderTop: `2px solid ${modeColor}`, mx: 2 }} />
-
-      <CardContent sx={{ flex: 1, overflowY: "auto", maxHeight: 600, pt: 1.5 }}>
-        <Stack spacing={0.5}>
-          {result.trace.map((event) => (
-            <MiniEventRow
-              key={`${event.index}-${event.event_type}`}
-              event={event}
-              onSelect={onSelectEvent}
-            />
-          ))}
-          {result.trace.length === 0 && (
-            <Typography variant="caption" sx={{ color: "text.secondary" }}>
-              No trace events.
-            </Typography>
-          )}
-        </Stack>
-      </CardContent>
-    </Card>
-  );
-}
 
 export function ComparePage() {
   const [reports, setReports] = useState<ReportSummary[]>([]);
@@ -221,8 +83,6 @@ export function ComparePage() {
     );
   }, [results]);
 
-  const cols = orderedResults.length || 4;
-
   return (
     <Stack spacing={3}>
       <Stack spacing={1}>
@@ -280,20 +140,14 @@ export function ComparePage() {
 
       {loadingDetail ? (
         <Grid container spacing={2}>
-          {[0, 1, 2, 3].map((i) => (
-            <Grid key={i} size={{ xs: 12, sm: 6, xl: 3 }}>
+          {[0, 1].map((i) => (
+            <Grid key={i} size={{ xs: 12, md: 6 }}>
               <ContentCardSkeleton rows={8} height={300} />
             </Grid>
           ))}
         </Grid>
       ) : orderedResults.length > 0 ? (
-        <Grid container spacing={2} alignItems="flex-start">
-          {orderedResults.map((result) => (
-            <Grid key={result.mode} size={{ xs: 12, sm: cols <= 2 ? 6 : 6, xl: cols <= 2 ? 6 : 3 }}>
-              <ModeColumn result={result} onSelectEvent={setEnvelopeEvent} />
-            </Grid>
-          ))}
-        </Grid>
+        <CompareTracesPanel results={orderedResults} />
       ) : selectedReport ? (
         <Alert severity="info">
           This report has no trace data yet, or was run with a single mode. Run the scenario with{" "}
