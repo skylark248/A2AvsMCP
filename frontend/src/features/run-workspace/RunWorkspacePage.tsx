@@ -33,6 +33,7 @@ import {
   runDemo,
 } from "../../lib/api/client";
 import { demoPresets, guidedStoryModes, type DemoPreset } from "../../lib/demo/presets";
+import { getProtocolColor } from "../../lib/trace/eventColors";
 import type {
   A2ATransportMode,
   ApiRunRequest,
@@ -45,13 +46,6 @@ import type {
   ScenarioOption,
   TransportMode,
 } from "../../lib/types/api";
-
-const protocolColor: Record<string, string> = {
-  mcp: "#1976d2",      // MUI blue
-  a2a: "#7b1fa2",      // MUI purple
-  hybrid: "#2e7d32",   // MUI green
-  baseline: "#757575", // MUI grey
-};
 
 const modeOptions: DemoMode[] = ["all", "baseline", "mcp", "a2a", "hybrid"];
 const runtimeOptions: RuntimeMode[] = ["mock", "llm"];
@@ -895,7 +889,7 @@ export function RunWorkspacePage() {
                                       <Paper
                                         elevation={0}
                                         sx={{
-                                          borderLeft: `4px solid ${protocolColor[item.mode] ?? "#757575"}`,
+                                          borderLeft: `4px solid ${getProtocolColor(item.mode)}`,
                                           bgcolor: "action.hover",
                                           p: 1.5,
                                         }}

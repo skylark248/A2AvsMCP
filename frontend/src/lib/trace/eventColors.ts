@@ -17,9 +17,11 @@ export const toneColor = {
   info: "#757575",
 } as const;
 
+const BASELINE = "#757575";
+
 /** Get protocol color by mode string, with fallback to baseline grey */
 export function getProtocolColor(mode: string): string {
-  return protocolColor[mode] ?? protocolColor.baseline;
+  return protocolColor[mode] ?? BASELINE;
 }
 
 /** Border color for trace event rows — tone takes priority, then protocol */
@@ -29,5 +31,5 @@ export function eventBorderColor(event: TraceEvent): string {
   if (tone === "warning") return toneColor.warning;
   if (tone === "success") return toneColor.success;
   const proto = traceEventProtocol(event);
-  return protocolColor[proto] ?? protocolColor.baseline;
+  return protocolColor[proto] ?? BASELINE;
 }

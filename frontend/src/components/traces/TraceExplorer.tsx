@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import { useMemo, useState } from "react";
 
+import { eventBorderColor, getProtocolColor } from "../../lib/trace/eventColors";
 import {
   groupA2AEventsByTaskId,
   isA2AEvent,
@@ -260,10 +261,7 @@ function ProtocolTier({ events }: { events: TraceEvent[] }) {
 
 function ProtocolEventRow({ event }: { event: TraceEvent }) {
   const tone = traceEventTone(event);
-  const borderColor =
-    tone === "error" ? "#c62828" :
-    tone === "warning" ? "#ed6c02" :
-    tone === "success" ? "#2e7d32" : "#17475f";
+  const borderColor = eventBorderColor(event);
   return (
     <Stack direction="row" spacing={1} alignItems="center"
       sx={{ px: 1, py: 0.5, borderLeft: `3px solid ${borderColor}`, borderRadius: 0.5, bgcolor: "background.paper" }}>
@@ -295,7 +293,7 @@ function FullTraceTier({ events }: { events: TraceEvent[] }) {
       )}
       {capped.map((event) => (
         <Card key={`${event.index}-${event.event_type}-${event.timestamp_ms}`} variant="outlined"
-          sx={{ borderLeft: `4px solid #17475f` }}>
+          sx={{ borderLeft: `4px solid ${getProtocolColor("mcp")}` }}>
           <CardContent sx={{ pb: "8px !important", pt: "8px !important" }}>
             <Typography variant="caption" sx={{ fontFamily: "monospace", whiteSpace: "pre-wrap", wordBreak: "break-all" }}>
               {JSON.stringify(event, null, 2)}

@@ -24,31 +24,23 @@ import { useSearchParams } from "react-router-dom";
 import { ProtocolEnvelopeDrawer } from "../../components/traces/ProtocolEnvelopeDrawer";
 import { ContentCardSkeleton, FilterCardSkeleton } from "../../components/loading/LoadingSkeletons";
 import { fetchReportDetail, fetchReports } from "../../lib/api/client";
+import { getProtocolColor, eventBorderColor } from "../../lib/trace/eventColors";
 import { isA2AEvent, isTraceFailureEvent, traceEventProtocol, traceEventTone, traceLabel } from "../../lib/trace/utils";
 import type { ReportSummary, RunResult, TraceEvent } from "../../lib/types/api";
 
 const MODE_ORDER = ["baseline", "mcp", "a2a", "hybrid"] as const;
 
-const MODE_META = {
-  baseline: { icon: <RouteOutlinedIcon fontSize="small" />, color: "#546e7a", protocol: "No protocol" },
-  mcp: { icon: <PrecisionManufacturingOutlinedIcon fontSize="small" />, color: "#17475f", protocol: "MCP" },
-  a2a: { icon: <HubOutlinedIcon fontSize="small" />, color: "#8d4e2a", protocol: "A2A" },
-  hybrid: { icon: <AccountTreeOutlinedIcon fontSize="small" />, color: "#4a235a", protocol: "A2A + MCP" },
+const BASELINE_ICON = { icon: <RouteOutlinedIcon fontSize="small" />, protocol: "No protocol" };
+
+const MODE_ICONS: Record<string, { icon: React.ReactNode; protocol: string }> = {
+  baseline: BASELINE_ICON,
+  mcp: { icon: <PrecisionManufacturingOutlinedIcon fontSize="small" />, protocol: "MCP" },
+  a2a: { icon: <HubOutlinedIcon fontSize="small" />, protocol: "A2A" },
+  hybrid: { icon: <AccountTreeOutlinedIcon fontSize="small" />, protocol: "A2A + MCP" },
 };
 
-function getMeta(mode: string) {
-  return (MODE_META as Record<string, typeof MODE_META.baseline | undefined>)[mode] ?? MODE_META.baseline;
-}
-
-function eventBorderColor(event: TraceEvent): string {
-  const tone = traceEventTone(event);
-  if (tone === "error") return "#c62828";
-  if (tone === "warning") return "#ed6c02";
-  if (tone === "success") return "#2e7d32";
-  const proto = traceEventProtocol(event);
-  if (proto === "a2a") return "#8d4e2a";
-  if (proto === "mcp") return "#17475f";
-  return "#546e7a";
+function getModeIcon(mode: string) {
+  return MODE_ICONS[mode] ?? BASELINE_ICON;
 }
 
 function MiniEventRow({
@@ -118,7 +110,8 @@ function ModeColumn({
   result: RunResult;
   onSelectEvent: (event: TraceEvent) => void;
 }) {
-  const meta = getMeta(result.mode);
+  const modeIcon = getModeIcon(result.mode);
+  const modeColor = getProtocolColor(result.mode);
   const toolCalls = result.trace.filter((e) => e.event_type === "tool_call").length;
   const a2aMessages = result.trace.filter(isA2AEvent).length;
   const failures = result.trace.filter(isTraceFailureEvent).length;
@@ -128,13 +121,13 @@ function ModeColumn({
       <CardContent sx={{ pb: 1 }}>
         <Stack spacing={1}>
           <Stack direction="row" spacing={0.75} alignItems="center">
-            <Box sx={{ color: meta.color }}>{meta.icon}</Box>
-            <Typography variant="h6" sx={{ color: meta.color, textTransform: "uppercase", fontSize: "0.85rem" }}>
+            <Box sx={{ color: modeColor }}>{modeIcon.icon}</Box>
+            <Typography variant="h6" sx={{ color: modeColor, textTransform: "uppercase", fontSize: "0.85rem" }}>
               {result.mode}
             </Typography>
           </Stack>
           <Typography variant="caption" sx={{ color: "text.secondary" }}>
-            {meta.protocol}
+            {modeIcon.protocol}
           </Typography>
           <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap>
             <Chip label={`${result.trace.length} events`} size="small" />
@@ -145,7 +138,7 @@ function ModeColumn({
         </Stack>
       </CardContent>
 
-      <Box sx={{ borderTop: `2px solid ${meta.color}`, mx: 2 }} />
+      <Box sx={{ borderTop: `2px solid ${modeColor}`, mx: 2 }} />
 
       <CardContent sx={{ flex: 1, overflowY: "auto", maxHeight: 600, pt: 1.5 }}>
         <Stack spacing={0.5}>
