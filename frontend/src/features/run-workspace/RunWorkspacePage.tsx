@@ -33,6 +33,7 @@ import {
   runDemo,
 } from "../../lib/api/client";
 import { demoPresets, guidedStoryModes, type DemoPreset } from "../../lib/demo/presets";
+import { ParallelAgentTimeline } from "../../components/timeline/ParallelAgentTimeline";
 import { getProtocolColor } from "../../lib/trace/eventColors";
 import type {
   A2ATransportMode,
@@ -888,6 +889,8 @@ export function RunWorkspacePage() {
                                       {item.final_answer}
                                     </Typography>
                                     <Divider />
+                                    {/* D-06: Swimlane timeline — only renders if events have parallel or step data */}
+                                    <ParallelAgentTimeline events={item.trace} mode={item.mode} />
                                     {item.ticket?.talking_point ? (
                                       <Paper
                                         elevation={0}

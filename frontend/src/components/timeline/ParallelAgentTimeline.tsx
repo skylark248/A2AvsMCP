@@ -49,11 +49,13 @@ function buildTimelineBars(events: TraceEvent[], mode: string): TimelineBar[] {
     .sort((a, b) => (a.step_index as number) - (b.step_index as number));
 
   if (stepEvents.length > 0) {
-    const minTs = stepEvents[0].timestamp_ms;
+    const firstEvent = stepEvents[0]!;
+    const minTs = firstEvent.timestamp_ms;
 
     return stepEvents.map((e, i) => {
       const offset = e.timestamp_ms - minTs;
-      const nextTs = i < stepEvents.length - 1 ? stepEvents[i + 1].timestamp_ms : null;
+      const nextEvent = stepEvents[i + 1];
+      const nextTs = nextEvent != null ? nextEvent.timestamp_ms : null;
       const duration = nextTs != null ? Math.max(nextTs - e.timestamp_ms, MIN_DURATION_MS) : 50;
 
       return {
@@ -86,10 +88,10 @@ export function ParallelAgentTimeline({ events, mode }: ParallelAgentTimelinePro
           <XAxis type="number" domain={[0, "dataMax"]} tickFormatter={(v: number) => `${v}ms`} />
           <YAxis type="category" dataKey="agent" width={100} tick={{ fontSize: 12 }} />
           <Tooltip
-            formatter={(value: number, name: string) =>
-              name === "offset" ? ["", ""] : [`${value}ms`, "Duration"]
+            formatter={(value, name) =>
+              name === "offset" ? ["", ""] : [`${Number(value)}ms`, "Duration"]
             }
-            labelFormatter={(label: string) => `Agent: ${label}`}
+            labelFormatter={(label) => `Agent: ${String(label)}`}
           />
           {/* Invisible offset bar — Gantt spacer */}
           <Bar dataKey="offset" stackId="timeline" fill="transparent" isAnimationActive={false} />
