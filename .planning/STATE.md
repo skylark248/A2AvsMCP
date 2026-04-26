@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: "Phase 4 planned — 4 plans in 3 waves, verification passed. Ready for /gsd-execute-phase 4."
-last_updated: "2026-04-27T13:00:00Z"
-last_activity: 2026-04-27
+stopped_at: "Completed 04-01-PLAN.md — eventColors.ts foundation + dependency install"
+last_updated: "2026-04-26T19:25:28Z"
+last_activity: 2026-04-26
 progress:
   total_phases: 5
   completed_phases: 3
   total_plans: 4
-  completed_plans: 0
-  percent: 60
+  completed_plans: 1
+  percent: 65
 ---
 
 # Project State
@@ -25,31 +25,31 @@ See: .planning/PROJECT.md (updated 2026-04-22)
 
 ## Current Position
 
-Phase: 3 of 5 (New Scenarios)
-Plan: 4 of 4 in current phase (03-04 complete, Phase 3 done)
-Status: Phase 3 complete — ready for Phase 4 (Comparison UI)
-Last activity: 2026-04-23
+Phase: 4 of 5 (Comparison UI)
+Plan: 1 of 4 in current phase (04-01 complete)
+Status: Executing Phase 4 — eventColors foundation done, ready for Plans 02-04
+Last activity: 2026-04-26
 
-Progress: [████████░░] 80%
+Progress: [████████░░] 65%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 0
-- Average duration: —
-- Total execution time: —
+- Total plans completed: 1
+- Average duration: 3m 46s
+- Total execution time: 3m 46s
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 04 | 1 | 3m 46s | 3m 46s |
 
 **Recent Trend:**
 
-- Last 5 plans: —
-- Trend: —
+- Last 5 plans: 04-01 (3m 46s)
+- Trend: starting
 
 *Updated after each plan completion*
 
@@ -75,6 +75,8 @@ Recent decisions affecting current work:
 - 03-04: api.ts maintains an independent inline RunResult.ticket type separate from api.generated.ts TicketResponse — both must be patched when adding fields; TalkingPointCard added to both (Rule 1 fix)
 - 03-04: protocolColor hardcoded at module level in RunWorkspacePage.tsx — Phase 4 eventColors.ts will subsume this (D-15)
 - 03-04: TalkingPointCard JSX inline in result map, not extracted to a component file (D-14)
+- 04-01: Used BASELINE constant instead of protocolColor.baseline for TS strict indexing safety
+- 04-01: Extracted BASELINE_ICON constant in ComparePage for TS Record fallback type safety
 
 ### Pending Todos
 
@@ -96,6 +98,6 @@ None — Phase 2 complete. TRACE-05 delivered; timeout_ms=5000 in A2ABroker conf
 
 ## Session Continuity
 
-Last session: 2026-04-27
-Stopped at: Phase 4 planned — 4 plans in 3 waves (eventColors foundation → metrics+swimlane parallel → compare panel). Verification passed, all 12 decisions covered.
-Resume file: .planning/phases/04-comparison-ui/04-01-PLAN.md
+Last session: 2026-04-26
+Stopped at: Completed 04-01-PLAN.md — eventColors.ts foundation + dependency install
+Resume file: .planning/phases/04-comparison-ui/04-02-PLAN.md
