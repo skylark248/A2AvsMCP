@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: "Completed 04-01-PLAN.md — eventColors.ts foundation + dependency install"
-last_updated: "2026-04-26T19:25:28Z"
+stopped_at: "Completed 04-02-PLAN.md — outcome metrics chips on result cards"
+last_updated: "2026-04-26T19:28:29Z"
 last_activity: 2026-04-26
 progress:
   total_phases: 5
   completed_phases: 3
   total_plans: 4
-  completed_plans: 1
-  percent: 65
+  completed_plans: 2
+  percent: 70
 ---
 
 # Project State
@@ -26,30 +26,30 @@ See: .planning/PROJECT.md (updated 2026-04-22)
 ## Current Position
 
 Phase: 4 of 5 (Comparison UI)
-Plan: 1 of 4 in current phase (04-01 complete)
-Status: Executing Phase 4 — eventColors foundation done, ready for Plans 02-04
+Plan: 2 of 4 in current phase (04-02 complete)
+Status: Executing Phase 4 — outcome metrics chips done, ready for Plans 03-04
 Last activity: 2026-04-26
 
-Progress: [████████░░] 65%
+Progress: [███████░░░] 70%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 1
-- Average duration: 3m 46s
-- Total execution time: 3m 46s
+- Total plans completed: 2
+- Average duration: 2m 21s
+- Total execution time: 4m 42s
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 04 | 1 | 3m 46s | 3m 46s |
+| 04 | 2 | 4m 42s | 2m 21s |
 
 **Recent Trend:**
 
-- Last 5 plans: 04-01 (3m 46s)
-- Trend: starting
+- Last 5 plans: 04-01 (3m 46s), 04-02 (0m 56s)
+- Trend: accelerating
 
 *Updated after each plan completion*
 
@@ -77,6 +77,8 @@ Recent decisions affecting current work:
 - 03-04: TalkingPointCard JSX inline in result map, not extracted to a component file (D-14)
 - 04-01: Used BASELINE constant instead of protocolColor.baseline for TS strict indexing safety
 - 04-01: Extracted BASELINE_ICON constant in ComparePage for TS Record fallback type safety
+- 04-02: Combined tool_calls + a2a_messages into single round-trips chip per D-02
+- 04-02: Latency chip moved from header row to metrics row with protocol color per D-01
 
 ### Pending Todos
 
@@ -99,5 +101,5 @@ None — Phase 2 complete. TRACE-05 delivered; timeout_ms=5000 in A2ABroker conf
 ## Session Continuity
 
 Last session: 2026-04-26
-Stopped at: Completed 04-01-PLAN.md — eventColors.ts foundation + dependency install
-Resume file: .planning/phases/04-comparison-ui/04-02-PLAN.md
+Stopped at: Completed 04-02-PLAN.md — outcome metrics chips on result cards
+Resume file: .planning/phases/04-comparison-ui/04-03-PLAN.md
