@@ -118,61 +118,61 @@ Phase 5 is a pure UI polish phase — no new API endpoints, no new backend logic
 
 ```
 Run Page / Compare Page
-        │
-        ▼
-┌─────────────────────────────────────────┐
-│  GlossaryTerm component                 │
-│  (wraps protocol labels at first use)   │
-│         │                               │
-│         ▼                               │
-│  glossaryTerms.ts (static TS map)       │
-│  key: slug → value: one-sentence def    │
-│         │                               │
-│         ▼                               │
-│  MUI Tooltip (hover popover)            │
-└─────────────────────────────────────────┘
+        |
+        v
++------------------------------------------+
+|  GlossaryTerm component                  |
+|  (wraps protocol labels at first use)    |
+|         |                                |
+|         v                                |
+|  glossaryTerms.ts (static TS map)        |
+|  key: slug -> value: one-sentence def    |
+|         |                                |
+|         v                                |
+|  MUI Tooltip (hover popover)             |
++------------------------------------------+
 
 RunWorkspacePage (result map)
-        │
-        ├── Runtime Chip (reads item.runtime)
-        │         └─ "Mock Runtime" (grey) | "OpenAI Runtime" (amber)
-        │
-        └── TalkingPointCard (reads item.ticket.talking_point)
-                  └─ Already renders for all modes via result.results.map()
+        |
+        +-- Runtime Chip (reads item.runtime)
+        |         +- "Mock Runtime" (grey) | "OpenAI Runtime" (amber)
+        |
+        +-- TalkingPointCard (reads item.ticket.talking_point)
+                  +- Already renders for all modes via result.results.map()
 
 TraceExplorer (receives runtime prop)
-        │
-        ├── Latency badge (if runtime === "llm")
-        │         └─ "Expect 2-5s per LLM call" — amber Chip in header
-        │
-        └── LLM Alert banner (if runtime !== "mock")
-                  └─ MUI Alert at top of accordion area
+        |
+        +-- Latency badge (if runtime === "llm")
+        |         +- "Expect 2-5s per LLM call" -- amber Chip in header
+        |
+        +-- LLM Alert banner (if runtime !== "mock")
+                  +- MUI Alert at top of accordion area
 
 TraceExplorer (failure event rows)
-        │
-        └── ProtocolEventRow (already uses eventBorderColor)
-                  └─ error tone → red border (#c62828) — already implemented
-                     failure summary list → new addition to result card
+        |
+        +-- ProtocolEventRow (already uses eventBorderColor)
+                  +- error tone -> red border (#c62828) -- already implemented
+                     failure summary list -> new addition to result card
 ```
 
 ### Recommended Project Structure
 
 ```
 frontend/src/
-├── lib/
-│   └── glossary/
-│       └── glossaryTerms.ts        # NEW — term slug → one-sentence definition map
-├── components/
-│   └── glossary/
-│       └── GlossaryTerm.tsx        # NEW — styled span + MUI Tooltip wrapper
-├── features/
-│   ├── run-workspace/
-│   │   └── RunWorkspacePage.tsx    # MODIFIED — runtime Chip, GlossaryTerm wrappers, failure summary
-│   └── compare/
-│       └── ComparePage.tsx         # MODIFIED — role-first phrasing, GlossaryTerm wrappers
-└── components/
-    └── traces/
-        └── TraceExplorer.tsx       # MODIFIED — latency badge, LLM banner, runtime prop
++-- lib/
+|   +-- glossary/
+|       +-- glossaryTerms.ts        # NEW -- term slug -> one-sentence definition map
++-- components/
+|   +-- glossary/
+|       +-- GlossaryTerm.tsx        # NEW -- styled span + MUI Tooltip wrapper
++-- features/
+|   +-- run-workspace/
+|   |   +-- RunWorkspacePage.tsx    # MODIFIED -- runtime Chip, GlossaryTerm wrappers, failure summary
+|   +-- compare/
+|       +-- ComparePage.tsx         # MODIFIED -- role-first phrasing, GlossaryTerm wrappers
++-- components/
+    +-- traces/
+        +-- TraceExplorer.tsx       # MODIFIED -- latency badge, LLM banner, runtime prop
 ```
 
 ### Pattern 1: GlossaryTerm Component
@@ -184,12 +184,12 @@ frontend/src/
 **Implementation:**
 ```typescript
 // frontend/src/components/glossary/GlossaryTerm.tsx
-// [ASSUMED] — pattern derived from D-01 through D-04 in CONTEXT.md
+// [ASSUMED] -- pattern derived from D-01 through D-04 in CONTEXT.md
 import Tooltip from "@mui/material/Tooltip";
 import { glossaryTerms } from "../../lib/glossary/glossaryTerms";
 
 interface GlossaryTermProps {
-  term: string;         // slug key — e.g., "mcp", "a2a", "tool_call"
+  term: string;         // slug key -- e.g., "mcp", "a2a", "tool_call"
   children: React.ReactNode;
 }
 
@@ -219,14 +219,14 @@ export function GlossaryTerm({ term, children }: GlossaryTermProps) {
 **Suggested ~15-20 terms (Claude's discretion per CONTEXT.md D-01):**
 ```typescript
 // frontend/src/lib/glossary/glossaryTerms.ts
-// [ASSUMED] — term list per Claude's discretion
+// [ASSUMED] -- term list per Claude's discretion
 export const glossaryTerms: Record<string, string> = {
-  mcp: "Model Context Protocol — a standard that lets an LLM call server-hosted tools via a structured request/response contract.",
-  a2a: "Agent-to-Agent protocol — a Google-led standard where agents advertise capabilities via Agent Cards and delegate tasks to peer agents.",
+  mcp: "Model Context Protocol -- a standard that lets an LLM call server-hosted tools via a structured request/response contract.",
+  a2a: "Agent-to-Agent protocol -- a Google-led standard where agents advertise capabilities via Agent Cards and delegate tasks to peer agents.",
   tool_call: "A discrete request from an LLM to invoke a named function exposed by an MCP server.",
   task_submit: "An A2A operation where one agent sends a unit of work to a specialist agent for asynchronous handling.",
-  agent_card: "A JSON manifest that describes an A2A agent's identity, capabilities, and endpoint — the discovery document for peer agents.",
-  transport: "The channel over which protocol messages travel — in-process (same process), stdio (subprocess pipe), HTTP, or remote HTTP.",
+  agent_card: "A JSON manifest that describes an A2A agent's identity, capabilities, and endpoint -- the discovery document for peer agents.",
+  transport: "The channel over which protocol messages travel -- in-process (same process), stdio (subprocess pipe), HTTP, or remote HTTP.",
   broker: "The A2A orchestrator that receives a ticket, classifies intent, and dispatches tasks to the right specialist agents.",
   specialist_agent: "An A2A agent focused on a single domain (e.g., billing, documentation) that handles delegated tasks from the broker.",
   parallel_dispatch: "An A2A pattern where the broker sends tasks to multiple specialists simultaneously rather than sequentially.",
@@ -235,9 +235,9 @@ export const glossaryTerms: Record<string, string> = {
   discovery_phase: "The initial portion of an A2A run where agents register and the broker resolves which specialists to contact.",
   execution_phase: "The portion of a run where tools are called (MCP) or tasks are dispatched (A2A) to produce the final answer.",
   mock_runtime: "A fully deterministic in-process execution path that requires no API keys and produces consistent trace data.",
-  llm_runtime: "The OpenAI GPT-4o-mini execution path where real LLM calls are made — latency reflects live API response times.",
+  llm_runtime: "The OpenAI GPT-4o-mini execution path where real LLM calls are made -- latency reflects live API response times.",
   baseline: "The single-agent execution mode where one LLM handles the ticket without MCP tools or A2A coordination.",
-  hybrid: "A mode that combines MCP tool access with A2A agent coordination — both protocols active in the same run.",
+  hybrid: "A mode that combines MCP tool access with A2A agent coordination -- both protocols active in the same run.",
 };
 ```
 
@@ -245,7 +245,7 @@ export const glossaryTerms: Record<string, string> = {
 
 **What:** A Chip adjacent to the existing transport badge chip, reading `item.runtime` from the run result.
 
-**Implementation reference (existing transport chip pattern — line 866 of RunWorkspacePage.tsx):**
+**Implementation reference (existing transport chip pattern -- line 866 of RunWorkspacePage.tsx):**
 ```tsx
 // EXISTING pattern (line 864-868 of RunWorkspacePage.tsx) [VERIFIED: codebase read]
 {item.mcp_transport ? (
@@ -253,7 +253,7 @@ export const glossaryTerms: Record<string, string> = {
 ) : null}
 
 // NEW runtime chip follows same pattern (D-09)
-// [ASSUMED] — exact placement at Claude's discretion
+// [ASSUMED] -- exact placement at Claude's discretion
 <Chip
   label={item.runtime === "llm" ? "OpenAI Runtime" : "Mock Runtime"}
   size="small"
@@ -268,7 +268,7 @@ export const glossaryTerms: Record<string, string> = {
 
 **Current TraceExplorer interface (verified):**
 ```typescript
-// [VERIFIED: codebase read — TraceExplorer.tsx line 38-43]
+// [VERIFIED: codebase read -- TraceExplorer.tsx line 38-43]
 interface TraceExplorerProps {
   events: TraceEvent[];
   title?: string;
@@ -280,7 +280,7 @@ interface TraceExplorerProps {
 
 **New conditional renders inside TraceExplorer:**
 ```tsx
-// Latency badge (D-10) — in header area, amber Chip
+// Latency badge (D-10) -- in header area, amber Chip
 {runtime === "llm" && (
   <Chip
     label="Expect 2-5s per LLM call"
@@ -290,10 +290,10 @@ interface TraceExplorerProps {
   />
 )}
 
-// LLM run Alert banner (D-11) — at top of accordion area
+// LLM run Alert banner (D-11) -- at top of accordion area
 {runtime !== "mock" && runtime !== undefined && (
   <Alert severity="warning" sx={{ mb: 1 }}>
-    This run used OpenAI GPT-4o-mini — latency reflects real API calls.
+    This run used OpenAI GPT-4o-mini -- latency reflects real API calls.
   </Alert>
 )}
 ```
@@ -302,10 +302,10 @@ interface TraceExplorerProps {
 
 **What:** Render `item.failures` (already a `string[]` in `RunResult`) as visible failure chips or a list in the result card, below the final answer.
 
-**Current state (verified):** `item.failures` field exists in `RunResult` interface (api.ts line 95) and is returned by the backend — but nothing in RunWorkspacePage renders it.
+**Current state (verified):** `item.failures` field exists in `RunResult` interface (api.ts line 95) and is returned by the backend -- but nothing in RunWorkspacePage renders it.
 
 ```tsx
-// [ASSUMED] — exact styling at Claude's discretion
+// [ASSUMED] -- exact styling at Claude's discretion
 {item.failures.length > 0 && (
   <Stack spacing={0.5}>
     <Typography variant="caption" sx={{ color: "error.main", fontWeight: 600 }}>
@@ -322,10 +322,10 @@ interface TraceExplorerProps {
 
 ### Anti-Patterns to Avoid
 
-- **Auto-detection regex for glossary terms:** D-02 explicitly locks manual wrapping — do not attempt to scan rendered text with regex.
-- **Fetching glossary from an API:** D-01 locks static TS map — no fetch, no useEffect, no async path.
+- **Auto-detection regex for glossary terms:** D-02 explicitly locks manual wrapping -- do not attempt to scan rendered text with regex.
+- **Fetching glossary from an API:** D-01 locks static TS map -- no fetch, no useEffect, no async path.
 - **Applying role-first phrasing to all pages:** D-06 locks to Run page + Compare page only.
-- **Redesigning failure toggle UI:** D-12 locks — existing checkboxes/switches stay; only add outcome visibility.
+- **Redesigning failure toggle UI:** D-12 locks -- existing checkboxes/switches stay; only add outcome visibility.
 - **Adding new backend endpoints:** Out of scope per REQUIREMENTS.md (all visualization reads existing `GET /api/runs/{id}`).
 - **Using recharts/xyflow for new visualizations:** Those are Phase 4 libraries; Phase 5 does not add new visualizations.
 
@@ -338,7 +338,7 @@ interface TraceExplorerProps {
 | Hover popover for glossary terms | Custom portal + position logic | MUI Tooltip | Already installed, handles positioning, keyboard accessibility, and touch targets automatically |
 | Failure event detection | New event-type checking logic | `isTraceFailureEvent()` from utils.ts | Already handles all 8 failure event types (error, tool_error, a2a_remote_failure, triage_warning, task_retry, task_error, a2a_remote_retry) [VERIFIED: utils.ts] |
 | Protocol color lookup for failure highlights | New color constants | `toneColor.error` from eventColors.ts | `#c62828` already defined; `eventBorderColor()` already applies it to error-tone events [VERIFIED: eventColors.ts] |
-| Runtime badge color logic | New color system | MUI Chip `color="warning"` | Amber is MUI's standard warning color — no custom hex needed |
+| Runtime badge color logic | New color system | MUI Chip `color="warning"` | Amber is MUI's standard warning color -- no custom hex needed |
 
 ---
 
@@ -350,13 +350,13 @@ interface TraceExplorerProps {
 
 **Why it happens:** The `talking_point` field lives in `SupportTicket` on the backend (schemas.py line 26). The backend must attach it to every `RunOutput.ticket` regardless of mode. Verify this in the API response.
 
-**How to avoid:** After Phase 5 implementation, run the demo with `mode=all` and confirm all four result cards show talking-point cards.
+**Resolution (verified):** The backend `platform.py run()` method passes the same `SupportTicket` object to all four mode runners. `RunOutput` stores `ticket=ticket` directly (line 112). All modes are guaranteed to carry `talking_point` when the scenario defines one. No fix needed.
 
 **Warning signs:** Cards appear for mcp and a2a but not for baseline or hybrid.
 
 ### Pitfall 2: GlossaryTerm on non-first mentions creates visual noise
 
-**What goes wrong:** If `<GlossaryTerm>` is applied to every occurrence of "MCP" in a page, every instance gets the dotted underline — making the page look noisy.
+**What goes wrong:** If `<GlossaryTerm>` is applied to every occurrence of "MCP" in a page, every instance gets the dotted underline -- making the page look noisy.
 
 **Why it happens:** D-05 specifies role-first phrasing only on first mention. Subsequent mentions should use plain text without wrapping.
 
@@ -366,17 +366,17 @@ interface TraceExplorerProps {
 
 ### Pitfall 3: TraceExplorer runtime prop not threaded through
 
-**What goes wrong:** `TraceExplorer` is used in both `RunWorkspacePage` (inside the result card expansion) and in `CompareTracesPanel` (the side-by-side compare view). If only one call site passes `runtime`, the LLM badge appears inconsistently.
+**What goes wrong:** `TraceExplorer` is used in `CompareTracesPanel` (the side-by-side compare view), `TraceWorkspacePage`, and `ReportDetailPage`. If only one call site passes `runtime`, the LLM badge appears inconsistently.
 
 **Why it happens:** Adding a new prop requires updating all call sites.
 
-**How to avoid:** After adding `runtime` to `TraceExplorerProps`, search all usages of `<TraceExplorer` and ensure each one passes the correct `runtime` value.
+**How to avoid:** After adding `runtime` to `TraceExplorerProps`, search all usages of `<TraceExplorer` and ensure each one passes the correct `runtime` value. Note: TraceExplorer is NOT used in RunWorkspacePage (which uses ParallelAgentTimeline instead).
 
-**Warning signs:** Latency badge appears in Run page but not in Compare page, or vice versa.
+**Warning signs:** Latency badge appears in Compare page but not in Trace workspace, or vice versa.
 
 ### Pitfall 4: Failure summary list renders for non-failure runs
 
-**What goes wrong:** `item.failures` is always an array — for clean runs it's `[]`. If the render check is `item.failures` (truthy check on array), it renders an empty list.
+**What goes wrong:** `item.failures` is always an array -- for clean runs it's `[]`. If the render check is `item.failures` (truthy check on array), it renders an empty list.
 
 **Why it happens:** Empty arrays are truthy in JavaScript.
 
@@ -390,7 +390,7 @@ interface TraceExplorerProps {
 
 **Why it happens:** Unstable object references in the tooltip `title` prop.
 
-**How to avoid:** The glossary map is a static module-level constant — accessing `glossaryTerms[term]` returns a string, not an object. String props are stable. No memoization needed.
+**How to avoid:** The glossary map is a static module-level constant -- accessing `glossaryTerms[term]` returns a string, not an object. String props are stable. No memoization needed.
 
 ---
 
@@ -473,7 +473,7 @@ export const protocolColor: Record<string, string> = {
 
 ```tsx
 // Source: TraceExplorer.tsx lines 139-148 [VERIFIED: codebase read]
-// "Only failures and warnings" filter already exists — wire failure count to result card
+// "Only failures and warnings" filter already exists -- wire failure count to result card
 <MenuItem value="only_failures">Only failures and warnings</MenuItem>
 ```
 
@@ -481,7 +481,7 @@ export const protocolColor: Record<string, string> = {
 
 ## Runtime State Inventory
 
-Step 2.5: SKIPPED — this is a greenfield additive phase, not a rename/refactor/migration.
+Step 2.5: SKIPPED -- this is a greenfield additive phase, not a rename/refactor/migration.
 
 ---
 
@@ -489,11 +489,11 @@ Step 2.5: SKIPPED — this is a greenfield additive phase, not a rename/refactor
 
 | Dependency | Required By | Available | Version | Fallback |
 |------------|------------|-----------|---------|----------|
-| `@mui/material` Tooltip | GlossaryTerm (PRES-02) | Yes | 7.3.1 | — |
-| `@mui/material` Chip | Runtime indicator (PRES-03) | Yes | 7.3.1 | — |
-| `@mui/material` Alert | LLM banner (PRES-03) | Yes | 7.3.1 | — |
+| `@mui/material` Tooltip | GlossaryTerm (PRES-02) | Yes | 7.3.1 | -- |
+| `@mui/material` Chip | Runtime indicator (PRES-03) | Yes | 7.3.1 | -- |
+| `@mui/material` Alert | LLM banner (PRES-03) | Yes | 7.3.1 | -- |
 | `motion` (framer-motion) | Optional card animations | Yes | 12.38.0 | Skip animations |
-| Node.js / npm | Build | Yes | (project standard) | — |
+| Node.js / npm | Build | Yes | (project standard) | -- |
 
 **No missing dependencies.** All libraries required for Phase 5 are already installed.
 
@@ -508,7 +508,7 @@ Step 2.5: SKIPPED — this is a greenfield additive phase, not a rename/refactor
 | Failure modes only discoverable by toggle | Failure outcomes visible in trace | Phase 5 goal | Enables walkthrough without code changes |
 
 **Deprecated/outdated:**
-- `protocolColor` hardcoded at module level in RunWorkspacePage.tsx — already replaced by `getProtocolColor()` from eventColors.ts (D-15 from Phase 3 context, implemented in Phase 4).
+- `protocolColor` hardcoded at module level in RunWorkspacePage.tsx -- already replaced by `getProtocolColor()` from eventColors.ts (D-15 from Phase 3 context, implemented in Phase 4).
 
 ---
 
@@ -516,33 +516,29 @@ Step 2.5: SKIPPED — this is a greenfield additive phase, not a rename/refactor
 
 | # | Claim | Section | Risk if Wrong |
 |---|-------|---------|---------------|
-| A1 | GlossaryTerm component uses styled span + MUI Tooltip (not Popover or Modal) | Pattern 1 | Low — MUI Tooltip is the lightest-weight option and confirmed in D-03 |
-| A2 | ~15-20 specific glossary terms listed in Code Examples | Glossary Terms Map | Low — Claude's discretion per D-01; list can be trimmed/extended during implementation |
-| A3 | Runtime chip uses MUI `color="warning"` for amber (not custom hex) | Pattern 3 | Low — MUI warning color is amber (#ed6c02 equivalent); consistent with toneColor.warning |
-| A4 | `item.runtime !== "mock"` is the correct LLM detection check | Pattern 4 | Low — `RunResult.runtime` is a required `string` field; values are "mock" or "llm" per RuntimeMode type |
-| A5 | `motion` is optionally used for card/badge animations; skip if complexity outweighs benefit | Standard Stack | Low — motion is already installed; decision at implementation time |
+| A1 | GlossaryTerm component uses styled span + MUI Tooltip (not Popover or Modal) | Pattern 1 | Low -- MUI Tooltip is the lightest-weight option and confirmed in D-03 |
+| A2 | ~15-20 specific glossary terms listed in Code Examples | Glossary Terms Map | Low -- Claude's discretion per D-01; list can be trimmed/extended during implementation |
+| A3 | Runtime chip uses MUI `color="warning"` for amber (not custom hex) | Pattern 3 | Low -- MUI warning color is amber (#ed6c02 equivalent); consistent with toneColor.warning |
+| A4 | `item.runtime !== "mock"` is the correct LLM detection check | Pattern 4 | Low -- `RunResult.runtime` is a required `string` field; values are "mock" or "llm" per RuntimeMode type |
+| A5 | `motion` is optionally used for card/badge animations; skip if complexity outweighs benefit | Standard Stack | Low -- motion is already installed; decision at implementation time |
 
 **All core architectural claims are VERIFIED from codebase reads. Assumptions are limited to implementation detail choices within Claude's discretion (per CONTEXT.md).**
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Do all four modes receive `talking_point` in the API response?**
-   - What we know: scenarios.json has `talking_point` for all 12 scenarios. The `SupportTicket` dataclass has `talking_point: dict | None`. RunWorkspacePage renders it via `item.ticket?.talking_point`.
-   - What's unclear: Does the backend attach the scenario's `talking_point` to every RunOutput regardless of mode (baseline, hybrid included)?
-   - Recommendation: Implementer should verify by running `mode=all` and checking the API response JSON for all four `results[*].ticket.talking_point` fields before adding any fix.
+   - RESOLVED: YES. In `platform.py`, the `run()` method (line 70) accepts a single `ticket: SupportTicket` and passes that same object to all four mode runners (`_run_baseline`, `_run_mcp`, `_run_a2a`, `_run_hybrid`). The `RunOutput` (line 112) stores `ticket=ticket` directly. Since `SupportTicket.talking_point` (schemas.py line 26) is populated from `scenarios.json` via `dataset.py` line 116, and the identical ticket object is shared across all modes, all four modes are guaranteed to have `talking_point` in the API response when the scenario defines one. No backend fix needed.
 
 2. **Where exactly does TraceExplorer get called with run results?**
-   - What we know: TraceExplorer exists in RunWorkspacePage (likely nested in an expansion or directly in result cards — not visible in the current RunWorkspacePage.tsx render). It's also used by CompareTracesPanel.
-   - What's unclear: The current RunWorkspacePage.tsx doesn't show a `<TraceExplorer>` render — the trace is shown via `ParallelAgentTimeline` only. TraceExplorer may be a click-through that hasn't been wired yet, or it may be in a tab.
-   - Recommendation: Implementer should check if TraceExplorer is rendered inline per result or accessed via the Compare page. The runtime prop needs to be added to all call sites.
+   - RESOLVED: TraceExplorer is NOT rendered in RunWorkspacePage.tsx (zero grep matches confirmed). It IS rendered in three other locations: `TraceWorkspacePage.tsx` (line 394), `ReportDetailPage.tsx` (line 260), and `CompareTracesPanel.tsx` (lines 106 and 125). RunWorkspacePage uses `ParallelAgentTimeline` for trace display, not TraceExplorer. The runtime prop added in Plan 02 needs to be threaded through CompareTracesPanel (already planned) and optionally through TraceWorkspacePage and ReportDetailPage for consistency.
 
 ---
 
 ## Security Domain
 
-> `security_enforcement` not set in config.json — treated as enabled. Phase 5 is client-side UI polish only.
+> `security_enforcement` not set in config.json -- treated as enabled. Phase 5 is client-side UI polish only.
 
 ### Applicable ASVS Categories
 
@@ -558,7 +554,7 @@ Step 2.5: SKIPPED — this is a greenfield additive phase, not a rename/refactor
 
 | Pattern | STRIDE | Standard Mitigation |
 |---------|--------|---------------------|
-| XSS via glossary definition rendered as HTML | Tampering | Definitions are plain strings in a static TS map; MUI Tooltip renders as text, not HTML — no sanitization needed |
+| XSS via glossary definition rendered as HTML | Tampering | Definitions are plain strings in a static TS map; MUI Tooltip renders as text, not HTML -- no sanitization needed |
 | Rendering user-supplied `item.failures` strings | Tampering | React escapes string content by default; `item.failures` are server-generated strings, not user input |
 
 **Security assessment:** Phase 5 introduces no new data input paths. All new content (glossary terms, role-first labels, runtime indicators) is static or derived from existing trusted API fields. No additional security controls required.
@@ -568,30 +564,32 @@ Step 2.5: SKIPPED — this is a greenfield additive phase, not a rename/refactor
 ## Sources
 
 ### Primary (HIGH confidence)
-- Codebase: `RunWorkspacePage.tsx` — verified runtime field access pattern, TalkingPointCard render, existing Chip patterns
-- Codebase: `TraceExplorer.tsx` — verified current props interface, failure filter, summary strip structure
-- Codebase: `eventColors.ts` — verified toneColor and protocolColor constants
-- Codebase: `utils.ts` — verified `isTraceFailureEvent()` signature and all 8 failure event types
-- Codebase: `api.ts` — verified `RunResult.runtime: string` (required field, not optional)
-- Codebase: `scenarios.json` — verified all 12 scenarios have `talking_point` objects
-- Codebase: `schemas.py` — verified `FailureConfig` dataclass with 9 boolean flags
-- Codebase: `package.json` — verified installed library versions (MUI 7.3.1, motion 12.38.0)
+- Codebase: `RunWorkspacePage.tsx` -- verified runtime field access pattern, TalkingPointCard render, existing Chip patterns
+- Codebase: `TraceExplorer.tsx` -- verified current props interface, failure filter, summary strip structure
+- Codebase: `eventColors.ts` -- verified toneColor and protocolColor constants
+- Codebase: `utils.ts` -- verified `isTraceFailureEvent()` signature and all 8 failure event types
+- Codebase: `api.ts` -- verified `RunResult.runtime: string` (required field, not optional)
+- Codebase: `scenarios.json` -- verified all 12 scenarios have `talking_point` objects
+- Codebase: `schemas.py` -- verified `FailureConfig` dataclass with 9 boolean flags
+- Codebase: `package.json` -- verified installed library versions (MUI 7.3.1, motion 12.38.0)
+- Codebase: `platform.py` -- verified all four mode runners receive identical `SupportTicket` with `talking_point` (RESOLVED Q1)
+- Codebase: grep for `<TraceExplorer` -- verified all call sites: CompareTracesPanel, TraceWorkspacePage, ReportDetailPage (RESOLVED Q2)
 
 ### Secondary (MEDIUM confidence)
-- MUI Tooltip documentation pattern — `title` prop renders as text tooltip on hover; `arrow` prop adds pointer; consistent with D-03 decision [ASSUMED from MUI API knowledge, consistent with MUI 7.x]
+- MUI Tooltip documentation pattern -- `title` prop renders as text tooltip on hover; `arrow` prop adds pointer; consistent with D-03 decision [ASSUMED from MUI API knowledge, consistent with MUI 7.x]
 
 ### Tertiary (LOW confidence)
-- None — all claims verified from codebase or CONTEXT.md locked decisions.
+- None -- all claims verified from codebase or CONTEXT.md locked decisions.
 
 ---
 
 ## Metadata
 
 **Confidence breakdown:**
-- Standard stack: HIGH — all libraries verified from package.json
-- Architecture: HIGH — all component locations verified from codebase reads
-- Pitfalls: HIGH — derived from actual code patterns observed in RunWorkspacePage.tsx, TraceExplorer.tsx, utils.ts
-- Glossary term list: MEDIUM (Claude's discretion) — reasonable working list, can be adjusted during implementation
+- Standard stack: HIGH -- all libraries verified from package.json
+- Architecture: HIGH -- all component locations verified from codebase reads
+- Pitfalls: HIGH -- derived from actual code patterns observed in RunWorkspacePage.tsx, TraceExplorer.tsx, utils.ts
+- Glossary term list: MEDIUM (Claude's discretion) -- reasonable working list, can be adjusted during implementation
 
 **Research date:** 2026-04-27
 **Valid until:** 2026-05-27 (stable MUI and React codebase; no fast-moving dependencies)
