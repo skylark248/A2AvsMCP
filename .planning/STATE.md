@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-02 runtime indicators
-last_updated: "2026-04-27T04:47:28Z"
-last_activity: 2026-04-27 -- Phase 5 Plan 02 complete
+stopped_at: Completed 05-03 presenter page polish
+last_updated: "2026-04-27T05:00:00Z"
+last_activity: 2026-04-27 -- Phase 5 Plan 03 complete
 progress:
   total_phases: 5
   completed_phases: 3
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-04-22)
 ## Current Position
 
 Phase: 5 of 5 (Presentation Polish)
-Plan: 2 of TBD in current phase (Plan 02 complete)
+Plan: 3 of TBD in current phase (Plan 03 complete)
 Status: Executing
-Last activity: 2026-04-27 -- Phase 5 Plan 02 complete
+Last activity: 2026-04-27 -- Phase 5 Plan 03 complete
 
 Progress: [██████████] 100%
 
@@ -36,20 +36,20 @@ Progress: [██████████] 100%
 
 **Velocity:**
 
-- Total plans completed: 6
-- Average duration: 1m 54s
-- Total execution time: 11m 23s
+- Total plans completed: 7
+- Average duration: 1m 50s
+- Total execution time: 12m 52s
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 04 | 4 | 8m 54s | 2m 13s |
-| 05 | 2 | 2m 29s | 1m 15s |
+| 05 | 3 | 3m 58s | 1m 19s |
 
 **Recent Trend:**
 
-- Last 5 plans: 04-02 (0m 56s), 04-03 (2m 11s), 04-04 (2m 01s), 05-01 (1m 05s), 05-02 (1m 24s)
+- Last 5 plans: 04-03 (2m 11s), 04-04 (2m 01s), 05-01 (1m 05s), 05-02 (1m 24s), 05-03 (1m 29s)
 - Trend: accelerating
 
 *Updated after each plan completion*
@@ -86,6 +86,8 @@ Recent decisions affecting current work:
 - 04-04: Removed Box import from ComparePage after ModeColumn deletion left it unused
 - 05-01: Used inline style on span instead of Box+sx -- simpler, avoids extra MUI wrapper, span provides DOM ref for Tooltip
 - 05-01: Em dashes (--) in glossary definitions matching RESEARCH.md copywriting pattern
+- 05-03: Duplicated ROLE_FIRST_LABELS in RunWorkspacePage and ComparePage -- keeps pages self-contained, avoids shared util for 4 lines
+- 05-03: ComparePage header uses JSX map with GlossaryTerm spans instead of template string -- enables per-mode tooltip wrapping
 
 ### Pending Todos
 
@@ -108,5 +110,5 @@ None — Phase 2 complete. TRACE-05 delivered; timeout_ms=5000 in A2ABroker conf
 ## Session Continuity
 
 Last session: 2026-04-27
-Stopped at: Completed 05-02 runtime indicators
-Resume file: .planning/phases/05-presentation-polish/05-02-SUMMARY.md
+Stopped at: Completed 05-03 presenter page polish
+Resume file: .planning/phases/05-presentation-polish/05-03-SUMMARY.md
