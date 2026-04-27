@@ -4,64 +4,100 @@
 
 An educational demo platform that runs the same customer support ticket through four execution modes — baseline, MCP, A2A, and hybrid — to teach engineers and decision-makers how the MCP and A2A protocols work, how they differ, and when to use each. The target audience is a mixed firm audience (technical and non-technical); the delivery format is a live walkthrough with slides.
 
+After v1.0: the platform now exposes protocol differences as first-class visual elements (swimlane timelines, side-by-side trace panels, outcome metrics), embeds presenter narration via talking-point cards, and removes jargon friction with hover-glossary popovers and role-first phrasing.
+
 ## Core Value
 
 A side-by-side, runnable comparison that makes the differences between MCP and A2A *visible* — not described, not diagrammed, but live and traceable.
+
+**Status after v1.0:** Held. Shipping the comparison UI confirmed visibility is the right priority — the swimlane + side-by-side panels carry the demo more than any narrative.
+
+## Current State (v1.0 — Shipped 2026-04-27)
+
+- All 4 demo modes (baseline, mcp, a2a, hybrid) run reliably under `runtime=mock, transport=in_process` — no API key required
+- Trace events carry the full enrichment contract: `step_index`, `parallel_batch_id`, `started_at`, `completed_at`, `phase`
+- 12 seed scenarios including TICKET-1011 (multi-step) and TICKET-1012 (parallel agents)
+- Comparison UI: outcome metrics chips, `ParallelAgentTimeline` (recharts swimlane), `CompareTracesPanel` (dual synchronized TraceExplorer)
+- Presentation polish: 17-term glossary popovers, role-first protocol labels, runtime indicators (latency badge + LLM Alert), failure summary chips
+- 88 commits, ~12,200 LOC (Python + TypeScript), 5 days execution
 
 ## Requirements
 
 ### Validated
 
-- ✓ Four runnable demo modes (baseline, mcp, a2a, hybrid) — existing
-- ✓ Mock runtime (deterministic, no API key required) — existing
-- ✓ OpenAI runtime path (real LLM calls via OPENAI_API_KEY) — existing
-- ✓ Trace system emitting structured protocol events per run — existing
-- ✓ React + MUI frontend with run workspace and trace explorer — existing
-- ✓ Learning page with guided educational content — existing
-- ✓ Report generation, history, and ZIP export — existing
-- ✓ MCP client with multi-transport (in-process, stdio, streamable-http, remote) — existing
-- ✓ A2A broker with retry logic, agent cards, full task lifecycle — existing
-- ✓ Presentation/slideshow mode — existing
+- ✓ Four runnable demo modes (baseline, mcp, a2a, hybrid) — pre-existing, locked under `runtime=mock, transport=in_process` in v1.0
+- ✓ Mock runtime (deterministic, no API key required) — pre-existing
+- ✓ OpenAI runtime path (real LLM calls via `OPENAI_API_KEY`) — pre-existing, surfaced in UI in v1.0 via runtime Chip + LLM Alert
+- ✓ Trace system emitting structured protocol events per run — pre-existing, enriched in v1.0 (TRACE-01..05)
+- ✓ React + MUI frontend with run workspace and trace explorer — pre-existing, three-tier accordion in v1.0
+- ✓ Learning page with guided educational content — pre-existing
+- ✓ Report generation, history, and ZIP export — pre-existing
+- ✓ MCP client with multi-transport (in-process, stdio, streamable-http, remote) — pre-existing
+- ✓ A2A broker with retry logic, agent cards, full task lifecycle — pre-existing, gained `send_tasks_parallel()` + `timeout_ms=5000` in v1.0
+- ✓ Presentation/slideshow mode — pre-existing
+- ✓ Demo stability — STAB-01..05 — v1.0
+- ✓ Trace enrichment — TRACE-01..05 — v1.0
+- ✓ Multi-step + parallel scenarios — SCEN-01..03 — v1.0
+- ✓ Comparison UI (metrics chips + swimlane + side-by-side) — UI-01..05 — v1.0
+- ✓ Presentation polish (glossary + role-first + runtime + failure walkthrough) — PRES-01..04 — v1.0
 
 ### Active
 
-- [ ] Multi-step workflow scenario — a ticket that requires chaining 3+ tool calls or agent handoffs, making the protocol depth visible
-- [ ] Parallel agent task scenario — multiple A2A specialists running simultaneously, showing A2A's coordination advantage vs MCP's sequential tool calls
-- [ ] Tool discovery scenario — side-by-side showing MCP's dynamic tool listing (server announces capabilities) vs A2A's agent card registry (agents self-describe)
-- [ ] Comparison clarity improvements — UI enhancements that make A2A vs MCP differences unmissable for a non-technical viewer during a live walkthrough
-- [ ] Real LLM visibility — make the OpenAI reasoning path easy to activate and clearly surfaced in the trace so audiences can see actual AI decision-making
-- [ ] Slide-companion content — key takeaway panels or talking-point cards embedded in the UI per mode, aligned to the demo walkthrough script
-- [ ] Demo stability pass — ensure all modes work flawlessly with `runtime=mock` (no API key needed for demo day)
+(Empty — set during `/gsd-new-milestone` for v2)
+
+### Carried to v2 Backlog
+
+- DISC-01 / DISC-02 — Tool discovery scenario + DiscoveryPhasePanel
+- VIZ-01 / VIZ-02 — Annotated diff view + interactive sequence diagram
+- SDK-01 / SDK-02 — A2A SDK 1.0 migration + MCP SDK v2 (`FastMCP` → `McpServer`)
+- Three-Lane Failure-Shape Race Demo (CEO-cleared design, eng-cleared, hybrid restored to v1 scope per CEO outside-voice review)
+- 10 plan-review feedback items in `TODOS.md` at project root
 
 ### Out of Scope
 
-- User authentication / multi-user accounts — this is a single-presenter demo tool, not a SaaS product
-- Cloud/production deployment — localhost demo is the delivery format
-- Persistent database (SQL/NoSQL) — file-based artifact storage is sufficient for demo purposes
-- A2A remote transport improvements — local transport already demonstrates the protocol; remote adds infra complexity without educational value for this goal
+| Feature | Reason | Held after v1.0? |
+|---------|--------|------------------|
+| User authentication / multi-user accounts | Single-presenter demo tool, not SaaS | ✓ Held |
+| Cloud / production deployment | Localhost is the delivery format | ✓ Held |
+| Persistent database (SQL/NoSQL) | File-based artifact storage sufficient | ✓ Held |
+| WebSocket real-time trace streaming | Mock runs <1s; reconnect complexity vs near-zero value | ✓ Held |
+| LLM-generated talking-point content | Non-deterministic; presenter loses confidence | ✓ Held |
+| A2A remote transport as demo path | Infra dependency that can fail live | ✓ Held |
+| Editable scenarios via UI | Form validation + persistence disproportionate | ✓ Held |
+| OpenTelemetry / Jaeger / Zipkin export | External infra irrelevant for self-contained demo | ✓ Held |
+| New API endpoints for trace visualization | All visualization reads existing `GET /api/runs/{id}` | ✓ Held |
+| Separate `MCPToolCard` / `A2AAgentCard` components | One `CapabilityCard` with protocol prop | ✓ Held |
 
 ## Context
 
-- The existing codebase is clean and well-structured (see `.planning/codebase/`). All four modes already run; the educational scaffolding exists. The work is about deepening the scenarios and sharpening the presentation.
-- The audience is mixed: engineers will appreciate trace depth and code fidelity; decision-makers need visual clarity on tradeoffs.
-- Demo timeline: 1-2 months out.
-- Current gaps: only one scenario (customer support / order status / setup error); comparison is hard to grasp at a glance; OpenAI mode exists but isn't highlighted.
-- No CI, no coverage tooling — acceptable for a demo platform, but a stability pass before demo day is warranted.
+- v1.0 shipped: ~12,200 LOC across Python (FastAPI backend) and TypeScript (React + MUI frontend)
+- Tech stack: Python 3.10+ / FastAPI / pytest / React / MUI / recharts / @xyflow/react / motion / react-syntax-highlighter
+- Test posture: 78 backend tests (pytest + pytest-asyncio + httpx async ASGI); zero TypeScript errors; production frontend build passes
+- Demo posture: locked to `runtime=mock, transport=in_process` for demo day; OpenAI runtime opt-in
+- Audience: mixed (engineers + decision-makers); demo timeline 1-2 months out from milestone start
+- v1.0 deferred items: 3 P4 visual checks, 1 missing P5 VERIFICATION.md, 10 TODOS.md items, 6 v2 backlog requirements
 
 ## Constraints
 
 - **Tech stack**: Python ≥3.10 / FastAPI / React / MUI — extend within existing stack, no rewrites
-- **API key**: Demo must run fully in `runtime=mock` without OPENAI_API_KEY; LLM features are an opt-in enhancement
-- **Timeline**: 1-2 months — prioritize scenario depth and comparison clarity over polish
+- **API key**: Demo must run fully in `runtime=mock` without `OPENAI_API_KEY`; LLM features are an opt-in enhancement
 - **Audience**: Non-technical viewers must understand the comparison without reading code
+- **Single source of truth for protocol colors**: `eventColors.ts` on comparison/trace surface (UI-04 outcome)
+- **Type drift discipline**: `api.ts` and `api.generated.ts` both need manual patching when adding fields
 
 ## Key Decisions
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Keep mock runtime as primary | Demo day reliability matters more than LLM authenticity | — Pending |
-| Add new scenarios as new `DemoRepository` entries | Existing platform dispatches by scenario; new scenarios fit the existing pattern | — Pending |
-| Embed talking-point cards in UI | Walkthrough + slides format means the demo app itself should carry context | — Pending |
+| Lock demo day to `runtime=mock, transport=in_process` | Demo day reliability matters more than LLM authenticity | ✓ Good — zero crashes across 5-day execution |
+| Pin `mcp>=1.27,<2` and `a2a-sdk==0.3.26` for v1; defer SDK migrations to v2 | SDK-01 (A2A 1.0) is a major breaking release touching broker core | ✓ Good — 88 commits without SDK churn |
+| New scenarios as `DemoRepository` entries | Existing platform dispatches by scenario; fits existing pattern | ✓ Good — TICKET-1011 + TICKET-1012 added with no infra change |
+| Embed talking-point cards in UI | Walkthrough + slides format means demo app itself should carry context | ✓ Good — talking-points present on all 12 scenarios; landed in P3 |
+| `task_submit` reserved for parallel; sequential a2a uses `a2a_message(task_request)` | Discovered during 03-03; assertion adjustment kept SCEN-01 contract met | ✓ Good — protocol-depth contrast still visible |
+| `eventColors.ts` as single source of truth on comparison/trace surface (UI-04) | Centralized color tokens; all 5 consumers import | ✓ Good — zero hardcoded protocol hex on trace surface |
+| Duplicate `ROLE_FIRST_LABELS` across RunWorkspacePage + ComparePage | 4 lines × 2 keeps pages self-contained vs shared util ceremony | — Pending — revisit if a third page needs the labels |
+| Manual patches in both `api.ts` and `api.generated.ts` | Generator regen path documented in inline comments | ⚠ Revisit — drift is high-friction; consider regenerator script in v2 |
+| Phase 5 shipped without phase-level VERIFICATION.md | Per-plan SUMMARYs + integration check covered all 4 PRES requirements | ⚠ Revisit — process gap; restore phase-level verification in v2 |
 
 ---
 
@@ -83,4 +119,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-22 after Phase 1 completion*
+*Last updated: 2026-04-28 after v1.0 milestone close*
