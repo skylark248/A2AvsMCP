@@ -266,6 +266,22 @@ See [Plan.md](Plan.md) for the original project architecture and phase details. 
 | [REMOTE_A2A.md](REMOTE_A2A.md) | Remote A2A specialist setup and verification |
 | [examples/](examples/) | Curated sample report and trace outputs |
 
+## Knowledge Graph
+
+This project includes a [graphify](https://github.com/safishamsi/graphify) knowledge graph (`graphify-out/`) with 663 nodes, 1665 edges, and 22 communities extracted via tree-sitter AST parsing. Core abstractions identified: `DemoPlatform`, `AgentResult`, `A2AMessage`, `A2ABroker`, `TraceRecorder`, `FailureConfig`.
+
+```bash
+# Query the graph
+graphify query "how does the broker route messages"
+graphify path "DemoPlatform" "A2ABroker"
+graphify explain "MCPClient"
+
+# Rebuild after code changes (AST-only, no API cost)
+graphify update .
+```
+
+See [graphify-out/GRAPH_REPORT.md](graphify-out/GRAPH_REPORT.md) for the full community structure and god nodes.
+
 ## License
 
 See [LICENSE](LICENSE).
