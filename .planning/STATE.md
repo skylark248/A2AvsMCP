@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Completed 05-03 presenter page polish
-last_updated: "2026-04-27T05:00:00Z"
-last_activity: 2026-04-27 -- Phase 5 Plan 03 complete
+status: complete
+stopped_at: Phase 5 complete — all plans executed
+last_updated: "2026-04-27T05:05:00Z"
+last_activity: 2026-04-27 -- Phase 5 complete, milestone done
 progress:
   total_phases: 5
-  completed_phases: 3
-  total_plans: 14
-  completed_plans: 15
+  completed_phases: 5
+  total_plans: 16
+  completed_plans: 16
   percent: 100
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-22)
 
 **Core value:** A side-by-side, runnable comparison that makes the differences between MCP and A2A visible — not described, not diagrammed, but live and traceable.
-**Current focus:** Phase 5 — Presentation Polish
+**Current focus:** Milestone complete
 
 ## Current Position
 
-Phase: 5 of 5 (Presentation Polish)
-Plan: 3 of TBD in current phase (Plan 03 complete)
-Status: Executing
-Last activity: 2026-04-27 -- Phase 5 Plan 03 complete
+Phase: 5 of 5 (Presentation Polish) — COMPLETE
+Plan: 3/3 in current phase — all done
+Status: Complete
+Last activity: 2026-04-27 -- Phase 5 complete, milestone done
 
 Progress: [██████████] 100%
 
@@ -110,5 +110,5 @@ None — Phase 2 complete. TRACE-05 delivered; timeout_ms=5000 in A2ABroker conf
 ## Session Continuity
 
 Last session: 2026-04-27
-Stopped at: Completed 05-03 presenter page polish
-Resume file: .planning/phases/05-presentation-polish/05-03-SUMMARY.md
+Stopped at: Milestone v1.0 complete — all 5 phases executed
+Resume file: .planning/ROADMAP.md
