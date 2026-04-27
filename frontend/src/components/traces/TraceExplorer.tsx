@@ -7,6 +7,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import {
+  Alert,
   Card,
   CardContent,
   Chip,
@@ -39,9 +40,10 @@ interface TraceExplorerProps {
   events: TraceEvent[];
   title?: string;
   subtitle?: string;
+  runtime?: string;
 }
 
-export function TraceExplorer({ events, title = "Trace Explorer", subtitle }: TraceExplorerProps) {
+export function TraceExplorer({ events, title = "Trace Explorer", subtitle, runtime }: TraceExplorerProps) {
   const [eventFilter, setEventFilter] = useState<string>("all");
   const [actorFilter, setActorFilter] = useState<string>("all");
   const [toolFilter, setToolFilter] = useState<string>("all");
@@ -90,11 +92,21 @@ export function TraceExplorer({ events, title = "Trace Explorer", subtitle }: Tr
     <Card>
       <CardContent>
         <Stack spacing={2}>
-          <Stack spacing={0.5}>
-            <Typography variant="h6">{title}</Typography>
-            <Typography variant="body2" sx={{ color: "text.secondary" }}>
-              {subtitle ?? "Filter the protocol timeline by event type, actor, tool, and failure state."}
-            </Typography>
+          <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
+            <Stack spacing={0.5}>
+              <Typography variant="h6">{title}</Typography>
+              <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                {subtitle ?? "Filter the protocol timeline by event type, actor, tool, and failure state."}
+              </Typography>
+            </Stack>
+            {runtime === "llm" && (
+              <Chip
+                label="Expect 2-5s per LLM call"
+                size="small"
+                color="warning"
+                icon={<WarningAmberRoundedIcon fontSize="small" />}
+              />
+            )}
           </Stack>
 
           <Grid container spacing={1.5}>
@@ -150,6 +162,12 @@ export function TraceExplorer({ events, title = "Trace Explorer", subtitle }: Tr
           </Grid>
 
           <Divider />
+
+          {runtime !== undefined && runtime !== "mock" && (
+            <Alert severity="warning" sx={{ mb: 1 }}>
+              This run used OpenAI GPT-4o-mini — latency reflects real API calls.
+            </Alert>
+          )}
 
           {/* === Tier 0: Summary Strip (always visible) === */}
           <Stack direction="row" spacing={2} flexWrap="wrap" useFlexGap
