@@ -26,6 +26,15 @@ Use the `/browse` skill from gstack for all web browsing. Never use `mcp__claude
 
 /office-hours, /plan-ceo-review, /plan-eng-review, /plan-design-review, /design-consultation, /design-shotgun, /design-html, /review, /ship, /land-and-deploy, /canary, /benchmark, /browse, /connect-chrome, /qa, /qa-only, /design-review, /setup-browser-cookies, /setup-deploy, /setup-gbrain, /retro, /investigate, /document-release, /codex, /cso, /autoplan, /plan-devex-review, /devex-review, /careful, /freeze, /guard, /unfreeze, /gstack-upgrade, /learn
 
+## claude mem
+
+This project has memories stored in claude mem (running at http://localhost:37701).
+
+Rules:
+- Use `/mem-search` or query `GET /api/search` to recall project context before starting new work
+- Save significant architectural decisions, gotchas, and session learnings via `POST /api/memory/save` with `project: "A2AvsMCP"`
+- Existing memories: project overview (#7), architecture and key files (#9), scenarios/routes/API (#11)
+
 ## graphify
 
 This project has a graphify knowledge graph at graphify-out/.
