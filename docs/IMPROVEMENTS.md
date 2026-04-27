@@ -1,5 +1,21 @@
 # Improvement Log
 
+## 2026-04-27 v1.0 Milestone Complete -- Presentation-Ready Demo Platform
+
+Five-phase milestone that deepened the platform from a working prototype into a polished, demo-day-ready comparison tool. 16 plans executed across 5 phases.
+
+Added:
+
+- Phase 1: Demo stability foundation -- all four modes run reliably without an API key, FakeReasoningEngine for keyless testing, transport badge chips, pytest migration with async integration tests
+- Phase 2: Backend trace enrichment -- step_index, parallel_batch_id, timing offsets, phase fields on all trace events; A2ABroker.send_tasks_parallel() with 5000ms timeout; three-tier accordion TraceExplorer
+- Phase 3: New scenarios -- multi-step workflow (device_failure_warranty_refund) and parallel-agent (vip_parallel_escalation) scenarios with talking-point cards; 12 total scenarios with difficulty/tag metadata
+- Phase 4: Comparison UI -- eventColors.ts color system, outcome metrics chips (elapsed time, round-trips, agent count), ParallelAgentTimeline swimlane component, CompareTracesPanel with synchronized dual TraceExplorer
+- Phase 5: Presentation polish -- glossaryTerms.ts (17 protocol terms) + GlossaryTerm component (dotted underline + MUI Tooltip), role-first phrasing on Run and Compare pages, runtime indicator chips (Mock/OpenAI), latency badges for LLM runs, failure summary chips
+
+Key dependency additions: @xyflow/react, recharts, react-syntax-highlighter, motion
+
+Backend tests: 86 passing. Frontend: TypeScript compiles cleanly, production build succeeds.
+
 ## 2026-04-07 Phase 6 Remote A2A Implementation Slice
 
 Added:
