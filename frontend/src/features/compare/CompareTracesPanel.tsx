@@ -107,6 +107,7 @@ export function CompareTracesPanel({ results }: CompareTracesPanelProps) {
                 events={resultA.trace}
                 title={`${resultA.mode.toUpperCase()} Trace`}
                 subtitle={`${resultA.trace.length} events`}
+                runtime={resultA.runtime}
               />
             ) : (
               <Typography variant="body2" sx={{ color: "text.secondary" }}>
@@ -126,6 +127,7 @@ export function CompareTracesPanel({ results }: CompareTracesPanelProps) {
                 events={resultB.trace}
                 title={`${resultB.mode.toUpperCase()} Trace`}
                 subtitle={`${resultB.trace.length} events`}
+                runtime={resultB.runtime}
               />
             ) : (
               <Typography variant="body2" sx={{ color: "text.secondary" }}>
