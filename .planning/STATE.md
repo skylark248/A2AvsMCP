@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: "Race Demo + Discovery + Visualization"
 status: planning
-last_updated: "2026-04-28T00:00:00Z"
-last_activity: "2026-04-28 -- Roadmap created (Phases 6-13)"
+last_updated: "2026-04-28T02:49:00Z"
+last_activity: "2026-04-28 -- Phase 6 context gathered (4 areas, 16 decisions)"
 progress:
   total_phases: 8
   completed_phases: 0
@@ -20,14 +20,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** A side-by-side, runnable comparison that makes the differences between MCP and A2A visible — not described, not diagrammed, but live and traceable.
-**Current focus:** Awaiting Phase 6 kickoff (TraceRecorder Schema Gate & Race Foundation)
+**Current focus:** Phase 6 context locked — ready for research + planning
 
 ## Current Position
 
-Phase: Not started — Phase 6 next (TraceRecorder Schema Gate & Race Foundation)
+Phase: 6 — TraceRecorder Schema Gate & Race Foundation
 Plan: —
-Status: Roadmap locked; ready for `/gsd-discuss-phase 6`
-Last activity: 2026-04-28 — Roadmap created, 31/31 v2.0 requirements mapped across Phases 6-13
+Status: CONTEXT.md committed (ab5c576); ready for `/gsd-plan-phase 6`
+Last activity: 2026-04-28 — Phase 6 context gathered: 4 areas discussed, 18 decisions captured (D-01..D-18)
 
 ## Accumulated Context
 
@@ -78,5 +78,6 @@ Items acknowledged at v1.0 close that remain deferred into v2.0+:
 ## Session Continuity
 
 Last session: 2026-04-28
-Stopped at: Roadmap created — 8 phases (6-13), 31/31 requirements mapped, ~25 plans estimated
-Next action: `/gsd-discuss-phase 6` to begin TraceRecorder Schema Gate & Race Foundation
+Stopped at: Phase 6 context gathered — 18 decisions across 4 areas (trace storage, ws lifecycle, fault module, turn-index ownership)
+Resume file: .planning/phases/06-tracerecorder-schema-gate-race-foundation/06-CONTEXT.md
+Next action: `/gsd-plan-phase 6` to research + plan Phase 6
