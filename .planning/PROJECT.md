@@ -21,6 +21,20 @@ A side-by-side, runnable comparison that makes the differences between MCP and A
 - Presentation polish: 17-term glossary popovers, role-first protocol labels, runtime indicators (latency badge + LLM Alert), failure summary chips
 - 88 commits, ~12,200 LOC (Python + TypeScript), 5 days execution
 
+## Current Milestone: v2.0 Race Demo + Discovery + Visualization
+
+**Goal:** Ship the Three-Lane Failure-Shape Race Demo as the new flagship surface, add the tool-discovery scenario, and deepen the comparison story with annotated-diff and sequence-diagram visualizations.
+
+**Target features:**
+- Three-Lane Failure-Shape Race Demo (Pure-MCP / Pure-A2A / Hybrid) with hardness×failure heatmap, recovery state machine (K=3, multi-task calibrated), shareable `/race/<run_id>` URLs with server-rendered OG images
+- Tool discovery scenario + `DiscoveryPhasePanel` (DISC-01/02) — surface MCP/A2A discovery as first-class UI
+- Annotated diff view between protocol traces (VIZ-01)
+- Interactive sequence diagram for protocol flows (VIZ-02)
+- DESIGN.md lock via `/design-consultation` (TODO 5) — formalize new race-demo tokens (`failureTagColor`, methodology-as-flat, secondary-as-replay-pill)
+
+**Promoted TODOs:** TODO 3 (OG image gen), TODO 5 (DESIGN.md), TODO 8 (K=3 multi-task calibration)
+**Deferred:** SDK-01/02 (A2A 1.0 + MCP v2 migrations), TODO 1/2/4/6/7/9/10 — promote conditions in `TODOS.md`
+
 ## Requirements
 
 ### Validated
@@ -43,15 +57,24 @@ A side-by-side, runnable comparison that makes the differences between MCP and A
 
 ### Active
 
-(Empty — set during `/gsd-new-milestone` for v2)
+Set during `/gsd-new-milestone` for v2.0 — see `.planning/REQUIREMENTS.md` for the v2.0 REQ-ID list. Categories:
 
-### Carried to v2 Backlog
+- **RACE-** — Three-Lane Failure-Shape Race Demo (lanes, hardness/failure, heatmap, recovery state machine, OG image, shareable URLs)
+- **DISC-** — Tool discovery scenario + DiscoveryPhasePanel
+- **VIZ-** — Annotated diff view + interactive sequence diagram
+- **DSGN-** — DESIGN.md lock + design-system formalization
+
+### Promoted into v2.0 (from v1 backlog)
 
 - DISC-01 / DISC-02 — Tool discovery scenario + DiscoveryPhasePanel
 - VIZ-01 / VIZ-02 — Annotated diff view + interactive sequence diagram
+- Three-Lane Failure-Shape Race Demo (CEO+eng+design-cleared design, hybrid restored)
+- TODOs 3 (OG image), 5 (DESIGN.md), 8 (K=3 multi-task calibration)
+
+### Carried to v2.1+ Backlog
+
 - SDK-01 / SDK-02 — A2A SDK 1.0 migration + MCP SDK v2 (`FastMCP` → `McpServer`)
-- Three-Lane Failure-Shape Race Demo (CEO-cleared design, eng-cleared, hybrid restored to v1 scope per CEO outside-voice review)
-- 10 plan-review feedback items in `TODOS.md` at project root
+- TODOs 1, 2, 4, 6, 7, 9, 10 in `TODOS.md` (project root) — promote conditions per item
 
 ### Out of Scope
 
@@ -119,4 +142,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-28 after v1.0 milestone close*
+*Last updated: 2026-04-28 — v2.0 milestone started (Race Demo + Discovery + Visualization)*
