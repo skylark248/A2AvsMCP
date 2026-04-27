@@ -14,11 +14,23 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
+import { GlossaryTerm } from "../../components/glossary/GlossaryTerm";
 import { ProtocolEnvelopeDrawer } from "../../components/traces/ProtocolEnvelopeDrawer";
 import { ContentCardSkeleton, FilterCardSkeleton } from "../../components/loading/LoadingSkeletons";
 import { fetchReportDetail, fetchReports } from "../../lib/api/client";
 import type { ReportSummary, RunResult, TraceEvent } from "../../lib/types/api";
 import { CompareTracesPanel } from "./CompareTracesPanel";
+
+const ROLE_FIRST_LABELS: Record<string, string> = {
+  mcp: "Tool Access Protocol (MCP)",
+  a2a: "Agent Coordination Protocol (A2A)",
+  baseline: "Direct Agent (Baseline)",
+  hybrid: "Combined Protocol (Hybrid)",
+};
+
+function roleFirstLabel(mode: string): string {
+  return ROLE_FIRST_LABELS[mode] ?? mode.toUpperCase();
+}
 
 const MODE_ORDER = ["baseline", "mcp", "a2a", "hybrid"] as const;
 
@@ -128,9 +140,21 @@ export function ComparePage() {
               <Stack direction="row" spacing={1} alignItems="center">
                 <CompareArrowsOutlinedIcon color="secondary" />
                 <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                  {orderedResults.length > 0
-                    ? `Comparing ${orderedResults.map((r) => r.mode.toUpperCase()).join(" · ")}`
-                    : "Select a report that was run with multiple modes."}
+                  {orderedResults.length > 0 ? (
+                    <>
+                      Comparing{" "}
+                      {orderedResults.map((r, i) => (
+                        <span key={r.mode}>
+                          {i > 0 && " \u00b7 "}
+                          <GlossaryTerm term={r.mode}>
+                            {roleFirstLabel(r.mode)}
+                          </GlossaryTerm>
+                        </span>
+                      ))}
+                    </>
+                  ) : (
+                    "Select a report that was run with multiple modes."
+                  )}
                 </Typography>
               </Stack>
             </Stack>

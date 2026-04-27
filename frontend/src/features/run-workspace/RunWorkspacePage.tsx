@@ -23,6 +23,7 @@ import {
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
+import { GlossaryTerm } from "../../components/glossary/GlossaryTerm";
 import { useAppUi } from "../../app/ui/AppUiProvider";
 import { ContentCardSkeleton, FilterCardSkeleton, PageIntroSkeleton } from "../../components/loading/LoadingSkeletons";
 import {
@@ -47,6 +48,17 @@ import type {
   ScenarioOption,
   TransportMode,
 } from "../../lib/types/api";
+
+const ROLE_FIRST_LABELS: Record<string, string> = {
+  mcp: "Tool Access Protocol (MCP)",
+  a2a: "Agent Coordination Protocol (A2A)",
+  baseline: "Direct Agent (Baseline)",
+  hybrid: "Combined Protocol (Hybrid)",
+};
+
+function roleFirstLabel(mode: string): string {
+  return ROLE_FIRST_LABELS[mode] ?? mode.toUpperCase();
+}
 
 const modeOptions: DemoMode[] = ["all", "baseline", "mcp", "a2a", "hybrid"];
 const runtimeOptions: RuntimeMode[] = ["mock", "llm"];
@@ -860,11 +872,21 @@ export function RunWorkspacePage() {
                                 <CardContent>
                                   <Stack spacing={1.25}>
                                     <Stack direction="row" justifyContent="space-between" alignItems="center">
-                                      <Typography variant="h6">{item.mode.toUpperCase()}</Typography>
+                                      <Typography variant="h6">
+                                        <GlossaryTerm term={item.mode}>
+                                          {roleFirstLabel(item.mode)}
+                                        </GlossaryTerm>
+                                      </Typography>
                                       <Stack direction="row" spacing={0.5} alignItems="center">
                                         {item.mcp_transport ? (
                                           <Chip label={item.mcp_transport} size="small" variant="outlined" color="default" />
                                         ) : null}
+                                        <Chip
+                                          label={item.runtime === "llm" ? "OpenAI Runtime" : "Mock Runtime"}
+                                          size="small"
+                                          color={item.runtime === "llm" ? "warning" : "default"}
+                                          variant="outlined"
+                                        />
                                       </Stack>
                                     </Stack>
                                     {/* D-01: Outcome metrics chips — below mode header, above final answer */}
@@ -914,6 +936,18 @@ export function RunWorkspacePage() {
                                         </Typography>
                                       </Paper>
                                     ) : null}
+                                    {item.failures.length > 0 && (
+                                      <Stack spacing={0.5}>
+                                        <Typography variant="caption" sx={{ color: "error.main", fontWeight: 600 }}>
+                                          Failure Events ({item.failures.length})
+                                        </Typography>
+                                        <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap>
+                                          {item.failures.map((f, i) => (
+                                            <Chip key={i} label={f} size="small" color="error" variant="outlined" />
+                                          ))}
+                                        </Stack>
+                                      </Stack>
+                                    )}
                                   </Stack>
                                 </CardContent>
                               </Card>
