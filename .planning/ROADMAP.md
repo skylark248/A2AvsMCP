@@ -3,6 +3,7 @@
 ## Milestones
 
 - ✅ **v1.0 Demo-Day-Ready Platform** — Phases 1-5 (shipped 2026-04-27) — see [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md)
+- 📋 **v2.0 Race Demo + Discovery + Visualization** — Phases 6-13 (active, started 2026-04-28)
 
 ## Phases
 
@@ -19,16 +20,108 @@ Full details: [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md)
 
 </details>
 
-### 📋 v2.0 (Planned)
+### 🟢 v2.0 Race Demo + Discovery + Visualization (Active)
 
-Next milestone planning starts via `/gsd-new-milestone`. Candidates carried from v1.0:
+- [ ] **Phase 6: TraceRecorder Schema Gate & Race Foundation** — Pre-design gate that lands the trace + websocket schema everything else depends on
+- [ ] **Phase 7: Race Backend — Lanes, Harness, Recovery State Machine** — Three runners, harness, recovery classifier, tasks, mock APIs
+- [ ] **Phase 8: Race Page UI & Visual Contract** — Three-lane scoreboard, banner, methodology, 12 page states, responsive + a11y
+- [ ] **Phase 9: Heatmap, Replay & K=3 Calibration** — Hardness-vs-failure heatmap, deterministic replay, multi-task K=3 sweep
+- [ ] **Phase 10: OG Image & Sharing** — Playwright OG/heatmap PNGs, copy-headline fallback, cache invalidation
+- [ ] **Phase 11: Tool Discovery Scenario** — `tool_discovery` scenario + `DiscoveryPhasePanel` surfacing MCP/A2A discovery as first-class UI
+- [ ] **Phase 12: Comparison Visualization Upgrades** — Annotated trace diff + interactive sequence diagram
+- [ ] **Phase 13: Design System Lock** — `/design-consultation` produces DESIGN.md formalizing race-demo tokens
 
-- DISC-01 / DISC-02 — Tool discovery scenario + DiscoveryPhasePanel
-- VIZ-01 / VIZ-02 — Annotated diff view + interactive sequence diagram
-- SDK-01 / SDK-02 — A2A SDK 1.0 migration + MCP SDK v2 (`FastMCP` → `McpServer`)
-- Three-Lane Failure-Shape Race Demo (CEO-cleared design, eng-cleared, hybrid restored to v1)
+## Phase Details
 
-See `TODOS.md` (project root) for 10 deferred plan-review feedback items.
+### Phase 6: TraceRecorder Schema Gate & Race Foundation
+**Goal**: Land the trace + websocket schema upgrades that the rest of v2.0 depends on, closing the design doc's PRE-DESIGN GATE.
+**Depends on**: Nothing (first phase of v2.0)
+**Requirements**: TRC-01, TRC-02, TRC-03, TRC-04
+**Success Criteria** (what must be TRUE):
+  1. A developer can replay a recorded run and query its events filtered by `(run_id, lane)` in causal order, with LLM, tool, and inter-agent message events all carrying their per-event timing fields.
+  2. Every trace file written by TraceRecorder carries `trace_schema_version`, and a v1.0 fixture loaded through `race/replay.py` is recognized by the stub no-op migrator without error.
+  3. When FailureConfig fires, both `fault_injected` and `fault_observed` events appear in the trace with `fault_id`, `fault_kind`, `target`, `t_inject_ms`, `t_observed_ms`, `evidence`, and `wasted_tokens_before_detection`.
+  4. A websocket client connecting to `/api/race/ws` receives `tick`, `tool_call`, `agent_msg`, `fault_injected`, `fault_observed`, `done`, `error`, and `race_done` events, each tagged with a per-lane `turn_index`.
+**Plans**: TBD
+
+### Phase 7: Race Backend — Lanes, Harness, Recovery State Machine
+**Goal**: Stand up the three runner lanes, the harness that drives parallel runs, the locked recovery state machine, and the three v1 tasks with their mock APIs.
+**Depends on**: Phase 6
+**Requirements**: RACE-01, RACE-02, RACE-03, RACE-04, RACE-05, RACE-06, RACE-07
+**Success Criteria** (what must be TRUE):
+  1. A user can run `summarize_repo`, `negotiate_meeting`, or `book_travel` end-to-end on any of the three lanes (pure_mcp, pure_a2a, hybrid) using only mocked APIs and FailureConfig-injected hard failures, and receive a `RaceResult` per run.
+  2. A demo operator can launch the harness at `n=5` (or `n=1` in dev) with `model=claude-sonnet-4-6, seed=42, temperature=0`, and watch live websocket events stream while the harness only retries transient infrastructure errors (never injected faults).
+  3. Every fault recorded in a run is tagged by the recovery classifier with one of `recovered | gave_up | kept_going_without_noticing | kept_going_to_failure | indeterminate`, using the K=3 turn window and the locked `agent_msg_acknowledging_fault` regex with negation guard.
+  4. Each (lane, task) emits one of the six deterministic headline sentences (recovered / gave_up / kept_going_without_noticing / kept_going_to_failure / indeterminate / lane_failed) from `failure_mode_classifier`.
+  5. Each of the four v1 hardness types appears in at least two of the three v1 tasks, verified by `HardnessProfile` inspection on the seeded `task_config.yaml` files.
+**Plans**: TBD
+
+### Phase 8: Race Page UI & Visual Contract
+**Goal**: Deliver the three-lane race page that renders the locked information hierarchy, the full set of 12 page states, and the visual / responsive / accessibility contracts.
+**Depends on**: Phase 6, Phase 7
+**Requirements**: UIRACE-01, UIRACE-02, UIRACE-03, UIRACE-04, UIRACE-05, UIRACE-06, UIRACE-07
+**Success Criteria** (what must be TRUE):
+  1. A viewer landing on `/race` sees the locked hierarchy — top bar, status strip, three lanes in the 1200px central column, characteristic-failure banner with 4px primary rule and italic dynamic clause, methodology as flat section, heatmap — with the visual contract enforced (lane stripes, pill failure-state badges, correct border-radius scale).
+  2. All 12 documented page states (pre-race, countdown, live n=1, live n=5, done, replay, sparse-heatmap, ws-disconnected, ws-reconnecting, indeterminate, lane-failed, heatmap-empty) render correctly, and a websocket reconnect resumes the client at its last `turn_index`.
+  3. A keyboard-only user can navigate the page in correct Tab order with focus-visible outlines, screen readers announce `fault_observed` via `aria-live="polite"`, and `prefers-reduced-motion` and `prefers-contrast: more` are honored on every animated transition and stripe/outline.
+  4. The page renders correctly across desktop (≥1200px three-lane row), tablet (768-1199 shrunk three lanes), small-tablet (480-767 compacted metrics), and mobile (<480 falls back to `?mode=summary` with cropped anchor PNG + heatmap).
+  5. The 8 new race glossary terms (ttff, recovery_rate, hardness_profile, recovered, gave_up, kept_going_without_noticing, kept_going_to_failure, indeterminate) appear with first-mention popovers across the Race page, and the `failureTagColor` map (5 entries in `eventColors.ts`) is the single source of truth consumed by both heatmap cells and badges, paired with icon + label.
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 9: Heatmap, Replay & K=3 Calibration
+**Goal**: Ship the hardness-vs-failure heatmap as the closing artifact, the deterministic `/race/<run_id>` replay path, and lock K=3 across all three v1 tasks.
+**Depends on**: Phase 7, Phase 8
+**Requirements**: HEAT-01, HEAT-02, HEAT-03, HEAT-04
+**Success Criteria** (what must be TRUE):
+  1. A viewer scrolling to the bottom of `/race` sees the heatmap with rows = HardnessType, columns = lane, each cell showing dominant_tag color + icon + pattern fill + recovery rate (e.g., `12/15`); cells are keyboard-focusable and the "directional · n=3 tasks · v1" pill renders in `secondary.main`.
+  2. A 5-pill legend strip is always visible and the heatmap footer shows model · seed · pinned task IDs.
+  3. Loading `/race/<run_id>` reads `data/runs/<run_id>.json`, replays without any live LLM call, and the recovery-rule state machine produces identical per-run tags to the original run, verified by a two-layer fixture test (snapshot + `--update-snapshots` flag).
+  4. A K∈{2,3,4,5} sweep over the §The Assignment fictional traces for all three v1 tasks confirms K=3 produces the expected tag for every trace, with the test committed to `tests/test_recovery_calibration.py`.
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 10: OG Image & Sharing
+**Goal**: Make every `/race/<run_id>` URL shareable with server-rendered OG and heatmap PNGs, with a client-side fallback.
+**Depends on**: Phase 8, Phase 9
+**Requirements**: OG-01, OG-02, OG-03, OG-04
+**Success Criteria** (what must be TRUE):
+  1. Pasting a `/race/<run_id>` URL into Twitter, LinkedIn, or Slack unfurls a 1200×630 cropped anchor (3 lanes + banner) served from `/race/<run_id>/og.png`, cached at `data/og/<run_id>-v<OG_LAYOUT_VERSION>.png` and wired via `og:image` and `twitter:image` meta tags.
+  2. Hitting `/race/<run_id>/heatmap.png` returns a 1200×900 heatmap card screenshot with `run_id · model · seed · n · task_ids` annotation, sharing the `OG_LAYOUT_VERSION` cache key.
+  3. A user can click "Copy headline image" beside the banner and a client-side canvas snapshot of the same 1200×630 anchor region is copied to clipboard, even if server OG generation has failed.
+  4. Hitting `/race/<run_id>/og.png` or `/heatmap.png` for an unknown `run_id` returns 404 before Playwright spawns, and bumping `OG_LAYOUT_VERSION` causes stale `<id>-v<old>.*` files to be purged on next request.
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 11: Tool Discovery Scenario
+**Goal**: Surface MCP tool discovery and A2A agent-card discovery as a first-class UI section above the trace explorer, on a dedicated scenario.
+**Depends on**: Phase 6 (trace schema)
+**Requirements**: DISC-01, DISC-02
+**Success Criteria** (what must be TRUE):
+  1. A demo operator can run the new `tool_discovery` scenario from `DemoRepository` on both MCP and A2A protocols and observe the discovery phase exercising stale-capability-cache and unknown-tool-fallback failure modes.
+  2. A viewer of the run sees a `DiscoveryPhasePanel` above the trace explorer rendering the MCP tool catalog and A2A agent cards side-by-side with timestamps, before any execution-phase events.
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 12: Comparison Visualization Upgrades
+**Goal**: Deepen the existing comparison story with annotated diff between two protocol traces and an interactive sequence diagram for a single trace.
+**Depends on**: Phase 6 (trace schema for alignment fields)
+**Requirements**: VIZ-01, VIZ-02
+**Success Criteria** (what must be TRUE):
+  1. A viewer on `CompareTracesPanel` can open an annotated diff view that aligns matching events line-by-line and visually highlights divergence points (added vs removed steps, role-first labels) between two protocol traces.
+  2. A viewer on `TraceExplorer` can open an interactive sequence diagram with vertical lifelines per actor and horizontal arrows per message, click-to-pin a message, and have the animation honor `prefers-reduced-motion`.
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 13: Design System Lock
+**Goal**: Run `/design-consultation` against the now-shipped race demo and produce `.planning/DESIGN.md` formalizing the new design tokens and rules so future surfaces stop relitigating them.
+**Depends on**: Phase 8, Phase 9, Phase 10 (race demo + heatmap + OG must exist for the consultation to formalize)
+**Requirements**: DSGN-01
+**Success Criteria** (what must be TRUE):
+  1. `.planning/DESIGN.md` exists and codifies the `failureTagColor` map (5 entries), the methodology-as-flat-section rule, `secondary.main` as replay-pill semantic, the role-first first-mention contract scoped to Run + Compare + Race pages, and the primary/secondary palette intent.
+  2. A new contributor opening DESIGN.md can answer "where does this color come from / when do I render flat vs in a card / how do I introduce role-first labels on a new page" without reading source.
+**Plans**: TBD
+**UI hint**: yes
 
 ## Progress
 
@@ -39,3 +132,11 @@ See `TODOS.md` (project root) for 10 deferred plan-review feedback items.
 | 3. New Scenarios | v1.0 | 4/4 | Complete | 2026-04-23 |
 | 4. Comparison UI | v1.0 | 4/4 | Complete | 2026-04-26 |
 | 5. Presentation Polish | v1.0 | 3/3 | Complete | 2026-04-27 |
+| 6. TraceRecorder Schema Gate & Race Foundation | v2.0 | 0/3 | Pending | — |
+| 7. Race Backend — Lanes, Harness, Recovery | v2.0 | 0/4 | Pending | — |
+| 8. Race Page UI & Visual Contract | v2.0 | 0/4 | Pending | — |
+| 9. Heatmap, Replay & K=3 Calibration | v2.0 | 0/3 | Pending | — |
+| 10. OG Image & Sharing | v2.0 | 0/3 | Pending | — |
+| 11. Tool Discovery Scenario | v2.0 | 0/3 | Pending | — |
+| 12. Comparison Visualization Upgrades | v2.0 | 0/3 | Pending | — |
+| 13. Design System Lock | v2.0 | 0/2 | Pending | — |

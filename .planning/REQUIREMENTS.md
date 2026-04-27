@@ -132,47 +132,47 @@ Explicitly excluded from v2.0 to prevent scope creep. Reasoning per item.
 
 ## Traceability
 
-Empty initially. Populated during roadmap creation in next step.
+Populated by roadmap creation 2026-04-28. Phases 6-13 carry the v2.0 milestone.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TRC-01 | TBD | Pending |
-| TRC-02 | TBD | Pending |
-| TRC-03 | TBD | Pending |
-| TRC-04 | TBD | Pending |
-| RACE-01 | TBD | Pending |
-| RACE-02 | TBD | Pending |
-| RACE-03 | TBD | Pending |
-| RACE-04 | TBD | Pending |
-| RACE-05 | TBD | Pending |
-| RACE-06 | TBD | Pending |
-| RACE-07 | TBD | Pending |
-| UIRACE-01 | TBD | Pending |
-| UIRACE-02 | TBD | Pending |
-| UIRACE-03 | TBD | Pending |
-| UIRACE-04 | TBD | Pending |
-| UIRACE-05 | TBD | Pending |
-| UIRACE-06 | TBD | Pending |
-| UIRACE-07 | TBD | Pending |
-| HEAT-01 | TBD | Pending |
-| HEAT-02 | TBD | Pending |
-| HEAT-03 | TBD | Pending |
-| HEAT-04 | TBD | Pending |
-| OG-01 | TBD | Pending |
-| OG-02 | TBD | Pending |
-| OG-03 | TBD | Pending |
-| OG-04 | TBD | Pending |
-| DISC-01 | TBD | Pending |
-| DISC-02 | TBD | Pending |
-| VIZ-01 | TBD | Pending |
-| VIZ-02 | TBD | Pending |
-| DSGN-01 | TBD | Pending |
+| TRC-01 | Phase 6 | Pending |
+| TRC-02 | Phase 6 | Pending |
+| TRC-03 | Phase 6 | Pending |
+| TRC-04 | Phase 6 | Pending |
+| RACE-01 | Phase 7 | Pending |
+| RACE-02 | Phase 7 | Pending |
+| RACE-03 | Phase 7 | Pending |
+| RACE-04 | Phase 7 | Pending |
+| RACE-05 | Phase 7 | Pending |
+| RACE-06 | Phase 7 | Pending |
+| RACE-07 | Phase 7 | Pending |
+| UIRACE-01 | Phase 8 | Pending |
+| UIRACE-02 | Phase 8 | Pending |
+| UIRACE-03 | Phase 8 | Pending |
+| UIRACE-04 | Phase 8 | Pending |
+| UIRACE-05 | Phase 8 | Pending |
+| UIRACE-06 | Phase 8 | Pending |
+| UIRACE-07 | Phase 8 | Pending |
+| HEAT-01 | Phase 9 | Pending |
+| HEAT-02 | Phase 9 | Pending |
+| HEAT-03 | Phase 9 | Pending |
+| HEAT-04 | Phase 9 | Pending |
+| OG-01 | Phase 10 | Pending |
+| OG-02 | Phase 10 | Pending |
+| OG-03 | Phase 10 | Pending |
+| OG-04 | Phase 10 | Pending |
+| DISC-01 | Phase 11 | Pending |
+| DISC-02 | Phase 11 | Pending |
+| VIZ-01 | Phase 12 | Pending |
+| VIZ-02 | Phase 12 | Pending |
+| DSGN-01 | Phase 13 | Pending |
 
 **Coverage:**
 - v2.0 requirements: 31 total
-- Mapped to phases: 0 (filled by roadmapper)
-- Unmapped: 31 ⚠️ (resolved during roadmap step)
+- Mapped to phases: 31 ✓
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-28*
-*Last updated: 2026-04-28 after milestone v2.0 initialization*
+*Last updated: 2026-04-28 — roadmap created, traceability populated (Phases 6-13)*

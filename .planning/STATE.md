@@ -4,11 +4,11 @@ milestone: v2.0
 milestone_name: "Race Demo + Discovery + Visualization"
 status: planning
 last_updated: "2026-04-28T00:00:00Z"
-last_activity: "2026-04-28 -- Milestone v2.0 started"
+last_activity: "2026-04-28 -- Roadmap created (Phases 6-13)"
 progress:
-  total_phases: 0
+  total_phases: 8
   completed_phases: 0
-  total_plans: 0
+  total_plans: 25
   completed_plans: 0
   percent: 0
 ---
@@ -20,14 +20,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** A side-by-side, runnable comparison that makes the differences between MCP and A2A visible — not described, not diagrammed, but live and traceable.
-**Current focus:** Defining v2.0 requirements
+**Current focus:** Awaiting Phase 6 kickoff (TraceRecorder Schema Gate & Race Foundation)
 
 ## Current Position
 
-Phase: Not started (defining requirements)
+Phase: Not started — Phase 6 next (TraceRecorder Schema Gate & Race Foundation)
 Plan: —
-Status: Defining requirements
-Last activity: 2026-04-28 — Milestone v2.0 started
+Status: Roadmap locked; ready for `/gsd-discuss-phase 6`
+Last activity: 2026-04-28 — Roadmap created, 31/31 v2.0 requirements mapped across Phases 6-13
 
 ## Accumulated Context
 
@@ -37,10 +37,16 @@ Decisions logged in PROJECT.md Key Decisions table. v1.0 per-plan decision histo
 
 Carried into v2.0:
 - Race Demo design: 2-lane Pure-MCP vs Pure-A2A + Hybrid restored to v1 scope (CEO+eng+design-cleared, iter 3, 8.5/10)
-- Recovery state machine K=3 confirmed; multi-task calibration (TODO 8) promoted into v2 scope
-- OG image generation via Playwright headless (TODO 3) promoted into v2 scope
-- DESIGN.md lock via /design-consultation (TODO 5) promoted into v2 scope
+- Recovery state machine K=3 confirmed; multi-task calibration (TODO 8) promoted into v2 scope (lands in Phase 9)
+- OG image generation via Playwright headless (TODO 3) promoted into v2 scope (Phase 10)
+- DESIGN.md lock via /design-consultation (TODO 5) promoted into v2 scope (Phase 13, late by design — benefits from race-demo rules already shipped)
 - SDK migrations (SDK-01/02) deferred to v2.1+ — too risky alongside Race Demo
+
+Roadmap-shaping decisions (2026-04-28):
+- Phase 6 opens v2.0 because the design doc's PRE-DESIGN GATE (TraceRecorder fault-injection schema audit) blocks all downstream race work. Front-loaded by design.
+- Hybrid runner (highest-risk seam per design doc) lives in Phase 7 alongside the recovery state machine — risk consolidated, not spread across phases.
+- DISC (Phase 11) and VIZ (Phase 12) sit after race demo lands; both depend only on the Phase 6 trace schema, so could parallelize with later race phases if scheduling allows.
+- DSGN-01 (Phase 13) deliberately last — `/design-consultation` is interactive and benefits from having race-demo design rules (failureTagColor, methodology-as-flat, secondary-as-replay-pill) already concrete in code.
 
 ### Pending Todos
 
@@ -55,7 +61,7 @@ Carried into v2.0:
 
 ### Blockers/Concerns
 
-None — defining requirements.
+None — roadmap locked, ready for phase planning.
 
 ## Deferred Items (carried from v1.0)
 
@@ -72,5 +78,5 @@ Items acknowledged at v1.0 close that remain deferred into v2.0+:
 ## Session Continuity
 
 Last session: 2026-04-28
-Stopped at: Milestone v2.0 started; gathering requirements
-Next action: Confirm requirements + roadmap, then `/gsd-discuss-phase 6`
+Stopped at: Roadmap created — 8 phases (6-13), 31/31 requirements mapped, ~25 plans estimated
+Next action: `/gsd-discuss-phase 6` to begin TraceRecorder Schema Gate & Race Foundation
