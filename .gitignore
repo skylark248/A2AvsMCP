@@ -18,6 +18,9 @@ frontend/*.tsbuildinfo
 # Temp files
 .tmp/
 
+# Claude Code local config
+.claude/
+
 # OS
 .DS_Store
 Thumbs.db
