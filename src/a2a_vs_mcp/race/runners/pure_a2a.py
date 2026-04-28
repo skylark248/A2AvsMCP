@@ -79,12 +79,19 @@ class FixtureBackedAgentHandler:
 
     Threat T-07-09-04 mitigation: handler delegates ONLY to race.mocks.<module>;
     no direct fixture access in this class. Plan 11 chokepoint test enforces.
+
+    NOTE on fault armament: the broker dispatches handlers via stdlib
+    ThreadPoolExecutor, which does NOT propagate ContextVars from the runner's
+    thread. The handler therefore re-arms ACTIVE_FAULTS inside ``handle_task``
+    using ``armed_faults`` captured at registration time, ensuring the chokepoint
+    sees the active fault per D-25.
     """
 
     capability: str
     recorder: TraceRecorder
     run_id: str
     task_id: str
+    armed_faults: dict[str, ActiveFault]
 
     def handle_task(self, message: A2AMessage) -> AgentResult:
         key = (self.task_id, self.capability)
@@ -97,6 +104,9 @@ class FixtureBackedAgentHandler:
         fn_name, mock_mod, target = _HANDLER_TABLE[key]
         fn = getattr(mock_mod, fn_name)
         payload = dict(message.payload or {})
+        # Re-arm in this worker thread (stdlib ThreadPoolExecutor doesn't propagate
+        # ContextVars). Reset on exit to keep this thread clean for any reuse.
+        thread_token = set_active_faults(self.armed_faults)
         # agent_msg event so Detector retry-detection (path 2) and ack-detection
         # (path 3) can see the per-capability turn boundary.
         self.recorder.record(
@@ -110,7 +120,10 @@ class FixtureBackedAgentHandler:
             lane="pure_a2a",
         )
         try:
-            data = fn(**payload, recorder=self.recorder, run_id=self.run_id)
+            try:
+                data = fn(**payload, recorder=self.recorder, run_id=self.run_id)
+            finally:
+                ACTIVE_FAULTS.reset(thread_token)
             return AgentResult(
                 agent_id=f"race_{self.task_id}_agent",
                 summary=f"{self.capability} ok",
@@ -278,6 +291,7 @@ async def run_pure_a2a(
                     recorder=recorder,
                     run_id=run_id,
                     task_id=task_spec.task_id,
+                    armed_faults=armed,
                 ),
             )
         # Drive each capability via broker.send_task (D-24 corrected).

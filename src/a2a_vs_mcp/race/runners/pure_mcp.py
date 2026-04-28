@@ -216,18 +216,30 @@ async def run_pure_mcp(
                     status="ok",
                     lane=lane,
                 )
-            except InjectedFaultError as exc:
-                # Runner records the error event so Detector path 1 (tool_error) fires.
-                # Never retry InjectedFaultError at the runner layer (D-38 — harness only,
-                # and harness never retries injected faults).
+            except Exception as exc:
+                # FastMCP wraps the underlying InjectedFaultError as a ToolError when
+                # the call_tool path raises (mcp/server/fastmcp/tools/base.py:117).
+                # We treat any tool-call exception while a fault is armed for this
+                # target as the injected fault (the IRON RULE in failure.py guarantees
+                # the fault_injected event was already recorded before the raise).
+                # Never retry InjectedFaultError at the runner layer — that's the
+                # harness's job (Plan 10), and only for transient infra errors.
+                is_injected = (
+                    isinstance(exc, InjectedFaultError)
+                    or "injected" in str(exc).lower()
+                    or armed.get(target) is not None
+                )
                 recorder.record(
                     "tool_call",
                     tool_name=target,
                     status="error",
-                    error_kind="injected_fault",
+                    error_kind="injected_fault" if is_injected else "transport_error",
                     error=str(exc),
                     lane=lane,
                 )
+                if not is_injected:
+                    # Real infra error — bubble up so harness retry classifier can act.
+                    raise
             events_before = _detect_and_record(events_before, recorder, detectors, lane)
         # Score via the per-task scorer. Judge=None — Haiku integration deferred to harness.
         scorer = import_module(f"a2a_vs_mcp.race.tasks.{task_spec.task_id}").score
