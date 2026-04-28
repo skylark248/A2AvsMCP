@@ -6,7 +6,7 @@ import unittest
 from pydantic import ValidationError
 
 from a2a_vs_mcp.trace import TraceRecorder
-from a2a_vs_mcp.race.failure import FaultKind, inject_fault, validate_failure_script
+from a2a_vs_mcp.race.failure import FaultKind, InjectedFaultError, inject_fault, validate_failure_script
 from a2a_vs_mcp.race.schemas import FaultInjectedEvent, FaultObservedEvent
 
 
@@ -32,7 +32,7 @@ class IronRuleAtomicityTests(unittest.TestCase):
 
     def test_record_runs_before_raise(self) -> None:
         r = _make_recorder()
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(InjectedFaultError):
             inject_fault(
                 r, fault_id="f2", kind=FaultKind.RATE_LIMIT_429,
                 target="github.repos", original_response={"ok": 1},
@@ -53,7 +53,7 @@ class IronRuleAtomicityTests(unittest.TestCase):
             r = _make_recorder()
             try:
                 inject_fault(r, fault_id="x", kind=kind, target="t", original_response={})
-            except RuntimeError:
+            except InjectedFaultError:
                 # rate_limit_429 + partial_commit_5xx raise; that's fine.
                 pass
             self.assertEqual(r.events[-1]["fault_kind"], value, f"kind {kind!r}")
