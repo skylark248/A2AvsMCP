@@ -9,10 +9,12 @@ description = "Comparative learning and demo platform for MCP and A2A support wo
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+  "anthropic>=0.40",
   "fastapi>=0.135.3",
   "jinja2>=3.1.6",
   "mcp[cli]>=1.27,<2",
   "openai>=2.30.0",
+  "pyyaml>=6.0",
   "uvicorn>=0.30.0"
 ]
 
