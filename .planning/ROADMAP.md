@@ -42,7 +42,16 @@ Full details: [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md)
   2. Every trace file written by TraceRecorder carries `trace_schema_version`, and a v1.0 fixture loaded through `race/replay.py` is recognized by the stub no-op migrator without error.
   3. When FailureConfig fires, both `fault_injected` and `fault_observed` events appear in the trace with `fault_id`, `fault_kind`, `target`, `t_inject_ms`, `t_observed_ms`, `evidence`, and `wasted_tokens_before_detection`.
   4. A websocket client connecting to `/api/race/ws` receives `tick`, `tool_call`, `agent_msg`, `fault_injected`, `fault_observed`, `done`, `error`, and `race_done` events, each tagged with a per-lane `turn_index`.
-**Plans**: TBD
+**Plans**: 8 plans
+Plans:
+- [ ] 06-01-PLAN.md — race/ package skeleton + 8 WsEvent dataclasses
+- [ ] 06-02-PLAN.md — race/turn.py TURN_DEFINING_EVENTS dispatch table
+- [ ] 06-03-PLAN.md — TraceRecorder upgrade (schema_version, lane, run_id, turn_index, ndjson hook)
+- [ ] 06-04-PLAN.md — race/failure.py FaultKind + inject_fault IRON RULE + Pydantic validator
+- [ ] 06-05-PLAN.md — race/runs.py RunWriter + threading.Lock single-writer arbiter
+- [ ] 06-06-PLAN.md — race/replay.py stub migrator + path-traversal guard + (run_id, lane) query
+- [ ] 06-07-PLAN.md — race/ws.py ConnectionManager + /api/race/ws full lifecycle route
+- [ ] 06-08-PLAN.md — tests/race/ test suite (8 files; field-presence, ndjson, IRON RULE, ws lifecycle)
 
 ### Phase 7: Race Backend — Lanes, Harness, Recovery State Machine
 **Goal**: Stand up the three runner lanes, the harness that drives parallel runs, the locked recovery state machine, and the three v1 tasks with their mock APIs.
@@ -132,7 +141,7 @@ Full details: [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md)
 | 3. New Scenarios | v1.0 | 4/4 | Complete | 2026-04-23 |
 | 4. Comparison UI | v1.0 | 4/4 | Complete | 2026-04-26 |
 | 5. Presentation Polish | v1.0 | 3/3 | Complete | 2026-04-27 |
-| 6. TraceRecorder Schema Gate & Race Foundation | v2.0 | 0/3 | Pending | — |
+| 6. TraceRecorder Schema Gate & Race Foundation | v2.0 | 0/8 | Pending | — |
 | 7. Race Backend — Lanes, Harness, Recovery | v2.0 | 0/4 | Pending | — |
 | 8. Race Page UI & Visual Contract | v2.0 | 0/4 | Pending | — |
 | 9. Heatmap, Replay & K=3 Calibration | v2.0 | 0/3 | Pending | — |
