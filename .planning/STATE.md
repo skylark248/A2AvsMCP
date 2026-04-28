@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: "Race Demo + Discovery + Visualization"
 status: in_progress
-last_updated: "2026-04-29T02:47:00+05:30"
-last_activity: "2026-04-29 -- Phase 7 Plan 08 (Wave 3) shipped: 3 v1 task packages (summarize_repo + negotiate_meeting + book_travel) with task_config.yaml + TARGETS + BINDS + per-task score(); Pydantic loader cross-validates targets/binds at first import (D-28); D-30 hardness coverage matrix verified (each of 4 types in ≥2 tasks); 37 race tests + 109 v1 tests still green (146 total)"
+last_updated: "2026-04-29T03:01:00+05:30"
+last_activity: "2026-04-29 -- Phase 7 Plan 09 (Wave 4) shipped: 3 race lane runners (pure_mcp + pure_a2a + hybrid) each consuming task_config.yaml and returning a RaceResult of identical shape; Detector(K=3) instantiated inline per fault_injected event in all 3 runners (D-32 + D-33 replay-symmetric); fault_observed events emitted with compute_wasted_tokens (D-40); D-21 IRON RULE enforced via grep gate (no LLM call in hybrid v1); D-24 send_task method (NOT send_message); 4 atomic commits including 1 follow-up Rule-1 fix for FastMCP ToolError unwrap + A2A worker-thread ContextVar re-arm; 146 pre-existing tests still green"
 progress:
   total_phases: 8
   completed_phases: 1
   total_plans: 41
-  completed_plans: 16
-  percent: 39
+  completed_plans: 17
+  percent: 41
 ---
 
 # Project State
@@ -24,10 +24,10 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 
 ## Current Position
 
-Phase: 7 — Race Backend — Lanes, Harness, Recovery State Machine — IN PROGRESS (8/11 plans)
-Next: Wave 4 onward — Plans 09 (pure_mcp/hybrid runners), 10 (harness), 11 (chokepoint tests + integration)
-Status: Waves 0-2 substrate complete + Wave 3 fully shipped (race MCP servers + task configs). New (07-08): 3 v1 task packages each with task_config.yaml + TARGETS/BINDS callable registries + per-task score() (Haiku 3/3 for summarize_repo, structural-only for negotiate_meeting per D-43, composite for book_travel). race/tasks/loader.py defines TaskConfig pydantic model + load_task_config() cross-validator; race/tasks/__init__.py module-load dict-comp triggers full-tree validation at first import (D-28). D-30 hardness coverage holds: each of 4 types appears in ≥2 of 3 tasks.
-Last activity: 2026-04-29 02:47 — Plan 07-08 shipped 5 atomic commits (1b62f26, da71d8a, d01c36d, dbe09b4, c583463); 37 race + 109 v1 tests green (146 total)
+Phase: 7 — Race Backend — Lanes, Harness, Recovery State Machine — IN PROGRESS (9/11 plans)
+Next: Wave 5/6 — Plan 10 (harness Semaphore(8) parallel scheduler + Haiku judge integration), Plan 11 (chokepoint tests + integration)
+Status: Waves 0-3 complete + Wave 4 fully shipped (3 race lane runners). New (07-09): race/runners/{__init__,pure_mcp,pure_a2a,hybrid}.py — module-level async coroutines with locked RESEARCH §4 signature. Detector(K=3) wiring inline per fault_injected event in all 3 runners (replay-symmetric with classifier.py by construction). pure_mcp uses real MCPClient(transport='in_process'); pure_a2a uses real A2ABroker.send_task (D-24 confirmed at broker.py:61, NOT send_message). hybrid is pre-scripted plan executor (D-21 IRON RULE — no LLM call) with full D-29 on_fault enum dispatch (retry_once/delegate/abort/continue). FixtureBackedAgentHandler routes A2A handlers through race.mocks chokepoint (T-07-09-04 mitigation). Two Rule-1 deviations auto-fixed: (1) FastMCP wraps InjectedFaultError as ToolError — runner now catches Exception when fault armed for target; (2) A2ABroker uses stdlib ThreadPoolExecutor which doesn't propagate ContextVars — handler captures armed_faults at registration and re-arms in worker thread.
+Last activity: 2026-04-29 03:01 — Plan 07-09 shipped 4 atomic commits (734455c, 3644805, f09a135, 7cc4be2); 146 pre-existing tests still green; all 9 (lane × task) clean-runs return well-formed RaceResults; all 3 runners produce fault_injected + fault_observed pairs when faults armed
 
 ## Accumulated Context
 
@@ -92,6 +92,6 @@ Items acknowledged at v1.0 close that remain deferred into v2.0+:
 ## Session Continuity
 
 Last session: 2026-04-29
-Stopped at: Phase 7 Plan 08 complete — Wave 3 fully shipped (task configs + per-task TARGETS/BINDS registries + Pydantic loader + module-load validation hook)
-Resume file: .planning/phases/07-race-backend-lanes-harness-recovery/07-08-SUMMARY.md
-Next action: Execute Wave 4 — Plan 07-09 (pure_mcp/hybrid runners) wiring TASK_CONFIGS into runners
+Stopped at: Phase 7 Plan 09 complete — Wave 4 fully shipped (3 race lane runners with end-to-end Detector wiring)
+Resume file: .planning/phases/07-race-backend-lanes-harness-recovery/07-09-SUMMARY.md
+Next action: Execute Wave 5/6 — Plan 07-10 (harness Semaphore(8) parallel scheduler + Haiku judge integration), Plan 07-11 (chokepoint + integration tests)
