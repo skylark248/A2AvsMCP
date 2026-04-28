@@ -1,0 +1,38 @@
+task_id: book_travel
+hardness_profile:
+  - long_chain
+  - rate_pressure
+  - multi_source
+failure_script:
+  - kind: rate_limit_429
+    target: travel_api.search_hotels
+    after_calls: 1
+    duration_calls: 2
+  - kind: partial_commit_5xx
+    target: travel_api.book_itinerary
+    after_calls: 0
+    duration_calls: 1
+hybrid_plan:
+  steps:
+    - kind: tool
+      tool: travel_api.search_flights
+      goal: "search SFO->JFK outbound"
+      on_fault: retry_once
+    - kind: tool
+      tool: travel_api.search_flights
+      goal: "search JFK->SFO return"
+      on_fault: retry_once
+    - kind: tool
+      tool: travel_api.search_hotels
+      goal: "search NYC hotels"
+      on_fault: retry_once
+    - kind: delegate
+      agent: trip_planner
+      goal: "compute lowest-cost combo within budget"
+      bind: lowest_cost_combo
+      on_fault: delegate
+    - kind: tool
+      tool: travel_api.book_itinerary
+      goal: "confirm booking"
+      bind: lowest_cost_combo
+      on_fault: abort
