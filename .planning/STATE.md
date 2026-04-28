@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: "Race Demo + Discovery + Visualization"
 status: in_progress
-last_updated: "2026-04-28T22:30:00+05:30"
-last_activity: "2026-04-28 -- Phase 7 Wave 1 merged: Plans 02 (race/types.py) + 03 (race/mocks/ + fixtures) shipped via parallel worktrees; 37/37 race tests green post-merge; merge commits 32fd3ab, 64101f5"
+last_updated: "2026-04-29T02:35:00+05:30"
+last_activity: "2026-04-29 -- Phase 7 Wave 2 recovered: Plans 04 (classifier) + 05 (metrics) + 06 (Haiku judge) shipped after Anthropic free-tier quota interrupted all 3 executors mid-run; orchestrator committed orphaned files + merged judge worktree; 37/37 race tests green post-recovery"
 progress:
   total_phases: 8
   completed_phases: 1
   total_plans: 41
-  completed_plans: 11
-  percent: 27
+  completed_plans: 14
+  percent: 34
 ---
 
 # Project State
@@ -20,14 +20,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** A side-by-side, runnable comparison that makes the differences between MCP and A2A visible — not described, not diagrammed, but live and traceable.
-**Current focus:** Phase 7 (Race Backend — Lanes, Harness, Recovery State Machine) — in progress, Waves 0-1 complete (3/11 plans)
+**Current focus:** Phase 7 (Race Backend — Lanes, Harness, Recovery State Machine) — in progress, Waves 0-2 complete (6/11 plans)
 
 ## Current Position
 
-Phase: 7 — Race Backend — Lanes, Harness, Recovery State Machine — IN PROGRESS (3/11 plans)
-Next wave: Wave 2 — Plans 04 (classifier), 05 (metrics), 06 (Haiku judge) parallel
-Status: Waves 0-1 substrate complete. Plan 02 added race/types.py (HardnessType, HardnessProfile, TaskSpec, ScoreCard, RaceResult, ExecutionContext) — pure dataclass module, replay-symmetric, no I/O. Plan 03 added race/mocks/{github,calendar,travel}.py + data/race/fixtures/* — 8 public callables all chokepointed through inject_fault() (D-22..D-25 IRON RULE preserved). 37/37 race tests pass post-merge.
-Last activity: 2026-04-28 22:30 — Wave 1 merged: Plans 02+03 via parallel worktrees, merge commits 32fd3ab and 64101f5
+Phase: 7 — Race Backend — Lanes, Harness, Recovery State Machine — IN PROGRESS (6/11 plans)
+Next wave: Wave 3 — Plans 07 (race MCP servers), 08 (task configs+registries) parallel
+Status: Waves 0-2 substrate complete. Plan 04 shipped race/classifier.py (Detector(K=3) + failure_mode_classifier + 6-template headline lookup, D-31..D-37). Plan 05 shipped race/metrics.py (compute_wasted_tokens, median_retries/delegations/switches/turns_after_fault, aggregate_for_classifier). Plan 06 shipped race/judges/haiku.py (HaikuJudge, JudgeVerdict — stateless Anthropic Haiku 4.5 wrapper, D-42). All 37 race tests pass.
+Last activity: 2026-04-29 02:35 — Wave 2 recovered: all 3 executors hit Anthropic quota at "2:30am Asia/Calcutta" mid-run; orchestrator committed orphaned classifier.py (commit 17e04a2), accepted in-flight metrics commit cef8365, merged judge worktree (commit a82ed2e); authored 07-04 + 07-06 SUMMARYs post-quota
 
 ## Accumulated Context
 
