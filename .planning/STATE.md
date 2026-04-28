@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: "Race Demo + Discovery + Visualization"
 status: in_progress
-last_updated: "2026-04-29T02:39:00+05:30"
-last_activity: "2026-04-29 -- Phase 7 Plan 07 (Wave 3) shipped: race_github + race_calendar + race_travel FastMCP servers wrapping Plan 03 mocks, plus race_context contextvars helper for recorder/run_id propagation; SERVER_BUILDERS extended with 3 race entries + _build_server() race branch; 37 race tests + 109 v1 tests green; end-to-end MCPClient in_process round-trip confirmed"
+last_updated: "2026-04-29T02:47:00+05:30"
+last_activity: "2026-04-29 -- Phase 7 Plan 08 (Wave 3) shipped: 3 v1 task packages (summarize_repo + negotiate_meeting + book_travel) with task_config.yaml + TARGETS + BINDS + per-task score(); Pydantic loader cross-validates targets/binds at first import (D-28); D-30 hardness coverage matrix verified (each of 4 types in ≥2 tasks); 37 race tests + 109 v1 tests still green (146 total)"
 progress:
   total_phases: 8
   completed_phases: 1
   total_plans: 41
-  completed_plans: 15
-  percent: 37
+  completed_plans: 16
+  percent: 39
 ---
 
 # Project State
@@ -20,14 +20,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** A side-by-side, runnable comparison that makes the differences between MCP and A2A visible — not described, not diagrammed, but live and traceable.
-**Current focus:** Phase 7 (Race Backend — Lanes, Harness, Recovery State Machine) — in progress, Wave 3 partial (7/11 plans)
+**Current focus:** Phase 7 (Race Backend — Lanes, Harness, Recovery State Machine) — in progress, Wave 3 complete (8/11 plans)
 
 ## Current Position
 
-Phase: 7 — Race Backend — Lanes, Harness, Recovery State Machine — IN PROGRESS (7/11 plans)
-Next: Wave 3 remaining — Plan 08 (task configs + registries); then Wave 4 onward — Plans 09 (pure_mcp/hybrid runners), 10 (harness), 11 (chokepoint tests + integration)
-Status: Waves 0-2 substrate complete + Plan 07 (race MCP servers) shipped in Wave 3. New: 3 FastMCP servers (race_github 3 tools, race_calendar 2 tools, race_travel 3 tools) wrap Plan 03 mocks via D-25 chokepoint; mcp_servers/race_context.py contextvars helper propagates recorder + run_id; SERVER_BUILDERS extended with 3 race entries; MCPClient _build_server() dispatch extended with race branch (Rule 3 fix). End-to-end smoke confirmed.
-Last activity: 2026-04-29 02:39 — Plan 07-07 shipped 5 atomic commits (5d4716d, 61b03c0, ed2ed7c, cabc276, 336b5aa); 37 race + 109 v1 tests green
+Phase: 7 — Race Backend — Lanes, Harness, Recovery State Machine — IN PROGRESS (8/11 plans)
+Next: Wave 4 onward — Plans 09 (pure_mcp/hybrid runners), 10 (harness), 11 (chokepoint tests + integration)
+Status: Waves 0-2 substrate complete + Wave 3 fully shipped (race MCP servers + task configs). New (07-08): 3 v1 task packages each with task_config.yaml + TARGETS/BINDS callable registries + per-task score() (Haiku 3/3 for summarize_repo, structural-only for negotiate_meeting per D-43, composite for book_travel). race/tasks/loader.py defines TaskConfig pydantic model + load_task_config() cross-validator; race/tasks/__init__.py module-load dict-comp triggers full-tree validation at first import (D-28). D-30 hardness coverage holds: each of 4 types appears in ≥2 of 3 tasks.
+Last activity: 2026-04-29 02:47 — Plan 07-08 shipped 5 atomic commits (1b62f26, da71d8a, d01c36d, dbe09b4, c583463); 37 race + 109 v1 tests green (146 total)
 
 ## Accumulated Context
 
@@ -92,6 +92,6 @@ Items acknowledged at v1.0 close that remain deferred into v2.0+:
 ## Session Continuity
 
 Last session: 2026-04-29
-Stopped at: Phase 7 Plan 07 complete — Wave 3 partial (race MCP server adapters shipped: race_github + race_calendar + race_travel + race_context contextvars + SERVER_BUILDERS wiring)
-Resume file: .planning/phases/07-race-backend-lanes-harness-recovery/07-07-SUMMARY.md
-Next action: Execute Plan 07-08 (Wave 3 sibling — task configs + per-task TARGETS/BINDS registries) and/or proceed to Wave 4 (runners)
+Stopped at: Phase 7 Plan 08 complete — Wave 3 fully shipped (task configs + per-task TARGETS/BINDS registries + Pydantic loader + module-load validation hook)
+Resume file: .planning/phases/07-race-backend-lanes-harness-recovery/07-08-SUMMARY.md
+Next action: Execute Wave 4 — Plan 07-09 (pure_mcp/hybrid runners) wiring TASK_CONFIGS into runners
