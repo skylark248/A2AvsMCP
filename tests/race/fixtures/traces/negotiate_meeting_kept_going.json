@@ -1,0 +1,16 @@
+{
+  "name": "negotiate_meeting_kept_going",
+  "lane": "pure_a2a",
+  "task_id": "negotiate_meeting",
+  "expected_terminal_tag": "kept_going_to_failure",
+  "score_pass": false,
+  "events": [
+    {"event_type": "agent_msg", "message_type": "task_submit", "content": "fetching free_busy", "turn_index": 1},
+    {"event_type": "fault_injected", "fault_id": "f1", "fault_kind": "schema_drift", "target": "calendar_api.get_free_busy", "turn_index": 2, "t_inject_ms": 4000},
+    {"event_type": "agent_msg", "message_type": "task_submit", "content": "Continuing to the next owner.", "turn_index": 3},
+    {"event_type": "agent_msg", "message_type": "task_submit", "content": "Three calendars fetched successfully.", "turn_index": 4},
+    {"event_type": "agent_msg", "message_type": "task_submit", "content": "Proposing a time slot.", "turn_index": 5},
+    {"event_type": "agent_msg", "message_type": "task_submit", "content": "Confirming proposal.", "turn_index": 6},
+    {"event_type": "done", "score_pass": false, "lane": "pure_a2a"}
+  ]
+}

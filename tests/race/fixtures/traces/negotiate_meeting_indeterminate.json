@@ -1,0 +1,13 @@
+{
+  "name": "negotiate_meeting_indeterminate",
+  "lane": "pure_a2a",
+  "task_id": "negotiate_meeting",
+  "expected_terminal_tag": "indeterminate",
+  "score_pass": null,
+  "events": [
+    {"event_type": "agent_msg", "message_type": "task_submit", "content": "fetching free_busy for alice", "turn_index": 1},
+    {"event_type": "fault_injected", "fault_id": "f1", "fault_kind": "eventual_consistency_read", "target": "calendar_api.propose_time", "turn_index": 2, "t_inject_ms": 5000},
+    {"event_type": "agent_msg", "message_type": "task_submit", "content": "Proposing time across owners.", "turn_index": 3},
+    {"event_type": "race_done"}
+  ]
+}

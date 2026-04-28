@@ -1,0 +1,17 @@
+{
+  "name": "book_travel_recovered",
+  "lane": "hybrid",
+  "task_id": "book_travel",
+  "expected_terminal_tag": "recovered",
+  "score_pass": true,
+  "events": [
+    {"event_type": "tool_call", "tool_name": "travel_api.search_flights", "status": "ok", "turn_index": 1},
+    {"event_type": "fault_injected", "fault_id": "f1", "fault_kind": "rate_limit_429", "target": "travel_api.search_hotels", "turn_index": 2, "t_inject_ms": 2500},
+    {"event_type": "tool_call", "tool_name": "travel_api.search_hotels", "status": "error", "error_kind": "injected_fault", "turn_index": 2, "t_call_start_ms": 2550},
+    {"event_type": "agent_msg", "content": "search_hotels returned a 429. Backing off and retrying.", "turn_index": 3, "t_call_start_ms": 2600},
+    {"event_type": "llm_call", "lane": "hybrid", "tokens_in": 120, "tokens_out": 70, "t_call_start_ms": 2580},
+    {"event_type": "tool_call", "tool_name": "travel_api.search_hotels", "status": "ok", "turn_index": 4, "t_call_start_ms": 2700},
+    {"event_type": "tool_call", "tool_name": "travel_api.book_itinerary", "status": "ok", "turn_index": 5},
+    {"event_type": "done", "score_pass": true, "lane": "hybrid"}
+  ]
+}

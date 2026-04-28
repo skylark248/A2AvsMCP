@@ -1,0 +1,15 @@
+{
+  "name": "book_travel_gave_up",
+  "lane": "hybrid",
+  "task_id": "book_travel",
+  "expected_terminal_tag": "gave_up",
+  "score_pass": false,
+  "events": [
+    {"event_type": "tool_call", "tool_name": "travel_api.search_flights", "status": "ok", "turn_index": 1},
+    {"event_type": "fault_injected", "fault_id": "f1", "fault_kind": "partial_commit_5xx", "target": "travel_api.book_itinerary", "turn_index": 2, "t_inject_ms": 3500},
+    {"event_type": "tool_call", "tool_name": "travel_api.book_itinerary", "status": "error", "error_kind": "injected_fault", "turn_index": 2, "t_call_start_ms": 3550},
+    {"event_type": "agent_msg", "content": "Booking endpoint returned a 503 partial commit. Aborting — cannot retry this fault.", "turn_index": 3, "t_call_start_ms": 3600},
+    {"event_type": "llm_call", "lane": "hybrid", "tokens_in": 180, "tokens_out": 90, "t_call_start_ms": 3580},
+    {"event_type": "done", "score_pass": false, "lane": "hybrid"}
+  ]
+}

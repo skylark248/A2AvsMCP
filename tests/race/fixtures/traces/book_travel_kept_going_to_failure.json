@@ -1,0 +1,16 @@
+{
+  "name": "book_travel_kept_going_to_failure",
+  "lane": "hybrid",
+  "task_id": "book_travel",
+  "expected_terminal_tag": "kept_going_to_failure",
+  "score_pass": false,
+  "events": [
+    {"event_type": "tool_call", "tool_name": "travel_api.search_flights", "status": "ok", "turn_index": 1},
+    {"event_type": "fault_injected", "fault_id": "f1", "fault_kind": "rate_limit_429", "target": "travel_api.search_hotels", "turn_index": 2, "t_inject_ms": 4000},
+    {"event_type": "agent_msg", "content": "Searching for the next hotel candidate.", "turn_index": 3},
+    {"event_type": "agent_msg", "content": "Three candidate hotels found in NYC.", "turn_index": 4},
+    {"event_type": "agent_msg", "content": "Selecting cheapest option.", "turn_index": 5},
+    {"event_type": "tool_call", "tool_name": "travel_api.book_itinerary", "status": "ok", "turn_index": 6},
+    {"event_type": "done", "score_pass": false, "lane": "hybrid"}
+  ]
+}

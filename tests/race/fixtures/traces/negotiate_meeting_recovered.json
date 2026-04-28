@@ -1,0 +1,16 @@
+{
+  "name": "negotiate_meeting_recovered",
+  "lane": "pure_a2a",
+  "task_id": "negotiate_meeting",
+  "expected_terminal_tag": "recovered",
+  "score_pass": true,
+  "events": [
+    {"event_type": "agent_msg", "message_type": "task_submit", "content": "fetching free_busy for alice", "turn_index": 1},
+    {"event_type": "fault_injected", "fault_id": "f1", "fault_kind": "schema_drift", "target": "calendar_api.get_free_busy", "turn_index": 2, "t_inject_ms": 1500},
+    {"event_type": "tool_call", "tool_name": "calendar_api.get_free_busy", "status": "error", "error_kind": "injected_fault", "turn_index": 2, "t_call_start_ms": 1550},
+    {"event_type": "agent_msg", "message_type": "task_submit", "content": "Schema mismatch detected on calendar — retrying with adjusted parsing.", "turn_index": 3, "t_call_start_ms": 1600},
+    {"event_type": "llm_call", "lane": "pure_a2a", "tokens_in": 150, "tokens_out": 60, "t_call_start_ms": 1580},
+    {"event_type": "tool_call", "tool_name": "calendar_api.get_free_busy", "status": "ok", "turn_index": 4, "t_call_start_ms": 1700},
+    {"event_type": "done", "score_pass": true, "lane": "pure_a2a"}
+  ]
+}
