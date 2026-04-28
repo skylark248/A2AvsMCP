@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: "Race Demo + Discovery + Visualization"
-status: phase_complete
-last_updated: "2026-04-28T12:31:00+05:30"
-last_activity: "2026-04-28 -- Phase 6 executed and verified: 8 plans complete, 146 tests pass, TRC-01..04 satisfied"
+status: discussing
+last_updated: "2026-04-28T13:05:00+05:30"
+last_activity: "2026-04-28 -- Phase 7 context gathered: 16 implementation decisions (D-19..D-43) locked across 4 gray areas"
 progress:
   total_phases: 8
   completed_phases: 1
@@ -20,20 +20,27 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** A side-by-side, runnable comparison that makes the differences between MCP and A2A visible — not described, not diagrammed, but live and traceable.
-**Current focus:** Phase 6 complete — Phase 7 (Race Backend — Lanes, Harness, Recovery State Machine) is next
+**Current focus:** Phase 7 (Race Backend — Lanes, Harness, Recovery State Machine) — context gathered, ready for planning
 
 ## Current Position
 
-Phase: 6 — TraceRecorder Schema Gate & Race Foundation — COMPLETE (2026-04-28)
-Next phase: 7 — Race Backend — Lanes, Harness, Recovery State Machine
-Status: 8/8 plans verified; 146 tests pass; TRC-01..04 marked complete in REQUIREMENTS.md
-Last activity: 2026-04-28 12:31 — Phase 6 verification PASSED (4/4 success criteria, 4/4 TRC reqs); ROADMAP / REQUIREMENTS updated
+Phase: 7 — Race Backend — Lanes, Harness, Recovery State Machine — DISCUSSING
+Next phase: 7 — proceed to `/gsd-plan-phase 7`
+Status: 07-CONTEXT.md written; 16 decisions D-19..D-43 locked; gray areas closed (runner architecture, mock surface, task_config + bind, fault_observed ownership)
+Last activity: 2026-04-28 13:05 — Phase 7 context captured
 
 ## Accumulated Context
 
 ### Decisions
 
 Decisions logged in PROJECT.md Key Decisions table. v1.0 per-plan decision history retained in `.planning/milestones/v1.0-phases/*/`.
+
+Phase 7 implementation decisions (D-19..D-43) locked in `07-CONTEXT.md`. Notable:
+- D-19: Fresh race runners; v1 agents NOT subclassed/touched.
+- D-22..D-25: Real MCP + A2A transport reused; mocks chokepointed in `race/mocks/`; `inject_fault()` is single mutation point.
+- D-26..D-30: task_config.yaml inside `src/.../race/tasks/<id>/`; per-task callable registries (TARGETS + BINDS); Pydantic startup validation.
+- D-31..D-34: Classifier owns `Detector(K=3)`; runners invoke inline; replay-symmetric by construction.
+- D-38, D-42: harness concurrency + Haiku judge integration deferred to research/planner.
 
 Carried into v2.0:
 - Race Demo design: 2-lane Pure-MCP vs Pure-A2A + Hybrid restored to v1 scope (CEO+eng+design-cleared, iter 3, 8.5/10)
@@ -68,7 +75,7 @@ Phase 6 implementation decisions (D-01..D-18) locked in `06-CONTEXT.md`. Notable
 
 ### Blockers/Concerns
 
-None — Phase 6 closed; Phase 7 ready to plan.
+None — Phase 7 context gathered; ready to plan.
 
 ## Deferred Items (carried from v1.0)
 
@@ -85,6 +92,6 @@ Items acknowledged at v1.0 close that remain deferred into v2.0+:
 ## Session Continuity
 
 Last session: 2026-04-28
-Stopped at: Phase 6 verified PASSED — ROADMAP / REQUIREMENTS updated
-Resume file: .planning/phases/06-tracerecorder-schema-gate-race-foundation/06-VERIFICATION.md
-Next action: `/gsd-discuss-phase 7` to gather context for Phase 7 (Race Backend — Lanes, Harness, Recovery State Machine)
+Stopped at: Phase 7 context gathered — 4 gray areas closed, 16 decisions locked
+Resume file: .planning/phases/07-race-backend-lanes-harness-recovery/07-CONTEXT.md
+Next action: `/gsd-plan-phase 7` to plan Phase 7 (Race Backend — Lanes, Harness, Recovery State Machine)
