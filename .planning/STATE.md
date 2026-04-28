@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: "Race Demo + Discovery + Visualization"
-status: planning
-last_updated: "2026-04-28T11:42:00+05:30"
-last_activity: "2026-04-28 -- Phase 6 planned: 8 plans across 4 waves (TRC-01..04 covered, D-01..D-18 referenced)"
+status: phase_complete
+last_updated: "2026-04-28T12:31:00+05:30"
+last_activity: "2026-04-28 -- Phase 6 executed and verified: 8 plans complete, 146 tests pass, TRC-01..04 satisfied"
 progress:
   total_phases: 8
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 30
-  completed_plans: 0
-  percent: 0
+  completed_plans: 8
+  percent: 12
 ---
 
 # Project State
@@ -20,14 +20,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** A side-by-side, runnable comparison that makes the differences between MCP and A2A visible — not described, not diagrammed, but live and traceable.
-**Current focus:** Phase 6 planned — ready to execute
+**Current focus:** Phase 6 complete — Phase 7 (Race Backend — Lanes, Harness, Recovery State Machine) is next
 
 ## Current Position
 
-Phase: 6 — TraceRecorder Schema Gate & Race Foundation
-Plan: 8 plans, 4 waves, ready to execute
-Status: RESEARCH + PATTERNS + 8 PLANs committed; plan-checker PASSED iter 2; coverage gates PASSED (TRC-01..04 covered; D-01..D-18 referenced)
-Last activity: 2026-04-28 — Phase 6 planned: 8 plans (06-01..06-08) across 4 waves; 0 BLOCKER / 7 WARNINGs resolved in revision
+Phase: 6 — TraceRecorder Schema Gate & Race Foundation — COMPLETE (2026-04-28)
+Next phase: 7 — Race Backend — Lanes, Harness, Recovery State Machine
+Status: 8/8 plans verified; 146 tests pass; TRC-01..04 marked complete in REQUIREMENTS.md
+Last activity: 2026-04-28 12:31 — Phase 6 verification PASSED (4/4 success criteria, 4/4 TRC reqs); ROADMAP / REQUIREMENTS updated
 
 ## Accumulated Context
 
@@ -48,6 +48,13 @@ Roadmap-shaping decisions (2026-04-28):
 - DISC (Phase 11) and VIZ (Phase 12) sit after race demo lands; both depend only on the Phase 6 trace schema, so could parallelize with later race phases if scheduling allows.
 - DSGN-01 (Phase 13) deliberately last — `/design-consultation` is interactive and benefits from having race-demo design rules (failureTagColor, methodology-as-flat, secondary-as-replay-pill) already concrete in code.
 
+Phase 6 implementation decisions (D-01..D-18) locked in `06-CONTEXT.md`. Notable:
+- D-03: TraceRecorder additive extension preserves v1 backwards-compat (all legacy tests stay green).
+- D-05: threading.Lock (not asyncio.Lock) for RunWriter single-writer arbiter.
+- D-08 + D-16: NEVER_COALESCE has exactly 7 members; only TickEvent eligible for coalescing.
+- D-11/D-13: IRON RULE atomicity — record fault_injected BEFORE mutation, even on raise paths.
+- D-14: `fault_observed` runtime emission deferred to Phase 7 (recovery state machine owns emission); Phase 6 ships schema + persistence path only.
+
 ### Pending Todos
 
 7 deferred items in `TODOS.md` (project root) post-v2-promotion:
@@ -61,7 +68,7 @@ Roadmap-shaping decisions (2026-04-28):
 
 ### Blockers/Concerns
 
-None — roadmap locked, ready for phase planning.
+None — Phase 6 closed; Phase 7 ready to plan.
 
 ## Deferred Items (carried from v1.0)
 
@@ -78,6 +85,6 @@ Items acknowledged at v1.0 close that remain deferred into v2.0+:
 ## Session Continuity
 
 Last session: 2026-04-28
-Stopped at: Phase 6 planned — 8 PLAN.md files across 4 waves; verification passed iter 2; coverage gates clean
-Resume file: .planning/phases/06-tracerecorder-schema-gate-race-foundation/06-01-PLAN.md (entry point)
-Next action: `/gsd-execute-phase 6` to run all 8 plans
+Stopped at: Phase 6 verified PASSED — ROADMAP / REQUIREMENTS updated
+Resume file: .planning/phases/06-tracerecorder-schema-gate-race-foundation/06-VERIFICATION.md
+Next action: `/gsd-discuss-phase 7` to gather context for Phase 7 (Race Backend — Lanes, Harness, Recovery State Machine)

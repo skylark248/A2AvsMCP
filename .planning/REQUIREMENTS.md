@@ -15,10 +15,10 @@ Each requirement maps to exactly one roadmap phase (see Traceability).
 
 Backend trace and websocket schema upgrades the rest of the race depends on.
 
-- [ ] **TRC-01**: TraceRecorder emits `t_call_start_ms`, `tokens_in`, `tokens_out` per LLM call; `t_call_ms`, `tool_name`, `status`, `error_kind` per tool call; `t_ms`, `sender`, `recipient`, `content` per inter-agent message; queryable post-run by `(run_id, lane)` in causal order
-- [ ] **TRC-02**: `trace_schema_version` field added to TraceRecorder; stub no-op migrator recognizes v1.0 traces in `race/replay.py`
-- [ ] **TRC-03**: FailureConfig emits `fault_injected` events to TraceRecorder with `fault_id`, `fault_kind`, `target`, `t_inject_ms`; emits `fault_observed` events with `evidence`, `wasted_tokens_before_detection`, `t_observed_ms`
-- [ ] **TRC-04**: Websocket event schema (`/api/race/ws`) supports `tick`, `tool_call`, `agent_msg`, `fault_injected`, `fault_observed`, `done`, `error`, `race_done`; every event carries `turn_index` per-lane
+- [x] **TRC-01**: TraceRecorder emits `t_call_start_ms`, `tokens_in`, `tokens_out` per LLM call; `t_call_ms`, `tool_name`, `status`, `error_kind` per tool call; `t_ms`, `sender`, `recipient`, `content` per inter-agent message; queryable post-run by `(run_id, lane)` in causal order
+- [x] **TRC-02**: `trace_schema_version` field added to TraceRecorder; stub no-op migrator recognizes v1.0 traces in `race/replay.py`
+- [x] **TRC-03**: FailureConfig emits `fault_injected` events to TraceRecorder with `fault_id`, `fault_kind`, `target`, `t_inject_ms`; emits `fault_observed` events with `evidence`, `wasted_tokens_before_detection`, `t_observed_ms` (schema + persistence path; runtime emission of fault_observed deferred to Phase 7 per D-14)
+- [x] **TRC-04**: Websocket event schema (`/api/race/ws`) supports `tick`, `tool_call`, `agent_msg`, `fault_injected`, `fault_observed`, `done`, `error`, `race_done`; every event carries `turn_index` per-lane
 
 ### Race Backend (RACE)
 
@@ -136,10 +136,10 @@ Populated by roadmap creation 2026-04-28. Phases 6-13 carry the v2.0 milestone.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TRC-01 | Phase 6 | Pending |
-| TRC-02 | Phase 6 | Pending |
-| TRC-03 | Phase 6 | Pending |
-| TRC-04 | Phase 6 | Pending |
+| TRC-01 | Phase 6 | Complete |
+| TRC-02 | Phase 6 | Complete |
+| TRC-03 | Phase 6 | Complete |
+| TRC-04 | Phase 6 | Complete |
 | RACE-01 | Phase 7 | Pending |
 | RACE-02 | Phase 7 | Pending |
 | RACE-03 | Phase 7 | Pending |

@@ -22,7 +22,7 @@ Full details: [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md)
 
 ### 🟢 v2.0 Race Demo + Discovery + Visualization (Active)
 
-- [ ] **Phase 6: TraceRecorder Schema Gate & Race Foundation** — Pre-design gate that lands the trace + websocket schema everything else depends on
+- [x] **Phase 6: TraceRecorder Schema Gate & Race Foundation** — Pre-design gate that lands the trace + websocket schema everything else depends on (8/8 plans, completed 2026-04-28)
 - [ ] **Phase 7: Race Backend — Lanes, Harness, Recovery State Machine** — Three runners, harness, recovery classifier, tasks, mock APIs
 - [ ] **Phase 8: Race Page UI & Visual Contract** — Three-lane scoreboard, banner, methodology, 12 page states, responsive + a11y
 - [ ] **Phase 9: Heatmap, Replay & K=3 Calibration** — Hardness-vs-failure heatmap, deterministic replay, multi-task K=3 sweep
@@ -44,14 +44,14 @@ Full details: [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md)
   4. A websocket client connecting to `/api/race/ws` receives `tick`, `tool_call`, `agent_msg`, `fault_injected`, `fault_observed`, `done`, `error`, and `race_done` events, each tagged with a per-lane `turn_index`.
 **Plans**: 8 plans
 Plans:
-- [ ] 06-01-PLAN.md — race/ package skeleton + 8 WsEvent dataclasses
-- [ ] 06-02-PLAN.md — race/turn.py TURN_DEFINING_EVENTS dispatch table
-- [ ] 06-03-PLAN.md — TraceRecorder upgrade (schema_version, lane, run_id, turn_index, ndjson hook)
-- [ ] 06-04-PLAN.md — race/failure.py FaultKind + inject_fault IRON RULE + Pydantic validator
-- [ ] 06-05-PLAN.md — race/runs.py RunWriter + threading.Lock single-writer arbiter
-- [ ] 06-06-PLAN.md — race/replay.py stub migrator + path-traversal guard + (run_id, lane) query
-- [ ] 06-07-PLAN.md — race/ws.py ConnectionManager + /api/race/ws full lifecycle route
-- [ ] 06-08-PLAN.md — tests/race/ test suite (8 files; field-presence, ndjson, IRON RULE, ws lifecycle)
+- [x] 06-01-PLAN.md — race/ package skeleton + 8 WsEvent dataclasses
+- [x] 06-02-PLAN.md — race/turn.py TURN_DEFINING_EVENTS dispatch table
+- [x] 06-03-PLAN.md — TraceRecorder upgrade (schema_version, lane, run_id, turn_index, ndjson hook)
+- [x] 06-04-PLAN.md — race/failure.py FaultKind + inject_fault IRON RULE + Pydantic validator
+- [x] 06-05-PLAN.md — race/runs.py RunWriter + threading.Lock single-writer arbiter
+- [x] 06-06-PLAN.md — race/replay.py stub migrator + path-traversal guard + (run_id, lane) query
+- [x] 06-07-PLAN.md — race/ws.py ConnectionManager + /api/race/ws full lifecycle route
+- [x] 06-08-PLAN.md — tests/race/ test suite (8 files; field-presence, ndjson, IRON RULE, ws lifecycle)
 
 ### Phase 7: Race Backend — Lanes, Harness, Recovery State Machine
 **Goal**: Stand up the three runner lanes, the harness that drives parallel runs, the locked recovery state machine, and the three v1 tasks with their mock APIs.
