@@ -1,0 +1,33 @@
+task_id: negotiate_meeting
+hardness_profile:
+  - schema_variance
+  - multi_source
+failure_script:
+  - kind: schema_drift
+    target: calendar_api.get_free_busy
+    after_calls: 1
+    duration_calls: 1
+    drift: "free_busy->slots"
+  - kind: eventual_consistency_read
+    target: calendar_api.propose_time
+    after_calls: 0
+    duration_calls: 1
+hybrid_plan:
+  steps:
+    - kind: tool
+      tool: calendar_api.get_free_busy
+      goal: "fetch alice@demo.org free/busy"
+      on_fault: retry_once
+    - kind: tool
+      tool: calendar_api.get_free_busy
+      goal: "fetch bob@demo.org free/busy"
+      on_fault: retry_once
+    - kind: tool
+      tool: calendar_api.get_free_busy
+      goal: "fetch carol@demo.org free/busy"
+      on_fault: retry_once
+    - kind: tool
+      tool: calendar_api.propose_time
+      goal: "compute mutual free 60-min window across 3 owners"
+      bind: combined_owners
+      on_fault: abort
