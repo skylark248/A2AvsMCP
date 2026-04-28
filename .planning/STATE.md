@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: "Race Demo + Discovery + Visualization"
 status: in_progress
-last_updated: "2026-04-29T03:01:00+05:30"
-last_activity: "2026-04-29 -- Phase 7 Plan 09 (Wave 4) shipped: 3 race lane runners (pure_mcp + pure_a2a + hybrid) each consuming task_config.yaml and returning a RaceResult of identical shape; Detector(K=3) instantiated inline per fault_injected event in all 3 runners (D-32 + D-33 replay-symmetric); fault_observed events emitted with compute_wasted_tokens (D-40); D-21 IRON RULE enforced via grep gate (no LLM call in hybrid v1); D-24 send_task method (NOT send_message); 4 atomic commits including 1 follow-up Rule-1 fix for FastMCP ToolError unwrap + A2A worker-thread ContextVar re-arm; 146 pre-existing tests still green"
+last_updated: "2026-04-29T03:10:00+05:30"
+last_activity: "2026-04-29 -- Phase 7 Plan 10 (Wave 5) shipped: race/harness.py — concurrency harness with asyncio.Semaphore(8) cap (env override RACE_HARNESS_CONCURRENCY), closed-tuple TRANSIENT_RETRY_TYPES (only 4 anthropic transient types; InjectedFaultError NEVER caught — IRON RULE enforced), 120s per-run asyncio.wait_for, race_done event emission per D-39 with t_end_ms + total_runs + lane_failed_reasons + 6-template per-(lane,task) headlines from failure_mode_classifier (RACE-06 closed); CLI dry-run path runs end-to-end against mock chokepoint, no Anthropic key required; 4 atomic commits (ad5cd77, e9878ef, 9fba337, f914fd9); 146 pre-existing tests still green"
 progress:
   total_phases: 8
   completed_phases: 1
   total_plans: 41
-  completed_plans: 17
-  percent: 41
+  completed_plans: 18
+  percent: 44
 ---
 
 # Project State
@@ -20,14 +20,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** A side-by-side, runnable comparison that makes the differences between MCP and A2A visible — not described, not diagrammed, but live and traceable.
-**Current focus:** Phase 7 (Race Backend — Lanes, Harness, Recovery State Machine) — in progress, Wave 3 complete (8/11 plans)
+**Current focus:** Phase 7 (Race Backend — Lanes, Harness, Recovery State Machine) — in progress, Wave 5 complete (10/11 plans)
 
 ## Current Position
 
-Phase: 7 — Race Backend — Lanes, Harness, Recovery State Machine — IN PROGRESS (9/11 plans)
-Next: Wave 5/6 — Plan 10 (harness Semaphore(8) parallel scheduler + Haiku judge integration), Plan 11 (chokepoint tests + integration)
-Status: Waves 0-3 complete + Wave 4 fully shipped (3 race lane runners). New (07-09): race/runners/{__init__,pure_mcp,pure_a2a,hybrid}.py — module-level async coroutines with locked RESEARCH §4 signature. Detector(K=3) wiring inline per fault_injected event in all 3 runners (replay-symmetric with classifier.py by construction). pure_mcp uses real MCPClient(transport='in_process'); pure_a2a uses real A2ABroker.send_task (D-24 confirmed at broker.py:61, NOT send_message). hybrid is pre-scripted plan executor (D-21 IRON RULE — no LLM call) with full D-29 on_fault enum dispatch (retry_once/delegate/abort/continue). FixtureBackedAgentHandler routes A2A handlers through race.mocks chokepoint (T-07-09-04 mitigation). Two Rule-1 deviations auto-fixed: (1) FastMCP wraps InjectedFaultError as ToolError — runner now catches Exception when fault armed for target; (2) A2ABroker uses stdlib ThreadPoolExecutor which doesn't propagate ContextVars — handler captures armed_faults at registration and re-arms in worker thread.
-Last activity: 2026-04-29 03:01 — Plan 07-09 shipped 4 atomic commits (734455c, 3644805, f09a135, 7cc4be2); 146 pre-existing tests still green; all 9 (lane × task) clean-runs return well-formed RaceResults; all 3 runners produce fault_injected + fault_observed pairs when faults armed
+Phase: 7 — Race Backend — Lanes, Harness, Recovery State Machine — IN PROGRESS (10/11 plans)
+Next: Wave 6 — Plan 11 (chokepoint tests + integration: test_harness.py, test_iron_rule_grep.py, test_mocks_chokepoint.py, integration suite)
+Status: Waves 0-3 + Wave 4 (lane runners) + Wave 5 (harness) all shipped. New (07-10): race/harness.py — async run_race fan-out across (lane × task × run_idx) tuples under shared module-level asyncio.Semaphore(8) (env override RACE_HARNESS_CONCURRENCY); closed-tuple TRANSIENT_RETRY_TYPES = (anthropic.APIConnectionError, APITimeoutError, InternalServerError, RateLimitError) — InjectedFaultError DELIBERATELY absent so injected faults bubble through retry classifier untouched (IRON RULE); 3-attempt exponential backoff (2**attempt + uniform(0,1)); per-run asyncio.wait_for(120s) — TimeoutError -> ScoreCard(failure_mode='lane_failed', lane_failed_reason='timeout'); transient exhaustion -> lane_failed_reason=type(exc).__name__; race_done event emitted exactly once per run_race call carrying t_end_ms + total_runs + lane_failed_reasons + headlines (tuple keys flattened to 'lane|task_id' for JSON compat); per (lane, task) cell aggregate_for_classifier (Plan 05) -> failure_mode_classifier (Plan 04) -> 6-template headline sentence (RACE-06 closed); fault_observed forwarded by recorders unfiltered (D-41 + Phase 6 D-08 NEVER_COALESCE preserved end-to-end); CLI smoke-test entry point (--dry-run path runs full fan-out against mock chokepoint, no Anthropic key needed). Two Rule-1 deviations auto-fixed during execution: (1) `^MODEL = ` grep gate required removing PEP 526 type annotation from module constants; (2) inline-comment `InjectedFaultError` references survived `grep -v '^#'` filter — moved to full-line comments using "the injected-fault exception type" rephrasing.
+Last activity: 2026-04-29 03:10 — Plan 07-10 shipped 4 atomic commits (ad5cd77, e9878ef, 9fba337, f914fd9); 146 pre-existing tests still green; CLI `python -m a2a_vs_mcp.race.harness --task summarize_repo --lane pure_mcp --n 1 --dry-run` exits 0 and emits race_done + headline lines
 
 ## Accumulated Context
 
