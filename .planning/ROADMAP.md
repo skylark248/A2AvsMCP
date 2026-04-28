@@ -63,7 +63,7 @@ Plans:
   3. Every fault recorded in a run is tagged by the recovery classifier with one of `recovered | gave_up | kept_going_without_noticing | kept_going_to_failure | indeterminate`, using the K=3 turn window and the locked `agent_msg_acknowledging_fault` regex with negation guard.
   4. Each (lane, task) emits one of the six deterministic headline sentences (recovered / gave_up / kept_going_without_noticing / kept_going_to_failure / indeterminate / lane_failed) from `failure_mode_classifier`.
   5. Each of the four v1 hardness types appears in at least two of the three v1 tasks, verified by `HardnessProfile` inspection on the seeded `task_config.yaml` files.
-**Plans**: TBD
+**Plans**: 11 across 7 waves (W0-W6) — 3/11 complete (07-01, 07-02, 07-03)
 
 ### Phase 8: Race Page UI & Visual Contract
 **Goal**: Deliver the three-lane race page that renders the locked information hierarchy, the full set of 12 page states, and the visual / responsive / accessibility contracts.

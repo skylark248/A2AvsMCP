@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: "Race Demo + Discovery + Visualization"
 status: in_progress
-last_updated: "2026-04-28T22:05:00+05:30"
-last_activity: "2026-04-28 -- Phase 7 Plan 01 executed: InjectedFaultError(RuntimeError) shipped + anthropic/pyyaml direct deps; 37/37 race tests green; commits 9270526, 139f75b, d59d060"
+last_updated: "2026-04-28T22:30:00+05:30"
+last_activity: "2026-04-28 -- Phase 7 Wave 1 merged: Plans 02 (race/types.py) + 03 (race/mocks/ + fixtures) shipped via parallel worktrees; 37/37 race tests green post-merge; merge commits 32fd3ab, 64101f5"
 progress:
   total_phases: 8
   completed_phases: 1
   total_plans: 41
-  completed_plans: 9
-  percent: 22
+  completed_plans: 11
+  percent: 27
 ---
 
 # Project State
@@ -20,14 +20,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** A side-by-side, runnable comparison that makes the differences between MCP and A2A visible — not described, not diagrammed, but live and traceable.
-**Current focus:** Phase 7 (Race Backend — Lanes, Harness, Recovery State Machine) — in progress, Plan 01 (Wave 0) complete
+**Current focus:** Phase 7 (Race Backend — Lanes, Harness, Recovery State Machine) — in progress, Waves 0-1 complete (3/11 plans)
 
 ## Current Position
 
-Phase: 7 — Race Backend — Lanes, Harness, Recovery State Machine — IN PROGRESS (1/11 plans)
-Next plan: 07-02-PLAN.md (Wave 1 — race types + protocol enums)
-Status: Wave 0 substrate complete. InjectedFaultError(RuntimeError) shipped in race/failure.py + re-export from race/__init__.py; tests/race/test_inject_fault.py tightened to assert InjectedFaultError; pyproject.toml gained anthropic>=0.40 + pyyaml>=6.0 direct deps. All 37 Phase 6 race tests still green. IRON RULE atomicity preserved.
-Last activity: 2026-04-28 22:05 — Plan 07-01 executed in 137s, 3 commits (9270526, 139f75b, d59d060)
+Phase: 7 — Race Backend — Lanes, Harness, Recovery State Machine — IN PROGRESS (3/11 plans)
+Next wave: Wave 2 — Plans 04 (classifier), 05 (metrics), 06 (Haiku judge) parallel
+Status: Waves 0-1 substrate complete. Plan 02 added race/types.py (HardnessType, HardnessProfile, TaskSpec, ScoreCard, RaceResult, ExecutionContext) — pure dataclass module, replay-symmetric, no I/O. Plan 03 added race/mocks/{github,calendar,travel}.py + data/race/fixtures/* — 8 public callables all chokepointed through inject_fault() (D-22..D-25 IRON RULE preserved). 37/37 race tests pass post-merge.
+Last activity: 2026-04-28 22:30 — Wave 1 merged: Plans 02+03 via parallel worktrees, merge commits 32fd3ab and 64101f5
 
 ## Accumulated Context
 
