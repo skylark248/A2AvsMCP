@@ -19,11 +19,15 @@ from ..schemas import FailureConfig
 from ..trace import TraceRecorder
 from ..mcp_servers.db_server import build_server as build_db_server
 from ..mcp_servers.docs_server import build_server as build_docs_server
+from ..mcp_servers import race_github, race_calendar, race_travel
 
 
 SERVER_BUILDERS: dict[str, Callable[..., Any]] = {
     "a2a_vs_mcp.mcp_servers.db_server": build_db_server,
     "a2a_vs_mcp.mcp_servers.docs_server": build_docs_server,
+    "a2a_vs_mcp.mcp_servers.race_github": lambda **_: race_github.build_server(),
+    "a2a_vs_mcp.mcp_servers.race_calendar": lambda **_: race_calendar.build_server(),
+    "a2a_vs_mcp.mcp_servers.race_travel": lambda **_: race_travel.build_server(),
 }
 
 
@@ -236,7 +240,12 @@ class MCPClient:
         normalized_args = {key.replace("_", "-"): value for key, value in self.server_args.items()}
         if self.server_module.endswith("db_server"):
             return builder(Path(normalized_args["db-path"]))
-        return builder(Path(normalized_args["docs-dir"]))
+        if self.server_module.endswith("docs_server"):
+            return builder(Path(normalized_args["docs-dir"]))
+        # Race MCP servers (race_github, race_calendar, race_travel) take no
+        # path args — recorder + run_id arrive via mcp_servers.race_context
+        # contextvars set by the runner before client.call().
+        return builder(**normalized_args)
 
     def _start_http_server(self) -> None:
         port = self._find_open_port()
