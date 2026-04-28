@@ -1,0 +1,34 @@
+task_id: summarize_repo
+hardness_profile:
+  - long_chain
+  - rate_pressure
+  - schema_variance
+failure_script:
+  - kind: rate_limit_429
+    target: github_api.get_repo_metadata
+    after_calls: 1
+    duration_calls: 2
+  - kind: schema_drift
+    target: github_api.list_files
+    after_calls: 2
+    duration_calls: 1
+    drift: "files->paths"
+hybrid_plan:
+  steps:
+    - kind: tool
+      tool: github_api.get_repo_metadata
+      goal: "fetch repo metadata"
+      on_fault: retry_once
+    - kind: tool
+      tool: github_api.list_files
+      goal: "list source files"
+      on_fault: retry_once
+    - kind: tool
+      tool: github_api.read_file
+      goal: "read entry point + 2 modules"
+      on_fault: continue
+    - kind: delegate
+      agent: summarizer
+      goal: "produce 3-line summary"
+      bind: from_subagent_output
+      on_fault: abort
