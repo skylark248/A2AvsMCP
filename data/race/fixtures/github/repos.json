@@ -1,0 +1,44 @@
+{
+  "repos": {
+    "demo-org/api-gateway": {
+      "id": "demo-org/api-gateway",
+      "purpose": "HTTP API gateway in front of microservices",
+      "modules": ["router", "auth", "ratelimit", "logging"],
+      "entry_point": "src/main.py",
+      "files": ["src/main.py", "src/router.py", "src/auth.py", "src/ratelimit.py", "src/logging.py", "README.md"],
+      "stars": 412
+    },
+    "demo-org/event-pipeline": {
+      "id": "demo-org/event-pipeline",
+      "purpose": "Event ingestion + Kafka fanout pipeline",
+      "modules": ["ingest", "transform", "fanout"],
+      "entry_point": "cmd/pipeline/main.go",
+      "files": ["cmd/pipeline/main.go", "internal/ingest.go", "internal/transform.go", "internal/fanout.go", "README.md"],
+      "stars": 287
+    },
+    "demo-org/cli-tools": {
+      "id": "demo-org/cli-tools",
+      "purpose": "Python CLI tools for local dev workflows",
+      "modules": ["lint", "format", "release"],
+      "entry_point": "src/cli.py",
+      "files": ["src/cli.py", "src/lint.py", "src/format.py", "src/release.py", "pyproject.toml"],
+      "stars": 95
+    },
+    "demo-org/web-dashboard": {
+      "id": "demo-org/web-dashboard",
+      "purpose": "Internal admin dashboard (React + FastAPI backend)",
+      "modules": ["frontend", "backend", "shared"],
+      "entry_point": "backend/app/main.py",
+      "files": ["backend/app/main.py", "backend/app/routes.py", "frontend/src/index.tsx", "shared/types.ts", "README.md"],
+      "stars": 153
+    },
+    "demo-org/ml-inference": {
+      "id": "demo-org/ml-inference",
+      "purpose": "Online ML inference service with batched scoring",
+      "modules": ["model", "scoring", "batching", "metrics"],
+      "entry_point": "service/server.py",
+      "files": ["service/server.py", "service/model.py", "service/scoring.py", "service/batching.py", "service/metrics.py", "README.md"],
+      "stars": 738
+    }
+  }
+}

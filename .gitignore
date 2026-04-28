@@ -8,6 +8,16 @@ data/
 # Phase 6 — race demo run trace files (data/runs/<run_id>.json append-only ndjson)
 /data/runs/
 
+# Phase 7 — race fixture data is checked-in (read-only JSON for mocks)
+# Re-include only the race/fixtures subtree under data/. Other data/* paths
+# (data/runs, data/seeds, etc.) remain ignored.
+!/data/
+/data/*
+!/data/race/
+/data/race/*
+!/data/race/fixtures/
+!/data/race/fixtures/**
+
 frontend/node_modules/
 frontend/dist/
 frontend/*.tsbuildinfo

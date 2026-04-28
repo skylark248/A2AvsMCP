@@ -1,0 +1,14 @@
+{
+  "flights": [
+    {"id": "F-001", "origin": "SFO", "destination": "JFK", "depart": "2026-05-10T08:00:00-07:00", "arrive": "2026-05-10T16:30:00-04:00", "price_usd": 412, "carrier": "JetBlue"},
+    {"id": "F-002", "origin": "SFO", "destination": "JFK", "depart": "2026-05-10T11:00:00-07:00", "arrive": "2026-05-10T19:30:00-04:00", "price_usd": 358, "carrier": "Delta"},
+    {"id": "F-003", "origin": "SFO", "destination": "JFK", "depart": "2026-05-10T14:00:00-07:00", "arrive": "2026-05-10T22:30:00-04:00", "price_usd": 295, "carrier": "United"},
+    {"id": "F-101", "origin": "JFK", "destination": "SFO", "depart": "2026-05-13T09:00:00-04:00", "arrive": "2026-05-13T12:30:00-07:00", "price_usd": 401, "carrier": "JetBlue"},
+    {"id": "F-102", "origin": "JFK", "destination": "SFO", "depart": "2026-05-13T18:00:00-04:00", "arrive": "2026-05-13T21:30:00-07:00", "price_usd": 332, "carrier": "Delta"}
+  ],
+  "hotels": [
+    {"id": "H-001", "city": "NYC", "name": "Midtown Inn", "nightly_usd": 220, "rating": 3.8},
+    {"id": "H-002", "city": "NYC", "name": "Battery Park Hotel", "nightly_usd": 318, "rating": 4.4},
+    {"id": "H-003", "city": "NYC", "name": "Brooklyn Suites", "nightly_usd": 175, "rating": 3.5}
+  ]
+}
