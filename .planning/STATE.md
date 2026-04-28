@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: "Race Demo + Discovery + Visualization"
-status: discussing
-last_updated: "2026-04-28T13:05:00+05:30"
-last_activity: "2026-04-28 -- Phase 7 context gathered: 16 implementation decisions (D-19..D-43) locked across 4 gray areas"
+status: ready_to_execute
+last_updated: "2026-04-28T21:42:00+05:30"
+last_activity: "2026-04-28 -- Phase 7 planned: 11 plans across 7 waves (W0-W6); RESEARCH + PATTERNS + PLAN docs complete; D-38 Semaphore(8), D-42 race/judges/haiku.py resolved"
 progress:
   total_phases: 8
   completed_phases: 1
-  total_plans: 30
+  total_plans: 41
   completed_plans: 8
   percent: 12
 ---
@@ -20,14 +20,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** A side-by-side, runnable comparison that makes the differences between MCP and A2A visible — not described, not diagrammed, but live and traceable.
-**Current focus:** Phase 7 (Race Backend — Lanes, Harness, Recovery State Machine) — context gathered, ready for planning
+**Current focus:** Phase 7 (Race Backend — Lanes, Harness, Recovery State Machine) — planned, ready to execute
 
 ## Current Position
 
-Phase: 7 — Race Backend — Lanes, Harness, Recovery State Machine — DISCUSSING
-Next phase: 7 — proceed to `/gsd-plan-phase 7`
-Status: 07-CONTEXT.md written; 16 decisions D-19..D-43 locked; gray areas closed (runner architecture, mock surface, task_config + bind, fault_observed ownership)
-Last activity: 2026-04-28 13:05 — Phase 7 context captured
+Phase: 7 — Race Backend — Lanes, Harness, Recovery State Machine — READY TO EXECUTE
+Next phase: 7 — proceed to `/gsd-execute-phase 7`
+Status: 07-RESEARCH.md (1432 lines) + 07-PATTERNS.md + 11 PLAN.md files written. Wave structure: W0 (01 Phase 6 deltas) → W1 (02 types, 03 mocks) → W2 (04 classifier, 05 metrics, 06 Haiku judge) → W3 (07 race MCP servers, 08 task configs+registries) → W4 (09 runners) → W5 (10 harness) → W6 (11 test suite, 12 files + fixtures). Coverage: 7/7 RACE requirements; 25/25 CONTEXT decisions D-19..D-43.
+Last activity: 2026-04-28 21:42 — Phase 7 planning complete; checker skipped (Anthropic overload + quota hit during planner spawns; manual coverage audit passed)
 
 ## Accumulated Context
 
