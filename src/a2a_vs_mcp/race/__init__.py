@@ -2,5 +2,21 @@
 from __future__ import annotations
 
 from .failure import InjectedFaultError
+from .types import (
+    ExecutionContext,
+    HardnessProfile,
+    HardnessType,
+    RaceResult,
+    ScoreCard,
+    TaskSpec,
+)
 
-__all__ = ["InjectedFaultError"]
+__all__ = [
+    "InjectedFaultError",
+    "HardnessType",
+    "HardnessProfile",
+    "TaskSpec",
+    "ScoreCard",
+    "RaceResult",
+    "ExecutionContext",
+]
