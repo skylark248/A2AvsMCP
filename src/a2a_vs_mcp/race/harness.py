@@ -93,6 +93,139 @@ __all__ = [
 
 
 # ---------------------------------------------------------------------------
+# Per-run retry classifier (D-38) + lane_failed result builder.
+# ---------------------------------------------------------------------------
+
+
+def _build_lane_failed_result(
+    run_id: str,
+    lane: str,
+    task_spec: TaskSpec,
+    *,
+    reason: str,
+) -> RaceResult:
+    """Construct a RaceResult representing a lane infra failure (D-39).
+
+    ``reason`` is one of: ``"timeout"`` (per-run wait_for fired) or the
+    ``type(exc).__name__`` of the transient Anthropic exception that
+    exhausted the 3-attempt retry budget — e.g., ``"RateLimitError"``,
+    ``"APIConnectionError"``, ``"APITimeoutError"``,
+    ``"InternalServerError"``.
+
+    The reason is stashed on ``ScoreCard.failure_mode`` (set to
+    ``"lane_failed"``) and surfaced separately as ``RaceResult``-level
+    metadata via the ``hardness_profile`` passthrough so the
+    classifier's ``lane_failed`` template (D-35 sixth template) can
+    look it up at race_done aggregation time.
+    """
+    sc = ScoreCard(
+        success=False,
+        ttff_ms=0,
+        recovered=False,
+        wasted_tokens_before_detection=0,
+        failure_mode="lane_failed",
+        cost_usd=0.0,
+        latency_ms=0,
+    )
+    # Attach reason as a runtime attribute so the post-run classifier
+    # aggregator can pick it up without a schema change to ScoreCard.
+    # (Plan 11 test_harness asserts the reason flows through.)
+    setattr(sc, "lane_failed_reason", reason)
+    return RaceResult(
+        run_id=run_id,
+        lane=lane,
+        task_id=task_spec.task_id,
+        hardness_profile=task_spec.hardness_profile,
+        score_card=sc,
+        trace_id=run_id,
+    )
+
+
+async def _run_one_with_retry(
+    lane: str,
+    task_spec: TaskSpec,
+    run_id: str,
+    recorder: TraceRecorder | None,
+    failure_script: list[FailureScriptEntry],
+    sonnet_client: Any,
+    hybrid_plan: dict[str, Any] | None = None,
+) -> RaceResult:
+    """Per-(lane × run_idx) execution with closed-tuple retry classifier.
+
+    Backoff math: worst-case 3-attempt window = (2^0+1)+(2^1+1) ≈ 4-6s
+    cumulative sleep, well inside the 120s per-run timeout. Each attempt
+    itself is wrapped in ``asyncio.wait_for(..., PER_RUN_TIMEOUT_S)``;
+    the harness-level cap on total wall-clock per cell is the caller's
+    responsibility.
+
+    ContextVar safety (D-38 + threat T-07-09-02): the runners (Plan 09)
+    own ``ACTIVE_FAULTS`` / ``MCP_TOOL_CONTEXT`` reset in their own
+    ``finally`` blocks. The harness MUST NOT touch those contextvars
+    directly here — but the harness MUST NEVER swallow ``BaseException``,
+    so a cancellation (e.g., wait_for timeout) propagates into the
+    runner's ``finally`` and the contextvar reset runs even if the worker
+    task is cancelled.
+    """
+    runner = _RUNNERS[lane]
+    runner_kwargs: dict[str, Any] = {}
+    if lane == "hybrid":
+        runner_kwargs["hybrid_plan"] = hybrid_plan
+    last_exc: BaseException | None = None
+    for attempt in range(3):
+        try:
+            return await asyncio.wait_for(
+                runner(
+                    task_spec,
+                    run_id,
+                    recorder,
+                    failure_script,
+                    sonnet_client,
+                    **runner_kwargs,
+                ),
+                timeout=PER_RUN_TIMEOUT_S,
+            )
+        except TRANSIENT_RETRY_TYPES as exc:
+            last_exc = exc
+            await asyncio.sleep(2 ** attempt + random.uniform(0, 1))
+            continue
+        except asyncio.TimeoutError:
+            return _build_lane_failed_result(
+                run_id, lane, task_spec, reason="timeout"
+            )
+        # NOTE: no broad-Exception arm — the injected-fault type MUST bubble.
+    # Exhausted 3 transient retries.
+    return _build_lane_failed_result(
+        run_id, lane, task_spec, reason=type(last_exc).__name__
+    )
+
+
+async def _run_one_under_semaphore(
+    lane: str,
+    task_spec: TaskSpec,
+    run_id: str,
+    recorder: TraceRecorder | None,
+    failure_script: list[FailureScriptEntry],
+    sonnet_client: Any,
+    hybrid_plan: dict[str, Any] | None = None,
+) -> RaceResult:
+    """Acquire the harness-wide ``_SEMAPHORE`` then run with retry policy.
+
+    Semaphore acquire wraps the ENTIRE retry loop so the cap (D-38)
+    measures concurrent in-flight runs, not concurrent retry attempts.
+    """
+    async with _SEMAPHORE:
+        return await _run_one_with_retry(
+            lane,
+            task_spec,
+            run_id,
+            recorder,
+            failure_script,
+            sonnet_client,
+            hybrid_plan,
+        )
+
+
+# ---------------------------------------------------------------------------
 # run_race stub — filled in Task 3.
 # ---------------------------------------------------------------------------
 
