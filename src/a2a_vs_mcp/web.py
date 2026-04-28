@@ -1,17 +1,19 @@
 from __future__ import annotations
 
+import asyncio
 from datetime import datetime, timezone
 import ipaddress
 from io import BytesIO
 import json
 import os
+import time as _ws_time
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 from typing import Any
 from urllib.parse import quote, urlparse
 import zipfile
 
-from fastapi import FastAPI, Form, HTTPException, Request
+from fastapi import FastAPI, Form, HTTPException, Query, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import FileResponse, HTMLResponse, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -38,6 +40,9 @@ from .platform import DemoPlatform
 from .persistence import PlatformStore
 from .remote_registry import RemoteMCPRegistry
 from .a2a.registry import RemoteA2ARegistry
+from .race.replay import load_run, _validate_run_id
+from .race.runs import RUNS_DIR
+from .race.ws import MANAGER, HEARTBEAT_S
 from .reporting import ReportService
 from .schemas import FailureConfig
 
@@ -847,4 +852,47 @@ def api_remote_a2a_health(
         except Exception as exc:
             results.append({**item, "status": "unavailable", "error": str(exc)})
     return RemoteA2AHealthResponse(agents=results)
+
+
+@app.websocket("/api/race/ws")
+async def race_ws(
+    websocket: WebSocket,
+    run_id: str = Query(...),
+    last_seen_turn_index: int = Query(-1),
+) -> None:
+    # Path-traversal guard FIRST — before any file resolution or accept().
+    try:
+        _validate_run_id(run_id)
+    except ValueError:
+        await websocket.close(code=4400, reason="invalid run_id")
+        return
+
+    client_ip = websocket.client.host if websocket.client else "unknown"
+    conn = await MANAGER.connect(websocket, run_id, last_seen_turn_index, client_ip)
+    if conn is None:
+        return  # 5/IP cap exceeded; ws already closed inside connect()
+
+    try:
+        # D-07 reconnect replay from disk: stream events with turn_index > last_seen_turn_index.
+        if last_seen_turn_index >= 0:
+            try:
+                for ev in load_run(run_id, RUNS_DIR):
+                    if ev.get("turn_index", -1) > last_seen_turn_index:
+                        await websocket.send_json(ev)
+            except FileNotFoundError:
+                pass  # live-only run, no on-disk events yet
+
+        # Live tail loop with 15s heartbeat.
+        while True:
+            try:
+                event = await asyncio.wait_for(conn.queue.get(), timeout=HEARTBEAT_S)
+                await websocket.send_json(event)
+            except asyncio.TimeoutError:
+                await websocket.send_json(
+                    {"event_type": "heartbeat", "ts_ms": int(_ws_time.time() * 1000)}
+                )
+    except WebSocketDisconnect:
+        pass
+    finally:
+        await MANAGER.disconnect(conn)
 
