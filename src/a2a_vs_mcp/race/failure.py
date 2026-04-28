@@ -23,6 +23,18 @@ from pydantic import TypeAdapter
 from ..trace import TraceRecorder
 
 
+class InjectedFaultError(RuntimeError):
+    """Raised by _apply_mutation for RATE_LIMIT_429 and PARTIAL_COMMIT_5XX faults.
+
+    Distinguishes injected faults from real Anthropic infra errors so the
+    harness retry classifier never retries the test. Phase 7 D-38: harness
+    retries anthropic.RateLimitError but NEVER InjectedFaultError.
+
+    IS-A RuntimeError so existing Phase 6 callers that catch RuntimeError
+    still work.
+    """
+
+
 # 3.10-safe StrEnum analog (RESEARCH.md Pitfall 6 — pyproject.toml pins >=3.10).
 class FaultKind(str, Enum):
     RATE_LIMIT_429 = "rate_limit_429"
@@ -89,9 +101,9 @@ def _apply_mutation(kind: FaultKind, response: Any) -> Any:
     as the two raise-style faults so the IRON RULE atomicity test can
     assert events are recorded BEFORE the raise."""
     if kind is FaultKind.RATE_LIMIT_429:
-        raise RuntimeError("HTTP 429 rate_limit (injected)")
+        raise InjectedFaultError("HTTP 429 rate_limit (injected)")
     if kind is FaultKind.PARTIAL_COMMIT_5XX:
-        raise RuntimeError("HTTP 503 partial_commit (injected)")
+        raise InjectedFaultError("HTTP 503 partial_commit (injected)")
     # Soft mutations (partial_json, schema_drift, eventual_consistency_read)
     # land in Phase 7's mock APIs; Phase 6 returns the original response unchanged
     # so the inject_fault contract is exercised end-to-end without partial logic.
