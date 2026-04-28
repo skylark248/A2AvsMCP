@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: "Race Demo + Discovery + Visualization"
-status: ready_to_execute
-last_updated: "2026-04-28T21:42:00+05:30"
-last_activity: "2026-04-28 -- Phase 7 planned: 11 plans across 7 waves (W0-W6); RESEARCH + PATTERNS + PLAN docs complete; D-38 Semaphore(8), D-42 race/judges/haiku.py resolved"
+status: in_progress
+last_updated: "2026-04-28T22:05:00+05:30"
+last_activity: "2026-04-28 -- Phase 7 Plan 01 executed: InjectedFaultError(RuntimeError) shipped + anthropic/pyyaml direct deps; 37/37 race tests green; commits 9270526, 139f75b, d59d060"
 progress:
   total_phases: 8
   completed_phases: 1
   total_plans: 41
-  completed_plans: 8
-  percent: 12
+  completed_plans: 9
+  percent: 22
 ---
 
 # Project State
@@ -20,14 +20,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** A side-by-side, runnable comparison that makes the differences between MCP and A2A visible — not described, not diagrammed, but live and traceable.
-**Current focus:** Phase 7 (Race Backend — Lanes, Harness, Recovery State Machine) — planned, ready to execute
+**Current focus:** Phase 7 (Race Backend — Lanes, Harness, Recovery State Machine) — in progress, Plan 01 (Wave 0) complete
 
 ## Current Position
 
-Phase: 7 — Race Backend — Lanes, Harness, Recovery State Machine — READY TO EXECUTE
-Next phase: 7 — proceed to `/gsd-execute-phase 7`
-Status: 07-RESEARCH.md (1432 lines) + 07-PATTERNS.md + 11 PLAN.md files written. Wave structure: W0 (01 Phase 6 deltas) → W1 (02 types, 03 mocks) → W2 (04 classifier, 05 metrics, 06 Haiku judge) → W3 (07 race MCP servers, 08 task configs+registries) → W4 (09 runners) → W5 (10 harness) → W6 (11 test suite, 12 files + fixtures). Coverage: 7/7 RACE requirements; 25/25 CONTEXT decisions D-19..D-43.
-Last activity: 2026-04-28 21:42 — Phase 7 planning complete; checker skipped (Anthropic overload + quota hit during planner spawns; manual coverage audit passed)
+Phase: 7 — Race Backend — Lanes, Harness, Recovery State Machine — IN PROGRESS (1/11 plans)
+Next plan: 07-02-PLAN.md (Wave 1 — race types + protocol enums)
+Status: Wave 0 substrate complete. InjectedFaultError(RuntimeError) shipped in race/failure.py + re-export from race/__init__.py; tests/race/test_inject_fault.py tightened to assert InjectedFaultError; pyproject.toml gained anthropic>=0.40 + pyyaml>=6.0 direct deps. All 37 Phase 6 race tests still green. IRON RULE atomicity preserved.
+Last activity: 2026-04-28 22:05 — Plan 07-01 executed in 137s, 3 commits (9270526, 139f75b, d59d060)
 
 ## Accumulated Context
 
@@ -92,6 +92,6 @@ Items acknowledged at v1.0 close that remain deferred into v2.0+:
 ## Session Continuity
 
 Last session: 2026-04-28
-Stopped at: Phase 7 context gathered — 4 gray areas closed, 16 decisions locked
-Resume file: .planning/phases/07-race-backend-lanes-harness-recovery/07-CONTEXT.md
-Next action: `/gsd-plan-phase 7` to plan Phase 7 (Race Backend — Lanes, Harness, Recovery State Machine)
+Stopped at: Phase 7 Plan 01 complete — Wave 0 substrate (InjectedFaultError + anthropic/pyyaml deps) shipped
+Resume file: .planning/phases/07-race-backend-lanes-harness-recovery/07-01-SUMMARY.md
+Next action: Execute Plan 07-02 (Wave 1 — race types + protocol enums) — depends on InjectedFaultError now exported

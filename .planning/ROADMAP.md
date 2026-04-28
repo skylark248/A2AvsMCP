@@ -142,7 +142,7 @@ Plans:
 | 4. Comparison UI | v1.0 | 4/4 | Complete | 2026-04-26 |
 | 5. Presentation Polish | v1.0 | 3/3 | Complete | 2026-04-27 |
 | 6. TraceRecorder Schema Gate & Race Foundation | v2.0 | 0/8 | Pending | — |
-| 7. Race Backend — Lanes, Harness, Recovery | v2.0 | 0/4 | Pending | — |
+| 7. Race Backend — Lanes, Harness, Recovery | v2.0 | 1/11 | In progress | — |
 | 8. Race Page UI & Visual Contract | v2.0 | 0/4 | Pending | — |
 | 9. Heatmap, Replay & K=3 Calibration | v2.0 | 0/3 | Pending | — |
 | 10. OG Image & Sharing | v2.0 | 0/3 | Pending | — |
