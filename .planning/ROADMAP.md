@@ -23,7 +23,7 @@ Full details: [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md)
 ### 🟢 v2.0 Race Demo + Discovery + Visualization (Active)
 
 - [x] **Phase 6: TraceRecorder Schema Gate & Race Foundation** — Pre-design gate that lands the trace + websocket schema everything else depends on (8/8 plans, completed 2026-04-28)
-- [ ] **Phase 7: Race Backend — Lanes, Harness, Recovery State Machine** — Three runners, harness, recovery classifier, tasks, mock APIs
+- [x] **Phase 7: Race Backend — Lanes, Harness, Recovery State Machine** — Three runners, harness, recovery classifier, tasks, mock APIs (11/11 plans, completed 2026-04-29)
 - [ ] **Phase 8: Race Page UI & Visual Contract** — Three-lane scoreboard, banner, methodology, 12 page states, responsive + a11y
 - [ ] **Phase 9: Heatmap, Replay & K=3 Calibration** — Hardness-vs-failure heatmap, deterministic replay, multi-task K=3 sweep
 - [ ] **Phase 10: OG Image & Sharing** — Playwright OG/heatmap PNGs, copy-headline fallback, cache invalidation
@@ -63,7 +63,7 @@ Plans:
   3. Every fault recorded in a run is tagged by the recovery classifier with one of `recovered | gave_up | kept_going_without_noticing | kept_going_to_failure | indeterminate`, using the K=3 turn window and the locked `agent_msg_acknowledging_fault` regex with negation guard.
   4. Each (lane, task) emits one of the six deterministic headline sentences (recovered / gave_up / kept_going_without_noticing / kept_going_to_failure / indeterminate / lane_failed) from `failure_mode_classifier`.
   5. Each of the four v1 hardness types appears in at least two of the three v1 tasks, verified by `HardnessProfile` inspection on the seeded `task_config.yaml` files.
-**Plans**: 11 across 7 waves (W0-W6) — 9/11 complete (07-01, 07-02, 07-03, 07-04, 07-05, 07-06, 07-07, 07-08, 07-09)
+**Plans**: 11 across 7 waves (W0-W6) — 11/11 complete (07-01..07-11; Phase 7 SHIPPED 2026-04-29)
 
 ### Phase 8: Race Page UI & Visual Contract
 **Goal**: Deliver the three-lane race page that renders the locked information hierarchy, the full set of 12 page states, and the visual / responsive / accessibility contracts.

@@ -26,11 +26,11 @@ Lanes, harness, recovery state machine, tasks.
 
 - [x] **RACE-01**: `HardnessType` enum with 4 v1 entries (LONG_CHAIN, RATE_PRESSURE, SCHEMA_VARIANCE, MULTI_SOURCE_SYNTHESIS); `HardnessProfile` dataclass; each v1 type appears in ≥2 tasks
 - [x] **RACE-02**: Three runners — `runners/pure_mcp.py`, `runners/pure_a2a.py`, `runners/hybrid.py` — each consumes a per-task `task_config.yaml` and returns a `RaceResult`
-- [ ] **RACE-03**: `harness.py` drives N parallel runs per (lane, task); demo `n=5`, dev `n=1`; deterministic `model=claude-sonnet-4-6, seed=42, temperature=0, per_run_timeout_s=120`; emits live websocket events; only retries transient infrastructure errors (not injected faults)
+- [x] **RACE-03**: `harness.py` drives N parallel runs per (lane, task); demo `n=5`, dev `n=1`; deterministic `model=claude-sonnet-4-6, seed=42, temperature=0, per_run_timeout_s=120`; emits live websocket events; only retries transient infrastructure errors (not injected faults)
 - [x] **RACE-04**: Recovery state machine in `race/classifier.py` tags each fault as `recovered | gave_up | kept_going_without_noticing | kept_going_to_failure | indeterminate`; uses K=3 turn window; `agent_msg_acknowledging_fault` regex with negation guard (locked in design doc)
 - [x] **RACE-05**: Three v1 tasks — `summarize_repo`, `negotiate_meeting`, `book_travel` — with full `task_config.yaml` (failure_script + hybrid_plan + hardness_profile) and per-task scorer (Haiku judge / structural / composite)
-- [ ] **RACE-06**: `failure_mode_classifier(lane, task_id, per_run_tags, per_run_aggregate_stats)` produces deterministic per-lane headline sentences from 6 templates (recovered / gave_up / kept_going_without_noticing / kept_going_to_failure / indeterminate / lane_failed)
-- [ ] **RACE-07**: Mock APIs for the 3 v1 tasks — GitHub mock (5 fixture repos), calendar mock (3 fixture calendars), travel mock (search + booking + fixtures)
+- [x] **RACE-06**: `failure_mode_classifier(lane, task_id, per_run_tags, per_run_aggregate_stats)` produces deterministic per-lane headline sentences from 6 templates (recovered / gave_up / kept_going_without_noticing / kept_going_to_failure / indeterminate / lane_failed)
+- [x] **RACE-07**: Mock APIs for the 3 v1 tasks — GitHub mock (5 fixture repos), calendar mock (3 fixture calendars), travel mock (search + booking + fixtures)
 
 ### Race Page UI (UIRACE)
 
