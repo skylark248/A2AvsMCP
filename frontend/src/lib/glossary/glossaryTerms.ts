@@ -36,4 +36,13 @@ export const glossaryTerms: Record<string, string> = {
     "The single-agent execution mode where one LLM handles the ticket without MCP tools or A2A coordination.",
   hybrid:
     "A mode that combines MCP tool access with A2A agent coordination -- both protocols active in the same run.",
+  // Race page terms — UIRACE-07 / 08-UI-SPEC.md Glossary Extension table (verbatim)
+  ttff: "Time to first fault — the elapsed milliseconds from run start until the first injected fault event lands in the trace.",
+  recovery_rate: "The fraction of runs in which the agent fully recovered from an injected fault, expressed as a count (e.g. 12/15).",
+  hardness_profile: "A structured description of the difficulty characteristics of a task — which hardness types apply and at what intensity.",
+  recovered: "A fault classification tag: the agent detected the fault and returned to a correct execution path within K=3 turns.",
+  gave_up: "A fault classification tag: the agent detected the fault and abandoned the task rather than attempting recovery.",
+  kept_going_without_noticing: "A fault classification tag: the agent did not acknowledge the fault and continued executing as if nothing had changed.",
+  kept_going_to_failure: "A fault classification tag: the agent continued past the fault point and ultimately produced an incorrect or failed result.",
+  indeterminate: "A fault classification tag: the available trace evidence was insufficient to assign any of the four primary recovery tags.",
 };
