@@ -1,16 +1,17 @@
 ---
 gsd_state_version: 1.0
 milestone: v2.0
-milestone_name: "Race Demo + Discovery + Visualization"
-status: ready_to_plan
-last_updated: "2026-04-29T04:05:00+05:30"
-last_activity: "2026-04-29 -- Phase 8 context gathered: 8 decisions D-44..D-51 across 4 areas (WS state, heatmap render, replay UX, first-mention popover); UIRACE-01..07 already locked, discussion focused on HOW. CONTEXT.md + DISCUSSION-LOG.md committed."
+milestone_name: Race Demo + Discovery + Visualization
+status: ready_to_execute
+stopped_at: Phase 8 plans verified (7 plans, 4 waves)
+last_updated: "2026-04-29T11:04:00.000Z"
+last_activity: "2026-04-29 16:34 — Phase 8 plans created (7 plans across 4 waves), checker PASSED iteration 2 after 04 split + 9 fixes."
 progress:
   total_phases: 8
   completed_phases: 2
-  total_plans: 41
+  total_plans: 26
   completed_plans: 19
-  percent: 46
+  percent: 73
 ---
 
 # Project State
@@ -20,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** A side-by-side, runnable comparison that makes the differences between MCP and A2A visible — not described, not diagrammed, but live and traceable.
-**Current focus:** Phase 8 (Race Page UI & Visual Contract) — context gathered, ready to plan.
+**Current focus:** Phase 8 (Race Page UI & Visual Contract) — plans verified, ready to execute.
 
 ## Current Position
 
-Phase: 8 — Race Page UI & Visual Contract — CONTEXT GATHERED (UIRACE-01..07; 8 decisions D-44..D-51 locked)
-Next action: `/gsd-plan-phase 8` to create plans from CONTEXT + REQUIREMENTS
-Status: Phase 7 shipped + verified (PASS-WITH-NOTES). Phase 8 context now gathered. 8 implementation decisions D-44..D-51 locked across 4 areas: D-44 useRaceStream hook + useReducer; D-45 per-lane turn_index reconnect cursor; D-46 CSS Grid + DOM heatmap cells; D-47 heatmap-empty preserves scaffold; D-48 separate /race/<run_id> route; D-49 status-strip replay pill + scrubber; D-50 click->MUI Popover (first), Tooltip (subsequent); D-51 route-scoped FirstMentionProvider context. UIRACE-01..07 already locked by REQUIREMENTS.md (file paths, radii scale, breakpoint px boundaries, a11y rules, failureTagColor 5 entries, 8 glossary terms) — discussion focused on HOW only.
-Last activity: 2026-04-29 04:05 — Phase 8 CONTEXT.md + DISCUSSION-LOG.md committed; STATE advanced to ready_to_plan for Phase 8.
+Phase: 8 — Race Page UI & Visual Contract — PLANNED (7 plans, 4 waves; checker PASSED)
+Next action: `/gsd-execute-phase 8` to run plans wave-by-wave
+Status: 7 plans verified across 4 waves. W1: 08-01 (eventColors+failureTagColor+glossary+FirstMentionProvider+GlossaryTerm). W2: 08-02 (routes+AppShell+RacePage shell+derivePageState). W3: 08-03 (useRaceStream+useReducer+useRaceReplay), 08-04a (RaceLaneCard+Ticker+FailureStateBadge+ReplayPill), 08-04b (RaceStatusStrip+Banner+MethodologySection; depends_on 04a for ReplayPill), 08-05 (HeatmapScaffold CSS Grid + ReplayScrubber). W4: 08-06 (integration: 12 page-state fixtures + a11y + responsive tests). UIRACE-01..07 all covered. D-44..D-51 all referenced. Threat models on every plan. Original Plan 04 split into 04a/04b after iter-1 checker BLOCKER on scope (8 files in 1 task).
+Last activity: 2026-04-29 16:34 — Phase 8 plans created and verified.
 
 ## Accumulated Context
 
@@ -36,6 +37,7 @@ Last activity: 2026-04-29 04:05 — Phase 8 CONTEXT.md + DISCUSSION-LOG.md commi
 Decisions logged in PROJECT.md Key Decisions table. v1.0 per-plan decision history retained in `.planning/milestones/v1.0-phases/*/`.
 
 Phase 7 implementation decisions (D-19..D-43) locked in `07-CONTEXT.md`. Notable:
+
 - D-19: Fresh race runners; v1 agents NOT subclassed/touched.
 - D-22..D-25: Real MCP + A2A transport reused; mocks chokepointed in `race/mocks/`; `inject_fault()` is single mutation point.
 - D-26..D-30: task_config.yaml inside `src/.../race/tasks/<id>/`; per-task callable registries (TARGETS + BINDS); Pydantic startup validation.
@@ -43,6 +45,7 @@ Phase 7 implementation decisions (D-19..D-43) locked in `07-CONTEXT.md`. Notable
 - D-38, D-42: harness concurrency + Haiku judge integration deferred to research/planner.
 
 Carried into v2.0:
+
 - Race Demo design: 2-lane Pure-MCP vs Pure-A2A + Hybrid restored to v1 scope (CEO+eng+design-cleared, iter 3, 8.5/10)
 - Recovery state machine K=3 confirmed; multi-task calibration (TODO 8) promoted into v2 scope (lands in Phase 9)
 - OG image generation via Playwright headless (TODO 3) promoted into v2 scope (Phase 10)
@@ -50,12 +53,14 @@ Carried into v2.0:
 - SDK migrations (SDK-01/02) deferred to v2.1+ — too risky alongside Race Demo
 
 Roadmap-shaping decisions (2026-04-28):
+
 - Phase 6 opens v2.0 because the design doc's PRE-DESIGN GATE (TraceRecorder fault-injection schema audit) blocks all downstream race work. Front-loaded by design.
 - Hybrid runner (highest-risk seam per design doc) lives in Phase 7 alongside the recovery state machine — risk consolidated, not spread across phases.
 - DISC (Phase 11) and VIZ (Phase 12) sit after race demo lands; both depend only on the Phase 6 trace schema, so could parallelize with later race phases if scheduling allows.
 - DSGN-01 (Phase 13) deliberately last — `/design-consultation` is interactive and benefits from having race-demo design rules (failureTagColor, methodology-as-flat, secondary-as-replay-pill) already concrete in code.
 
 Phase 6 implementation decisions (D-01..D-18) locked in `06-CONTEXT.md`. Notable:
+
 - D-03: TraceRecorder additive extension preserves v1 backwards-compat (all legacy tests stay green).
 - D-05: threading.Lock (not asyncio.Lock) for RunWriter single-writer arbiter.
 - D-08 + D-16: NEVER_COALESCE has exactly 7 members; only TickEvent eligible for coalescing.
@@ -65,6 +70,7 @@ Phase 6 implementation decisions (D-01..D-18) locked in `06-CONTEXT.md`. Notable
 ### Pending Todos
 
 7 deferred items in `TODOS.md` (project root) post-v2-promotion:
+
 - TODO 1 (real plan-emitter hybrid)
 - TODO 2 (multi-seed benchmark)
 - TODO 4 (trace schema migrator)
@@ -91,7 +97,7 @@ Items acknowledged at v1.0 close that remain deferred into v2.0+:
 
 ## Session Continuity
 
-Last session: 2026-04-29
-Stopped at: Phase 7 Plan 09 complete — Wave 4 fully shipped (3 race lane runners with end-to-end Detector wiring)
-Resume file: .planning/phases/07-race-backend-lanes-harness-recovery/07-09-SUMMARY.md
+Last session: 2026-04-29T06:21:06.559Z
+Stopped at: Phase 8 UI-SPEC approved
+Resume file: .planning/phases/08-race-page-ui-visual-contract/08-UI-SPEC.md
 Next action: Execute Wave 5/6 — Plan 07-10 (harness Semaphore(8) parallel scheduler + Haiku judge integration), Plan 07-11 (chokepoint + integration tests)

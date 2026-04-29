@@ -75,7 +75,15 @@ Plans:
   3. A keyboard-only user can navigate the page in correct Tab order with focus-visible outlines, screen readers announce `fault_observed` via `aria-live="polite"`, and `prefers-reduced-motion` and `prefers-contrast: more` are honored on every animated transition and stripe/outline.
   4. The page renders correctly across desktop (≥1200px three-lane row), tablet (768-1199 shrunk three lanes), small-tablet (480-767 compacted metrics), and mobile (<480 falls back to `?mode=summary` with cropped anchor PNG + heatmap).
   5. The 8 new race glossary terms (ttff, recovery_rate, hardness_profile, recovered, gave_up, kept_going_without_noticing, kept_going_to_failure, indeterminate) appear with first-mention popovers across the Race page, and the `failureTagColor` map (5 entries in `eventColors.ts`) is the single source of truth consumed by both heatmap cells and badges, paired with icon + label.
-**Plans**: TBD
+**Plans**: 7 plans across 4 waves
+Plans:
+- [ ] 08-01-PLAN.md — Tokens + glossary + FirstMentionProvider + GlossaryTerm Popover branch + shared race types (Wave 1)
+- [ ] 08-02-PLAN.md — Routes (/race + /race/:run_id) + AppShell nav + RacePage shell + 12-state derivePageState (Wave 2)
+- [ ] 08-03-PLAN.md — TDD raceReducer + useRaceStream(enabled) + useRaceReplay (Wave 3)
+- [ ] 08-04a-PLAN.md — Lane/badge family: RaceLaneCard (with prefers-contrast widen) + RaceLaneTicker + FailureStateBadge + ReplayPill (Wave 3)
+- [ ] 08-04b-PLAN.md — Chrome family: RaceStatusStrip + CharacteristicFailureBanner + MethodologySection (Wave 3)
+- [ ] 08-05-PLAN.md — HeatmapScaffold (CSS Grid + role=grid/gridcell + empty-state overlay) + ReplayScrubber (Slider + 200ms aria-live throttle) (Wave 3)
+- [ ] 08-06-PLAN.md — RacePage integration + 12-state fixtures + responsive (4 breakpoints) + a11y test suite (Wave 4)
 **UI hint**: yes
 
 ### Phase 9: Heatmap, Replay & K=3 Calibration
@@ -143,7 +151,7 @@ Plans:
 | 5. Presentation Polish | v1.0 | 3/3 | Complete | 2026-04-27 |
 | 6. TraceRecorder Schema Gate & Race Foundation | v2.0 | 0/8 | Pending | — |
 | 7. Race Backend — Lanes, Harness, Recovery | v2.0 | 10/11 | In progress | — |
-| 8. Race Page UI & Visual Contract | v2.0 | 0/4 | Pending | — |
+| 8. Race Page UI & Visual Contract | v2.0 | 0/7 | Planned | — |
 | 9. Heatmap, Replay & K=3 Calibration | v2.0 | 0/3 | Pending | — |
 | 10. OG Image & Sharing | v2.0 | 0/3 | Pending | — |
 | 11. Tool Discovery Scenario | v2.0 | 0/3 | Pending | — |
