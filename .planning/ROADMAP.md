@@ -95,7 +95,12 @@ Plans:
   2. A 5-pill legend strip is always visible and the heatmap footer shows model · seed · pinned task IDs.
   3. Loading `/race/<run_id>` reads `data/runs/<run_id>.json`, replays without any live LLM call, and the recovery-rule state machine produces identical per-run tags to the original run, verified by a two-layer fixture test (snapshot + `--update-snapshots` flag).
   4. A K∈{2,3,4,5} sweep over the §The Assignment fictional traces for all three v1 tasks confirms K=3 produces the expected tag for every trace, with the test committed to `tests/test_recovery_calibration.py`.
-**Plans**: TBD
+**Plans**: 4 plans across 2 waves
+Plans:
+- [ ] 09-01-PLAN.md — race/config.py HEATMAP_BASELINE + race/heatmap.py aggregator + cache + GET /api/race/heatmap + harness run_meta + invalidate_cache hook (Wave 1)
+- [ ] 09-02-PLAN.md — GET /api/race/runs/{run_id}/trace replay route + 400/404/schema tests (Wave 1)
+- [ ] 09-03-PLAN.md — pytest --update-snapshots flag + _replay_helpers.replay_with_k + test_replay_symmetry + tests/test_recovery_calibration.py K∈{2,3,4,5} sweep (Wave 1)
+- [ ] 09-04-PLAN.md — HardnessFailureHeatmap.tsx wrapper + useRaceHeatmap hook + fetchRaceHeatmap client + RacePage wiring (Wave 2)
 **UI hint**: yes
 
 ### Phase 10: OG Image & Sharing
@@ -152,7 +157,7 @@ Plans:
 | 6. TraceRecorder Schema Gate & Race Foundation | v2.0 | 0/8 | Pending | — |
 | 7. Race Backend — Lanes, Harness, Recovery | v2.0 | 10/11 | In progress | — |
 | 8. Race Page UI & Visual Contract | v2.0 | 0/7 | Planned | — |
-| 9. Heatmap, Replay & K=3 Calibration | v2.0 | 0/3 | Pending | — |
+| 9. Heatmap, Replay & K=3 Calibration | v2.0 | 0/4 | Planned | — |
 | 10. OG Image & Sharing | v2.0 | 0/3 | Pending | — |
 | 11. Tool Discovery Scenario | v2.0 | 0/3 | Pending | — |
 | 12. Comparison Visualization Upgrades | v2.0 | 0/3 | Pending | — |
