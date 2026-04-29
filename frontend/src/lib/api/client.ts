@@ -10,6 +10,7 @@ import type {
   TelemetrySnapshot,
   TrendsResponse,
 } from "../types/api";
+import type { RaceEvent } from "../types/race";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "";
 
@@ -128,4 +129,35 @@ export async function fetchRemoteA2aHealth(urls?: {
   if (urls?.policy_url) params.set("policy_url", urls.policy_url);
   const query = params.toString();
   return requestJson<RemoteA2AHealthResponse>(`/api/a2a/health${query ? `?${query}` : ""}`);
+}
+
+// ---- Race Replay -----------------------------------------------------------
+
+export interface RaceReplayPayload {
+  run_id: string;
+  events: RaceEvent[];
+  schema_version: string;
+}
+
+/** Regex for valid run_id path segment (T-08-05: reject path traversal before fetch). */
+const RUN_ID_REGEX = /^[a-zA-Z0-9_-]{1,64}$/;
+
+export function isValidRunId(run_id: string): boolean {
+  return RUN_ID_REGEX.test(run_id);
+}
+
+/**
+ * Fetch the trace for a completed race run.
+ * Phase 9 HEAT-03 ships the backend; Phase 8 ships the typed call signature only (D-48).
+ *
+ * Security: run_id is validated against RUN_ID_REGEX before use (T-08-05).
+ * URL construction uses encodeURIComponent as belt-and-suspenders (T-08-04).
+ */
+export async function fetchRaceReplay(run_id: string): Promise<RaceReplayPayload> {
+  if (!isValidRunId(run_id)) {
+    throw new Error("Invalid run_id");
+  }
+  const res = await fetch(`/api/race/runs/${encodeURIComponent(run_id)}/trace`);
+  if (!res.ok) throw new Error(`Replay fetch failed: ${res.status}`);
+  return (await res.json()) as RaceReplayPayload;
 }
