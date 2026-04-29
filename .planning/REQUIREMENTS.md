@@ -36,13 +36,13 @@ Lanes, harness, recovery state machine, tasks.
 
 Three-lane scoreboard, banner, methodology, page states.
 
-- [ ] **UIRACE-01**: `frontend/src/features/race/RacePage.tsx` renders the locked information hierarchy — top bar, status strip, three lanes (1200px central column), characteristic-failure banner, methodology, heatmap
-- [ ] **UIRACE-02**: All 12 page states render correctly (pre-race, countdown, live n=1, live n=5, done, replay, sparse-heatmap, ws-disconnected, ws-reconnecting, indeterminate, lane-failed, heatmap-empty); WS reconnect resumes from last `turn_index`
-- [ ] **UIRACE-03**: Visual contract enforced — left-edge lane stripe, pill-shaped failure-state badge, border-radius scale (lane=18 / banner=0 / badge=4 / heatmap-cell=0 / pills=999), banner h1 left-aligned with 4px primary rule and italic dynamic clause, methodology as flat section (no Paper/Card), label-above-value ticker
-- [ ] **UIRACE-04**: `failureTagColor` token map (5 entries) added to `frontend/src/lib/trace/eventColors.ts`; consumed by both heatmap cells and failure-state badges; color paired with icon + label (never sole information channel)
-- [ ] **UIRACE-05**: Responsive contract — desktop ≥1200px three-lane row, tablet 768-1199 shrinks but keeps three lanes, small-tablet 480-767 compacts metrics, mobile <480 renders `?mode=summary` with cropped anchor PNG + heatmap
-- [ ] **UIRACE-06**: Accessibility contract — keyboard nav (Tab order, focus-visible), WCAG AA contrast, ARIA landmarks (banner / main / aside), `prefers-reduced-motion` honored on all animated transitions, `prefers-contrast: more` widens stripe + outline, fault_observed announced via `aria-live="polite"`
-- [ ] **UIRACE-07**: 8 new glossary terms added (ttff, recovery_rate, hardness_profile, recovered, gave_up, kept_going_without_noticing, kept_going_to_failure, indeterminate); first-mention rule extended to Race page
+- [x] **UIRACE-01**: `frontend/src/features/race/RacePage.tsx` renders the locked information hierarchy — top bar, status strip, three lanes (1200px central column), characteristic-failure banner, methodology, heatmap
+- [x] **UIRACE-02**: All 12 page states render correctly (pre-race, countdown, live n=1, live n=5, done, replay, sparse-heatmap, ws-disconnected, ws-reconnecting, indeterminate, lane-failed, heatmap-empty); WS reconnect resumes from last `turn_index`
+- [x] **UIRACE-03**: Visual contract enforced — left-edge lane stripe, pill-shaped failure-state badge, border-radius scale (lane=18 / banner=0 / badge=4 / heatmap-cell=0 / pills=999), banner h1 left-aligned with 4px primary rule and italic dynamic clause, methodology as flat section (no Paper/Card), label-above-value ticker
+- [x] **UIRACE-04**: `failureTagColor` token map (5 entries) added to `frontend/src/lib/trace/eventColors.ts`; consumed by both heatmap cells and failure-state badges; color paired with icon + label (never sole information channel)
+- [x] **UIRACE-05**: Responsive contract — desktop ≥1200px three-lane row, tablet 768-1199 shrinks but keeps three lanes, small-tablet 480-767 compacts metrics, mobile <480 renders `?mode=summary` with cropped anchor PNG + heatmap (Phase 8 ships placeholder; Phase 10 ships full PNG)
+- [x] **UIRACE-06**: Accessibility contract — keyboard nav (Tab order, focus-visible), WCAG AA contrast, ARIA landmarks (banner / main / aside), `prefers-reduced-motion` honored on all animated transitions, `prefers-contrast: more` widens stripe + outline, fault_observed announced via `aria-live="polite"`
+- [x] **UIRACE-07**: 8 new glossary terms added (ttff, recovery_rate, hardness_profile, recovered, gave_up, kept_going_without_noticing, kept_going_to_failure, indeterminate); first-mention rule extended to Race page
 
 ### Heatmap & Replay (HEAT)
 
@@ -147,13 +147,13 @@ Populated by roadmap creation 2026-04-28. Phases 6-13 carry the v2.0 milestone.
 | RACE-05 | Phase 7 | Complete |
 | RACE-06 | Phase 7 | Complete |
 | RACE-07 | Phase 7 | Complete |
-| UIRACE-01 | Phase 8 | Pending |
-| UIRACE-02 | Phase 8 | Pending |
-| UIRACE-03 | Phase 8 | Pending |
-| UIRACE-04 | Phase 8 | Pending |
-| UIRACE-05 | Phase 8 | Pending |
-| UIRACE-06 | Phase 8 | Pending |
-| UIRACE-07 | Phase 8 | Pending |
+| UIRACE-01 | Phase 8 | Complete |
+| UIRACE-02 | Phase 8 | Complete |
+| UIRACE-03 | Phase 8 | Complete |
+| UIRACE-04 | Phase 8 | Complete |
+| UIRACE-05 | Phase 8 | Complete |
+| UIRACE-06 | Phase 8 | Complete |
+| UIRACE-07 | Phase 8 | Complete |
 | HEAT-01 | Phase 9 | Pending |
 | HEAT-02 | Phase 9 | Pending |
 | HEAT-03 | Phase 9 | Pending |
