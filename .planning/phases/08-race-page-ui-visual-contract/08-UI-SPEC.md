@@ -1,10 +1,11 @@
 ---
 phase: 8
 slug: race-page-ui-visual-contract
-status: draft
+status: approved
 shadcn_initialized: false
 preset: none
 created: 2026-04-29
+reviewed_at: 2026-04-29
 ---
 
 # Phase 8 — UI Design Contract
