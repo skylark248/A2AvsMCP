@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Race Demo + Discovery + Visualization
-status: ready_to_execute
-stopped_at: Phase 8 plans verified (7 plans, 4 waves)
-last_updated: "2026-04-29T11:04:00.000Z"
-last_activity: "2026-04-29 16:34 — Phase 8 plans created (7 plans across 4 waves), checker PASSED iteration 2 after 04 split + 9 fixes."
+status: executing
+stopped_at: Phase 8 UI-SPEC approved
+last_updated: "2026-04-29T11:07:52.186Z"
+last_activity: 2026-04-29 -- Phase 08 execution started
 progress:
   total_phases: 8
   completed_phases: 2
@@ -21,14 +21,15 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** A side-by-side, runnable comparison that makes the differences between MCP and A2A visible — not described, not diagrammed, but live and traceable.
-**Current focus:** Phase 8 (Race Page UI & Visual Contract) — plans verified, ready to execute.
+**Current focus:** Phase 08 — race-page-ui-visual-contract
 
 ## Current Position
 
-Phase: 8 — Race Page UI & Visual Contract — PLANNED (7 plans, 4 waves; checker PASSED)
+Phase: 08 (race-page-ui-visual-contract) — EXECUTING
+Plan: 1 of 7
 Next action: `/gsd-execute-phase 8` to run plans wave-by-wave
-Status: 7 plans verified across 4 waves. W1: 08-01 (eventColors+failureTagColor+glossary+FirstMentionProvider+GlossaryTerm). W2: 08-02 (routes+AppShell+RacePage shell+derivePageState). W3: 08-03 (useRaceStream+useReducer+useRaceReplay), 08-04a (RaceLaneCard+Ticker+FailureStateBadge+ReplayPill), 08-04b (RaceStatusStrip+Banner+MethodologySection; depends_on 04a for ReplayPill), 08-05 (HeatmapScaffold CSS Grid + ReplayScrubber). W4: 08-06 (integration: 12 page-state fixtures + a11y + responsive tests). UIRACE-01..07 all covered. D-44..D-51 all referenced. Threat models on every plan. Original Plan 04 split into 04a/04b after iter-1 checker BLOCKER on scope (8 files in 1 task).
-Last activity: 2026-04-29 16:34 — Phase 8 plans created and verified.
+Status: Executing Phase 08
+Last activity: 2026-04-29 -- Phase 08 execution started
 
 ## Accumulated Context
 
