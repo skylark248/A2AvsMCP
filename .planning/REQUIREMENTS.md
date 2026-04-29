@@ -142,11 +142,11 @@ Populated by roadmap creation 2026-04-28. Phases 6-13 carry the v2.0 milestone.
 | TRC-04 | Phase 6 | Complete |
 | RACE-01 | Phase 7 | Complete |
 | RACE-02 | Phase 7 | Complete |
-| RACE-03 | Phase 7 | Pending |
+| RACE-03 | Phase 7 | Complete |
 | RACE-04 | Phase 7 | Complete |
 | RACE-05 | Phase 7 | Complete |
-| RACE-06 | Phase 7 | Pending |
-| RACE-07 | Phase 7 | Pending |
+| RACE-06 | Phase 7 | Complete |
+| RACE-07 | Phase 7 | Complete |
 | UIRACE-01 | Phase 8 | Pending |
 | UIRACE-02 | Phase 8 | Pending |
 | UIRACE-03 | Phase 8 | Pending |
