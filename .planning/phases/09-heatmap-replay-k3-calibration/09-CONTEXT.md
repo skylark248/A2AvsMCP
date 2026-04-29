@@ -59,6 +59,14 @@ Out of scope:
 ### Folded Todos
 - **TODO 8** — K=3 multi-task calibration. Promoted into v2.0 (PROJECT.md). HEAT-04 closes this todo on phase verification.
 
+### Plan-phase additions (2026-04-29, locked during /gsd-plan-phase 9)
+- **D-58:** **Add `run_meta` event to ndjson trace.** Harness emits `run_meta {model, seed, task_id, baseline_version}` as the first event of every run. Heatmap aggregator reads `run_meta` per run for D-55 baseline filter; replay endpoint preserves it. Backfill is not required — pre-D-58 runs are silently excluded by D-57 (no `run_meta` ⇒ off-baseline).
+  - **Why:** Run files lack a model/seed envelope today; without `run_meta` the baseline filter is a no-op and footer (model · seed · pinned task IDs) cannot honor D-55. Long-term correct design vs lazy "assume all baseline" hack.
+- **D-59:** **Defer `RaceEvent.type` (frontend) vs `event_type` (backend ndjson) normalization to a later phase.** HardnessFailureHeatmap reads aggregated cells, not raw events; replay endpoint returns trace as-is so the existing `useRaceReplay` typed stub is satisfied without a normalization pass. The mismatch becomes load-bearing only when a future phase reads raw events on the frontend.
+  - **Why:** Phase 8 didn't trip on it; in-scope Phase 9 surfaces (heatmap cells + replay payload pass-through) don't either. Lower risk to defer than to widen Phase 9 scope.
+- **D-60:** **Skip `/gsd-ui-phase 9` for the heatmap UI.** Phase 8 UI-SPEC + ROADMAP §Phase 9 success criteria #1+#2 + this CONTEXT D-53 cell shape already specify the heatmap visual contract (rows × columns, cell composition, legend strip, footer). HardnessFailureHeatmap.tsx is a data-wiring upgrade of HeatmapScaffold.tsx, not a new design.
+  - **Why:** Visual contract is fully covered upstream; running ui-phase would duplicate locked decisions and add a step. Plan-checker still verifies cell markup against D-46 (CSS Grid + role=gridcell, failureTagColor lookup).
+
 </decisions>
 
 <canonical_refs>
