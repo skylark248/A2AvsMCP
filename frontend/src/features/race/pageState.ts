@@ -55,8 +55,10 @@ export function derivePageState(input: DerivePageStateInput): PageState {
     if (laneStates.some((l) => l.terminal_tag === "indeterminate")) return "indeterminate";
     // heatmap-empty: race complete but no heatmap data yet (D-47).
     if (!input.heatmap_has_data) return "heatmap-empty";
-    // sparse-heatmap heuristic is deferred to Plan 05 (requires cell-coverage analysis).
-    // Until then, terminal + heatmap_has_data → done.
+    // sparse-heatmap: terminal + heatmap_has_data + low run volume (any lane total_count < 3).
+    // Low run count means the heatmap grid is sparsely populated — UIRACE-02 sparse-heatmap state.
+    const isSparse = laneStates.some((l) => l.total_count > 0 && l.total_count < 3);
+    if (isSparse) return "sparse-heatmap";
     return "done";
   }
 

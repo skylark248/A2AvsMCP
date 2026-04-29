@@ -16,3 +16,6 @@ export function renderWithProviders(ui: ReactElement, route: string = "/") {
     </ThemeProvider>,
   );
 }
+
+/** Alias for renderWithProviders — explicitly names the initial route for test clarity. */
+export const renderWithProvidersAtRoute = renderWithProviders;
