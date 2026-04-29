@@ -5,6 +5,7 @@ import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import PlayCircleOutlineOutlinedIcon from "@mui/icons-material/PlayCircleOutlineOutlined";
 import QueryStatsOutlinedIcon from "@mui/icons-material/QueryStatsOutlined";
 import SlideshowOutlinedIcon from "@mui/icons-material/SlideshowOutlined";
+import SportsScoreOutlinedIcon from "@mui/icons-material/SportsScoreOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import { AppBar, Box, Button, Container, Stack, Toolbar, Typography } from "@mui/material";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
@@ -20,6 +21,7 @@ const navItems = [
   { to: "/trends", label: "Trends", icon: <InsightsOutlinedIcon fontSize="small" /> },
   { to: "/presentation", label: "Presentation", icon: <SlideshowOutlinedIcon fontSize="small" /> },
   { to: "/telemetry", label: "Telemetry", icon: <QueryStatsOutlinedIcon fontSize="small" /> },
+  { to: "/race", label: "Race", icon: <SportsScoreOutlinedIcon fontSize="small" /> },
 ];
 
 export function AppShell() {

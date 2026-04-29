@@ -3,6 +3,7 @@ import { CircularProgress, Stack } from "@mui/material";
 import { createBrowserRouter } from "react-router-dom";
 
 import { AppShell } from "../components/layout/AppShell";
+import { FirstMentionProvider } from "../features/race/context/FirstMentionProvider";
 
 const LearningPage = lazy(() =>
   import("../features/learn/LearningPage").then((module) => ({
@@ -49,6 +50,12 @@ const TelemetryPage = lazy(() =>
 const ComparePage = lazy(() =>
   import("../features/compare/ComparePage").then((module) => ({
     default: module.ComparePage,
+  })),
+);
+
+const RacePage = lazy(() =>
+  import("../features/race/RacePage").then((module) => ({
+    default: module.RacePage,
   })),
 );
 function PageLoader() {
@@ -103,6 +110,22 @@ export const router = createBrowserRouter([
       {
         path: "compare",
         element: withSuspense(<ComparePage />),
+      },
+      {
+        path: "race",
+        element: withSuspense(
+          <FirstMentionProvider>
+            <RacePage />
+          </FirstMentionProvider>,
+        ),
+      },
+      {
+        path: "race/:run_id",
+        element: withSuspense(
+          <FirstMentionProvider>
+            <RacePage />
+          </FirstMentionProvider>,
+        ),
       },
     ],
   },
