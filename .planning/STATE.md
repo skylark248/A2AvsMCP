@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: "Race Demo + Discovery + Visualization"
-status: in_progress
-last_updated: "2026-04-29T03:40:00+05:30"
-last_activity: "2026-04-29 -- Phase 7 VERIFIED PASS-WITH-NOTES: VERIFICATION.md authored inline (gsd-verifier subagent quota-blocked); 5/5 phase success criteria mapped to source + tests; 7/7 RACE requirements complete; 8 IRON RULE audits pass; 147 race + 256 total tests green. Fixed REQUIREMENTS.md status table sync (RACE-03/06/07 stale 'Pending' → 'Complete' to match checked items)."
+status: ready_to_plan
+last_updated: "2026-04-29T04:05:00+05:30"
+last_activity: "2026-04-29 -- Phase 8 context gathered: 8 decisions D-44..D-51 across 4 areas (WS state, heatmap render, replay UX, first-mention popover); UIRACE-01..07 already locked, discussion focused on HOW. CONTEXT.md + DISCUSSION-LOG.md committed."
 progress:
   total_phases: 8
   completed_phases: 2
@@ -20,14 +20,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** A side-by-side, runnable comparison that makes the differences between MCP and A2A visible — not described, not diagrammed, but live and traceable.
-**Current focus:** Phase 7 COMPLETE (11/11 plans). Next: Phase 8 (Race Page UI & Visual Contract).
+**Current focus:** Phase 8 (Race Page UI & Visual Contract) — context gathered, ready to plan.
 
 ## Current Position
 
-Phase: 7 — Race Backend — Lanes, Harness, Recovery State Machine — COMPLETE (11/11 plans, shipped 2026-04-29)
-Next: Phase 8 — Race Page UI & Visual Contract (UIRACE-01..07; three-lane scoreboard, banner, methodology, 12 page states, responsive + a11y)
-Status: Phase 7 fully shipped. Plan 11 (Wave 6) landed the verification truth-bearer: 12 new test files + 10 fixture files in tests/race/; 110 new tests + 37 existing race tests = 147 race tests; full pytest tests/ -> 256 passed (no regression). Every RACE-01..07 success criterion mapped to >=1 named test method via traceability table in 07-11-SUMMARY.md. Every Phase 7 IRON RULE (D-21 no-LLM-in-hybrid, D-24 broker.send_task, D-25 single fault chokepoint, D-30 hardness coverage matrix, D-33 replay symmetry, D-36 regex FP <10% with negation guard, D-38 closed-tuple retry classifier, D-43 negotiate_meeting structural-only) has a named test enforcing it. Two Rule-1 deviations auto-fixed: (1) negation-guard test case mismatch — replaced "I am not retrying" with "without any timeout" because the regex's _NEGATION_FAULT_TOKENS lists `retry` (not `retrying`); (2) loader unknown-target test path — restructured to exercise the actual cross-validation path in load_task_config (raises ValueError, not pydantic.ValidationError) plus 3 explicit pydantic enum-rejection tests for FaultKind/HardnessType/OnFault.
-Last activity: 2026-04-29 03:40 — Phase 7 verification complete: VERIFICATION.md authored, REQUIREMENTS.md status table sync fixed, all 8 IRON RULES audited via grep, 147 race + 256 total tests green. Phase 7 ready to close.
+Phase: 8 — Race Page UI & Visual Contract — CONTEXT GATHERED (UIRACE-01..07; 8 decisions D-44..D-51 locked)
+Next action: `/gsd-plan-phase 8` to create plans from CONTEXT + REQUIREMENTS
+Status: Phase 7 shipped + verified (PASS-WITH-NOTES). Phase 8 context now gathered. 8 implementation decisions D-44..D-51 locked across 4 areas: D-44 useRaceStream hook + useReducer; D-45 per-lane turn_index reconnect cursor; D-46 CSS Grid + DOM heatmap cells; D-47 heatmap-empty preserves scaffold; D-48 separate /race/<run_id> route; D-49 status-strip replay pill + scrubber; D-50 click->MUI Popover (first), Tooltip (subsequent); D-51 route-scoped FirstMentionProvider context. UIRACE-01..07 already locked by REQUIREMENTS.md (file paths, radii scale, breakpoint px boundaries, a11y rules, failureTagColor 5 entries, 8 glossary terms) — discussion focused on HOW only.
+Last activity: 2026-04-29 04:05 — Phase 8 CONTEXT.md + DISCUSSION-LOG.md committed; STATE advanced to ready_to_plan for Phase 8.
 
 ## Accumulated Context
 
