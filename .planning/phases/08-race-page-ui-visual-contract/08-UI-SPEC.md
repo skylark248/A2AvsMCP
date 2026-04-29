@@ -63,9 +63,9 @@ All sizes from `frontend/src/app/theme.ts`. Body/label sizes are MUI defaults (1
 
 Notes:
 - Banner h1 maps to h2 in theme (1.6rem/700). The banner element uses `<h1>` semantically (ARIA landmark `role="banner"`) but receives h2 visual size to preserve hierarchy proportion on the dense race layout.
-- Ticker value (live metric number): 20px (1.25rem) / 700 — label-above-value pattern per UIRACE-03; value gets display treatment, label gets Label treatment.
+- Ticker value (live metric number): 18.4px (1.15rem) / 700 — label-above-value pattern per UIRACE-03; value uses Heading size, label uses Label size.
 - Italic dynamic clause in banner: same size/weight as parent (1.6rem/700) + `font-style: italic`. Source: UIRACE-03.
-- Replay pill text: 12px / 600 — all-caps tracking ("REPLAY · run abc123"). Source: D-49.
+- Replay pill text: 14px (0.875rem) / 700 — `text-transform: uppercase; letter-spacing: 0.08em` ("REPLAY · run abc123"). Source: D-49. Visual distinction provided by uppercase + tracking, not size reduction.
 - TODO-06 (real display typeface) deferred to v2.1+ — do not substitute font in Phase 8.
 
 ---
@@ -379,3 +379,4 @@ No third-party component registries. All components are MUI 7 or custom React. G
 
 *Phase: 8-race-page-ui-visual-contract*
 *UI-SPEC created: 2026-04-29*
+*UI-SPEC revised: 2026-04-29 — typography fix: collapsed to 4 sizes (14/16/18.4/25.6px) and 2 weights (400/700); eliminated 12px and 20px; replay pill moved to 14px/700/uppercase/letter-spacing; ticker value moved to 18.4px/700*
