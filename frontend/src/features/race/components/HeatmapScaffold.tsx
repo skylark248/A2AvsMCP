@@ -13,10 +13,16 @@
  */
 
 import type React from "react";
+import type { ComponentType } from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import { visuallyHidden } from "@mui/utils"; // canonical accessible-hide helper from @mui/utils
 import { failureTagColor } from "../../../lib/trace/eventColors";
 import type { FailureTag, RaceLane } from "../../../lib/types/race";
+
+/** MUI SvgIcon props subset needed to render a tag icon with fontSize */
+interface SvgIconLike {
+  fontSize?: "small" | "medium" | "large" | "inherit";
+}
 
 export type HardnessType =
   | "long_chain"
@@ -101,7 +107,7 @@ export function HeatmapScaffold({ cells }: { cells: HeatmapCells }) {
             {LANE_ORDER.map((lane) => {
               const cell = cells[row]?.[lane];
               const cfg = cell ? failureTagColor[cell.tag] : null;
-              const Icon = cfg?.Icon;
+              const Icon = cfg?.Icon as ComponentType<SvgIconLike> | undefined;
 
               return (
                 <Box

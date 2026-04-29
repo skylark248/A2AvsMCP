@@ -5,6 +5,7 @@
  * UI-SPEC line 128: prefers-reduced-motion disables CSS transitions.
  */
 
+import type React from "react";
 import { Box, Slider, Stack, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 
@@ -31,8 +32,11 @@ export function ReplayScrubber({
     setAnnounceText(`Turn ${value} of ${max}`);
   }, [value, max]);
 
+  const toSingleValue = (raw: number | number[]): number =>
+    Array.isArray(raw) ? (raw[0] ?? 0) : raw;
+
   const handleChange = (_evt: Event, raw: number | number[]) => {
-    const next = Array.isArray(raw) ? raw[0] : raw;
+    const next = toSingleValue(raw);
     onScrub(next);
 
     const now = Date.now();
@@ -52,7 +56,7 @@ export function ReplayScrubber({
     _evt: Event | React.SyntheticEvent,
     raw: number | number[],
   ) => {
-    const next = Array.isArray(raw) ? raw[0] : raw;
+    const next = toSingleValue(raw);
     setAnnounceText(`Turn ${next} of ${max}`);
     lastAnnounceRef.current = Date.now();
     pendingValueRef.current = null;
