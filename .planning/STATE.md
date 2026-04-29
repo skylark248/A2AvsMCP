@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Race Demo + Discovery + Visualization
-status: phase_complete
-stopped_at: Phase 8 verified PASS — 7/7 plans, 267 frontend tests green
-last_updated: "2026-04-29T16:11:00.000Z"
-last_activity: 2026-04-29 21:41 — Phase 8 executed across 4 waves; verifier PASS (15/15 truths); UIRACE-01..07 all complete
+status: ready_to_plan
+stopped_at: Phase 9 context gathered — 6 decisions (D-52..D-57); ready for /gsd-plan-phase 9
+last_updated: "2026-04-29T16:52:00.000Z"
+last_activity: 2026-04-29 22:22 — Phase 9 discuss-phase complete; CONTEXT.md + DISCUSSION-LOG.md written
 progress:
   total_phases: 8
   completed_phases: 3
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** A side-by-side, runnable comparison that makes the differences between MCP and A2A visible — not described, not diagrammed, but live and traceable.
-**Current focus:** Phase 08 — race-page-ui-visual-contract
+**Current focus:** Phase 09 — heatmap-replay-k3-calibration
 
 ## Current Position
 
-Phase: 08 (race-page-ui-visual-contract) — COMPLETE (PASS, 7/7 plans, 267 frontend tests)
-Plan: 7 of 7
-Next action: `/gsd-discuss-phase 9` (Heatmap, Replay & K=3 Calibration) — Phase 8 ships rendering layer + empty-state contract; Phase 9 wires heatmap data API (HEAT-01/02), deterministic replay path (HEAT-03), and K=3 calibration (HEAT-04)
+Phase: 09 (heatmap-replay-k3-calibration) — READY TO PLAN (CONTEXT.md gathered, 0/4 plans)
+Plan: 0 of TBD
+Next action: `/gsd-plan-phase 9` — 6 decisions locked (D-52..D-57): GET /api/race/heatmap aggregate endpoint, minimal cell shape, in-memory cache invalidated on race_done, pinned (model=claude-sonnet-4-6, seed=42, 3 v1 task_ids) baseline filter, HEATMAP_BASELINE module constant in race/config.py, off-baseline runs silently excluded. Researcher picks: replay tag computation (HEAT-03), K=3 calibration fixture format (HEAT-04), two-layer fixture plugin, cache invalidation transport, HardnessFailureHeatmap vs HeatmapScaffold replacement strategy.
 Status: Phase 08 complete; ready for Phase 09 planning. Wave breakdown: W1 08-01 (tokens/glossary/types), W2 08-02 (routes+shell+derivePageState), W3a 08-03+04a+05 (parallel: hooks/lane components/heatmap+scrubber), W3b 08-04b (status strip+banner+methodology), W4 08-06 (RacePage integration + 12 fixtures + a11y + responsive). UIRACE-01..07 all verified; D-44..D-51 all honored. 24 commits across waves. Deferred: heatmap data backend → P9, replay endpoint → P9, OG/mobile PNG → P10.
 Last activity: 2026-04-29 21:41 — Phase 08 verified PASS
 
