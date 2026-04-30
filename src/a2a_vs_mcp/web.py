@@ -866,6 +866,26 @@ def api_race_heatmap() -> dict:
     return get_heatmap()
 
 
+@app.get("/api/race/runs/{run_id}/trace")
+def api_race_run_trace(run_id: str) -> dict:
+    """Replay endpoint — load ndjson trace from disk for /race/<run_id> (HEAT-03).
+
+    Path-traversal guard via _validate_run_id BEFORE any path resolution.
+    No live LLM. No event mutation. schema_version is the disk schema (Phase 6 D-03).
+    Events shipped verbatim (D-59 — backend `event_type` key NOT renamed).
+    Frontend contract: matches RaceReplayPayload at client.ts:136-140.
+    """
+    try:
+        _validate_run_id(run_id)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    try:
+        events = load_run(run_id, RUNS_DIR)
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="run not found")
+    return {"run_id": run_id, "events": events, "schema_version": "1.0"}
+
+
 @app.websocket("/api/race/ws")
 async def race_ws(
     websocket: WebSocket,
