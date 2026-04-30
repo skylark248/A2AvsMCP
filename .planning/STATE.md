@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Race Demo + Discovery + Visualization
-status: phase_complete
-stopped_at: Phase 10 (OG Image & Sharing) shipped — 5/5 plans, VERIFICATION.md PASSED
-last_updated: "2026-04-30T21:58:00.000Z"
-last_activity: 2026-04-30 21:58 — Phase 10 execution complete; 4 ROADMAP success criteria verified; 342 backend + 286 frontend tests green
+status: ready_to_plan
+stopped_at: Phase 11 (Tool Discovery Scenario) context gathered — 7 decisions locked (D-67..D-73); 2 areas to research/planner discretion
+last_updated: "2026-04-30T22:30:00.000Z"
+last_activity: 2026-04-30 22:30 — Phase 11 CONTEXT.md + DISCUSSION-LOG.md committed at 6033118; ready for /gsd-plan-phase 11
 progress:
   total_phases: 8
   completed_phases: 5
@@ -21,13 +21,21 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** A side-by-side, runnable comparison that makes the differences between MCP and A2A visible — not described, not diagrammed, but live and traceable.
-**Current focus:** Phase 11 — Tool Discovery Scenario (next; Phase 10 complete)
+**Current focus:** Phase 11 — Tool Discovery Scenario (CONTEXT.md ready; next: /gsd-plan-phase 11)
 
 ## Current Position
 
-Phase: 10 (og-image-and-sharing) — COMPLETE; 5/5 plans shipped; 4/4 ROADMAP success criteria verified.
-Plan: 5 of 5 done. Wave 1: 10-01 (race/og.py module + 6 cache tests). Wave 2: 10-02 (4 FastAPI routes + 10-test D-63 matrix), 10-03 (RacePage `?og=1` mode + sentinels + HeatmapAnnotationStrip). Wave 3: 10-04 (CopyHeadlineImageButton + html2canvas lazy + ClipboardItem + 4 vitest cases). Wave 4: 10-05 (UIRACE-05 mobile <img> consumer).
-Next action: Phase 11 (Tool Discovery Scenario) — `/gsd-discuss-phase 11` to plan. Phase 10 closed TODO 3 (OG image generation); TODO 9 (HMAC URLs) explicitly deferred to v2.1+.
+Phase: 11 (tool-discovery-scenario) — CONTEXT.md gathered; ready to plan.
+Decisions locked (D-67..D-73):
+- D-67: Net-new TICKET-1013 + net-new customer in seeds/scenarios.json (researcher fills profile)
+- D-68: Unknown product/SKU in query forces discovery — naturally exercises stale-cache + unknown-tool-fallback
+- D-69: difficulty=advanced, tags=[discovery, fallback]
+- D-70: TraceWorkspacePage — active protocol column populated; sibling column dimmed with placeholder
+- D-71: Sibling placeholder = static hint text only ("Run on {A2A|MCP} to populate"); no inline run button
+- D-72: CompareTracesPanel — single DiscoveryPhasePanel above both columns, full-width, internal MCP|A2A split
+- D-73: Panel mounts only when scenario === "tool_discovery" on TraceWorkspacePage
+Researcher/planner discretion: failure-mode injection mechanism (reuse tool_transport_fallback?), ReportDetailPage/RacePage placement, collapsible default, talking_point copy, customer profile.
+Next action: `/gsd-plan-phase 11` (or `/gsd-ui-phase 11` first for DiscoveryPhasePanel design contract).
 Status: Phase 10 implementation decisions D-61..D-66 honoured (Playwright singleton + asyncio.Lock, 503 + canvas fallback, mock render in CI, html2canvas lazy, ClipboardItem + download fallback, manual OG_LAYOUT_VERSION). Backend pytest 342/342 (336 baseline + 6 og_cache + 10 og_routes); frontend vitest 286/286 across 31 files (280 baseline + 2 HeatmapAnnotationStrip + 4 CopyHeadlineImageButton; Phase 8 RacePage.responsive copy assertion updated for UIRACE-05 closure). Wave 2 quota recovery: 10-02 + 10-03 each had Task 1 committed pre-quota; Task 2 salvaged from main tree; remaining tasks (test_og_routes.py, RacePage `?og=1` wiring, both SUMMARYs) executed inline.
 Last activity: 2026-04-30 21:58 — Phase 10 verified PASS; ROADMAP + STATE advanced
 
