@@ -1203,22 +1203,13 @@ app = FastAPI(lifespan=lifespan)
 | A8 | Master design's "~500ms-1s warm cache miss" is achievable | (Specifics summary) | Low — driven by Playwright performance; will measure during dev |
 | A9 | `frontend/dist/index.html` is built before the server starts in production | Meta-tag injection | High — if dist doesn't exist, the OG HTML route falls back to the `render_react_app()` 503 path. Plan must guard. |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **n (run count) field name in HeatmapPayload**
-   - What we know: Phase 9 D-58 emits `run_meta` with `model · seed · task_ids`; aggregator counts runs.
-   - What's unclear: exact field name (`n`, `n_runs`, `count`).
-   - Recommendation: planner inspects `frontend/src/lib/types/race.ts` HeatmapPayload during 10-03 plan-task; if absent, derive from `Σ recovery_rate.den` per row or expose via Phase 9 follow-up.
+1. **n (run count) field name in HeatmapPayload** — **(RESOLVED)** Plan 10-03 Task 2 directs executor to inspect `frontend/src/lib/types/race.ts` HeatmapPayload during implementation; if absent, derive from `Σ recovery_rate.den` per row. No blocker for planning.
 
-2. **Should `/race` (no run_id) also gain the OG meta-tag treatment?**
-   - What we know: `/race` is the live, no-run-yet page; an OG embed there would be generic.
-   - What's unclear: whether the demo wants generic OG-fallback marketing copy.
-   - Recommendation: out of scope; only `/race/{run_id}` URLs are shareable artifacts. `/race` can return plain `render_react_app()`.
+2. **Should `/race` (no run_id) also gain the OG meta-tag treatment?** — **(RESOLVED)** Out of scope. Only `/race/{run_id}` URLs are shareable artifacts. `/race` returns plain `render_react_app()` per Plan 10-02.
 
-3. **Single-flight on cache miss (Pitfall 6)**
-   - What we know: Two requests for the same uncached run can race.
-   - What's unclear: whether to add the inside-lock re-check now or wait for production traffic to surface it.
-   - Recommendation: add the re-check now — it's a 2-line addition with no downside.
+3. **Single-flight on cache miss (Pitfall 6)** — **(RESOLVED)** Plan 10-02 Task 2 implements inside-lock re-check (2-line addition).
 
 ## Environment Availability
 
@@ -1316,8 +1307,8 @@ These constraints are operational; Phase 10 implementation does not contradict a
 | Cross-browser | MEDIUM | Firefox ClipboardItem state is the only piece resting on feature-detection-and-fallback rather than direct testing |
 
 ### Open Questions
-1. Exact field name of `n` (run count) in `HeatmapPayload` — needs `lib/types/race.ts` inspection at plan time.
-2. Whether to add inside-lock re-check (single-flight on cache miss) — recommended yes, 2 lines.
+1. (RESOLVED) Exact field name of `n` (run count) in `HeatmapPayload` — Plan 10-03 Task 2 inspects at execution time; fallback `Σ recovery_rate.den`.
+2. (RESOLVED) Inside-lock re-check (single-flight on cache miss) — Plan 10-02 Task 2 implements.
 
 ### Ready for Planning
 Research complete. Five-plan decomposition (or three-plan slim version) provided with explicit wave assignments. Planner can now create PLAN.md files with no further investigation.
