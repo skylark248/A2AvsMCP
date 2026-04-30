@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Race Demo + Discovery + Visualization
-status: phase_complete
-stopped_at: Phase 9 COMPLETE — verifier PASS 21/21 must-haves; ready for Phase 10 (OG Image & Sharing)
-last_updated: "2026-04-30T11:59:00.000Z"
-last_activity: 2026-04-30 11:59 — Phase 9 verified PASS; ROADMAP.md checkbox marked complete
+status: ready_to_plan
+stopped_at: Phase 10 context gathered — D-61..D-66 locked; ready for `/gsd-plan-phase 10`
+last_updated: "2026-04-30T12:27:00.000Z"
+last_activity: 2026-04-30 12:27 — Phase 10 CONTEXT.md + DISCUSSION-LOG.md committed (c5355bc)
 progress:
   total_phases: 8
   completed_phases: 4
@@ -25,9 +25,9 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 
 ## Current Position
 
-Phase: 09 (heatmap-replay-k3-calibration) — COMPLETE + VERIFIED (4/4 plans, 21/21 must-haves)
-Plan: 4 of 4 SHIPPED (09-01 heatmap backend, 09-02 replay route, 09-03 K-calibration, 09-04 frontend wiring)
-Next action: `/gsd-discuss-phase 10` or `/gsd-plan-phase 10` — Phase 10 (OG Image & Sharing) unblocked: heatmap card renders populated cells under `/race/<run_id>?og=1` mode for Playwright PNG capture.
+Phase: 10 (og-image-and-sharing) — CONTEXT GATHERED, ready to plan
+Plan: 0 of TBD — `/gsd-plan-phase 10` next
+Next action: `/gsd-plan-phase 10` — discussion captured 6 implementation decisions (D-61..D-66): Playwright singleton + asyncio.Lock (D-61), 503 + canvas fallback on render failure (D-62), mock render fn in CI tests (D-63), html2canvas lazy-loaded for client snapshot (D-64), ClipboardItem with download fallback (D-65), manual `OG_LAYOUT_VERSION` Python int constant for cache key (D-66; resolves master-design vs eng-review-iter-2 Decision #3 conflict in favor of REQUIREMENTS.md OG-01 verbatim). Phase 10 closes TODO 3 (OG image generation); TODO 9 (HMAC URLs) explicitly deferred.
 Status: Plan 09-04 complete with 4 atomic commits (1a77308 RED hook, 2ea9f4d GREEN hook+types+client, cfa20e3 RED component, 864fa2d GREEN component+RacePage wiring). 2 auto-fixed deviations: (Rule 1) hook initial loading state had to be true (not false) for synchronous test assertion to pass before useEffect flushes — one-line fix; (Rule 1) component test getByText('Recovered') matched both legend chip + sr-only label inside populated cell (UIRACE-04 channel 4) — switched to getAllByText >= 1 for the two collision-prone tags. HEAT-01 + HEAT-02 satisfied: HardnessFailureHeatmap renders rows × cols via HeatmapScaffold with directional pill in MUI secondary, 5-pill always-visible legend strip, and data-driven model · seed · task_ids footer. LANDMINE 1 (backend "multi_source" → frontend "multi_source_synthesis") resolved at the wrapper transform boundary via HARDNESS_BACKEND_TO_FRONTEND closed Record. D-46 (HeatmapScaffold rendering primitive) and D-47 (empty-state never-unmount) preserved. Frontend suite 280/280 (+13), backend pytest 326/326 (no regression).
 Last activity: 2026-04-30 11:50 — Phase 09 Plan 04 complete; Phase 9 fully shipped
 
