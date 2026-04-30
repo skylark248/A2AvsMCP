@@ -174,7 +174,7 @@
     "title": "Discovery: Unknown Product Triage",
     "difficulty": "advanced",
     "tags": ["discovery", "fallback"],
-    "query": "I just bought a NebulaSync Hub. It won't pair with my devices. Where do I start?",
+    "query": "I just bought a NebulaSync Hub and the setup is failing — it won't pair with my devices. Where do I start?",
     "talking_point": {
       "headline": "Discovery before answer",
       "sentence": "MCP enumerates tools and falls back to search_docs when no warranty/order matches; A2A enumerates agent skills and escalates to documentation specialist.",
