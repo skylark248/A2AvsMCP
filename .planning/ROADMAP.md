@@ -112,7 +112,13 @@ Plans:
   2. Hitting `/race/<run_id>/heatmap.png` returns a 1200×900 heatmap card screenshot with `run_id · model · seed · n · task_ids` annotation, sharing the `OG_LAYOUT_VERSION` cache key.
   3. A user can click "Copy headline image" beside the banner and a client-side canvas snapshot of the same 1200×630 anchor region is copied to clipboard, even if server OG generation has failed.
   4. Hitting `/race/<run_id>/og.png` or `/heatmap.png` for an unknown `run_id` returns 404 before Playwright spawns, and bumping `OG_LAYOUT_VERSION` causes stale `<id>-v<old>.*` files to be purged on next request.
-**Plans**: TBD
+**Plans**: 5 plans across 4 waves
+Plans:
+- [ ] 10-01-PLAN.md — race/og.py module (Playwright lifespan + asyncio.Lock + cache helpers) + OG_LAYOUT_VERSION + .gitignore + pyproject optional-dep + cache unit tests (Wave 1)
+- [ ] 10-02-PLAN.md — web.py lifespan registration + /race + /race/{run_id} HTML route w/ meta-tag injection + /race/{run_id}/og.png + /race/{run_id}/heatmap.png + 9-test D-63 mocked-render matrix (Wave 2)
+- [ ] 10-03-PLAN.md — RacePage `?og=1` mode + data-og-anchor/data-og-ready/data-heatmap-anchor sentinels + WS-gating + HardnessFailureHeatmap ogAnnotation prop + HeatmapAnnotationStrip component (Wave 2)
+- [ ] 10-04-PLAN.md — html2canvas dep + CopyHeadlineImageButton (lazy import + ClipboardItem + download fallback) + CharacteristicFailureBanner actionSlot prop + RacePage button mount + 4 vitest cases (Wave 3)
+- [ ] 10-05-PLAN.md — Phase 8 mobile-summary placeholder closure: <img src=/race/{run_id}/og.png> consumer w/ onError graceful degradation (Wave 4)
 **UI hint**: yes
 
 ### Phase 11: Tool Discovery Scenario
