@@ -545,6 +545,64 @@ def race_run_html(run_id: str, request: Request) -> HTMLResponse:
     return HTMLResponse(html_out)
 
 
+@app.get("/race/{run_id}/og.png")
+async def race_og_png(run_id: str, request: Request) -> Response:
+    """OG-04: 404 BEFORE Playwright spawn; D-66 cache pattern; D-61 single-flight; D-62 503 on render failure (no cache write)."""
+    try:
+        _validate_run_id(run_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail="invalid run_id") from exc
+    if not (RUNS_DIR / f"{run_id}.json").exists():
+        raise HTTPException(status_code=404, detail="run not found")
+    cleanup_stale(run_id, "og")
+    cache = og_cache_path(run_id, "og")
+    if cache.exists():
+        return FileResponse(cache, media_type="image/png")
+    async with OG_RENDER_LOCK:
+        if cache.exists():
+            return FileResponse(cache, media_type="image/png")
+        try:
+            data = await render_og_png(run_id, request.app.state.og_browser)
+        except HTTPException:
+            raise
+        except Exception as exc:
+            raise HTTPException(
+                status_code=503, detail="og render failed; please retry"
+            ) from exc
+        OG_DIR.mkdir(parents=True, exist_ok=True)
+        cache.write_bytes(data)
+        return Response(content=data, media_type="image/png")
+
+
+@app.get("/race/{run_id}/heatmap.png")
+async def race_heatmap_png(run_id: str, request: Request) -> Response:
+    """OG-02: heatmap.png surface mirrors og.png shape (single-flight cache + 503 on failure)."""
+    try:
+        _validate_run_id(run_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail="invalid run_id") from exc
+    if not (RUNS_DIR / f"{run_id}.json").exists():
+        raise HTTPException(status_code=404, detail="run not found")
+    cleanup_stale(run_id, "heatmap")
+    cache = og_cache_path(run_id, "heatmap")
+    if cache.exists():
+        return FileResponse(cache, media_type="image/png")
+    async with OG_RENDER_LOCK:
+        if cache.exists():
+            return FileResponse(cache, media_type="image/png")
+        try:
+            data = await render_heatmap_png(run_id, request.app.state.og_browser)
+        except HTTPException:
+            raise
+        except Exception as exc:
+            raise HTTPException(
+                status_code=503, detail="heatmap render failed; please retry"
+            ) from exc
+        OG_DIR.mkdir(parents=True, exist_ok=True)
+        cache.write_bytes(data)
+        return Response(content=data, media_type="image/png")
+
+
 @app.get("/legacy", response_class=HTMLResponse)
 def legacy_index(request: Request) -> HTMLResponse:
     context = build_context(request)
