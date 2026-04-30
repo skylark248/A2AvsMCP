@@ -130,7 +130,7 @@ Plans:
   2. A viewer of the run sees a `DiscoveryPhasePanel` above the trace explorer rendering the MCP tool catalog and A2A agent cards side-by-side with timestamps, before any execution-phase events.
 **Plans**: 4 plans across 3 waves
 Plans:
-- [ ] 11-01-PLAN.md — Wave 0 refactor: extract JsonTree + FIELD_ANNOTATIONS + annotate from ProtocolEnvelopeDrawer to lib/trace/JsonTree.tsx (DISC-02)
+- [x] 11-01-PLAN.md — Wave 0 refactor: extract JsonTree + FIELD_ANNOTATIONS + annotate from ProtocolEnvelopeDrawer to lib/trace/JsonTree.tsx (DISC-02)
 - [ ] 11-02-PLAN.md — Wave 1 backend: TICKET-1013 + CUST-005 seed rows + pytest coverage proving discovery+fallback emission (DISC-01)
 - [ ] 11-03-PLAN.md — Wave 1 frontend: DiscoveryPhasePanel.tsx component + DiscoveryPhasePanelProps + 5 vitest cases (incl. a2a_remote_discovery skill chips) (DISC-02)
 - [ ] 11-04-PLAN.md — Wave 2 mount-site wiring: TraceWorkspacePage gate (D-73) + CompareTracesPanel single-panel above dual-column (D-72) + integration verification (DISC-02)
@@ -170,6 +170,6 @@ Plans:
 | 8. Race Page UI & Visual Contract | v2.0 | 0/7 | Planned | — |
 | 9. Heatmap, Replay & K=3 Calibration | v2.0 | 4/4 | Awaiting verification | — |
 | 10. OG Image & Sharing | v2.0 | 0/3 | Pending | — |
-| 11. Tool Discovery Scenario | v2.0 | 0/4 | Pending | — |
+| 11. Tool Discovery Scenario | v2.0 | 1/4 | In progress | — |
 | 12. Comparison Visualization Upgrades | v2.0 | 0/3 | Pending | — |
 | 13. Design System Lock | v2.0 | 0/2 | Pending | — |
