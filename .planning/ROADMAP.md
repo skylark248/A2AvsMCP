@@ -25,7 +25,7 @@ Full details: [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md)
 - [x] **Phase 6: TraceRecorder Schema Gate & Race Foundation** — Pre-design gate that lands the trace + websocket schema everything else depends on (8/8 plans, completed 2026-04-28)
 - [x] **Phase 7: Race Backend — Lanes, Harness, Recovery State Machine** — Three runners, harness, recovery classifier, tasks, mock APIs (11/11 plans, completed 2026-04-29)
 - [x] **Phase 8: Race Page UI & Visual Contract** — Three-lane scoreboard, banner, methodology, 12 page states, responsive + a11y (7/7 plans, completed 2026-04-29)
-- [ ] **Phase 9: Heatmap, Replay & K=3 Calibration** — Hardness-vs-failure heatmap, deterministic replay, multi-task K=3 sweep
+- [x] **Phase 9: Heatmap, Replay & K=3 Calibration** — Hardness-vs-failure heatmap, deterministic replay, multi-task K=3 sweep (4/4 plans, completed 2026-04-30)
 - [ ] **Phase 10: OG Image & Sharing** — Playwright OG/heatmap PNGs, copy-headline fallback, cache invalidation
 - [ ] **Phase 11: Tool Discovery Scenario** — `tool_discovery` scenario + `DiscoveryPhasePanel` surfacing MCP/A2A discovery as first-class UI
 - [ ] **Phase 12: Comparison Visualization Upgrades** — Annotated trace diff + interactive sequence diagram

@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Race Demo + Discovery + Visualization
-status: in_progress
-stopped_at: Phase 9 ALL PLANS COMPLETE (09-01..09-04) — ready for /gsd-verify-phase 9
-last_updated: "2026-04-30T06:20:22Z"
-last_activity: 2026-04-30 11:50 — Phase 9 Plan 04 complete (4 commits, 13 new frontend tests, 280/280 vitest, 326/326 pytest)
+status: phase_complete
+stopped_at: Phase 9 COMPLETE — verifier PASS 21/21 must-haves; ready for Phase 10 (OG Image & Sharing)
+last_updated: "2026-04-30T11:59:00.000Z"
+last_activity: 2026-04-30 11:59 — Phase 9 verified PASS; ROADMAP.md checkbox marked complete
 progress:
   total_phases: 8
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 30
   completed_plans: 30
   percent: 100
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** A side-by-side, runnable comparison that makes the differences between MCP and A2A visible — not described, not diagrammed, but live and traceable.
-**Current focus:** Phase 09 — heatmap-replay-k3-calibration
+**Current focus:** Phase 10 — OG Image & Sharing (queued)
 
 ## Current Position
 
-Phase: 09 (heatmap-replay-k3-calibration) — ALL PLANS COMPLETE (4/4)
-Plan: 4 of 4 complete (09-01, 09-02, 09-03, 09-04 SHIPPED 2026-04-30)
-Next action: `/gsd-verify-phase 9` — all 4 ROADMAP success criteria are now testable in CI. After PASS verdict, advance to Phase 10 (OG Image & Sharing) which is unblocked: heatmap card now renders populated cells under `/race/<run_id>?og=1` mode for Playwright PNG capture.
+Phase: 09 (heatmap-replay-k3-calibration) — COMPLETE + VERIFIED (4/4 plans, 21/21 must-haves)
+Plan: 4 of 4 SHIPPED (09-01 heatmap backend, 09-02 replay route, 09-03 K-calibration, 09-04 frontend wiring)
+Next action: `/gsd-discuss-phase 10` or `/gsd-plan-phase 10` — Phase 10 (OG Image & Sharing) unblocked: heatmap card renders populated cells under `/race/<run_id>?og=1` mode for Playwright PNG capture.
 Status: Plan 09-04 complete with 4 atomic commits (1a77308 RED hook, 2ea9f4d GREEN hook+types+client, cfa20e3 RED component, 864fa2d GREEN component+RacePage wiring). 2 auto-fixed deviations: (Rule 1) hook initial loading state had to be true (not false) for synchronous test assertion to pass before useEffect flushes — one-line fix; (Rule 1) component test getByText('Recovered') matched both legend chip + sr-only label inside populated cell (UIRACE-04 channel 4) — switched to getAllByText >= 1 for the two collision-prone tags. HEAT-01 + HEAT-02 satisfied: HardnessFailureHeatmap renders rows × cols via HeatmapScaffold with directional pill in MUI secondary, 5-pill always-visible legend strip, and data-driven model · seed · task_ids footer. LANDMINE 1 (backend "multi_source" → frontend "multi_source_synthesis") resolved at the wrapper transform boundary via HARDNESS_BACKEND_TO_FRONTEND closed Record. D-46 (HeatmapScaffold rendering primitive) and D-47 (empty-state never-unmount) preserved. Frontend suite 280/280 (+13), backend pytest 326/326 (no regression).
 Last activity: 2026-04-30 11:50 — Phase 09 Plan 04 complete; Phase 9 fully shipped
 
