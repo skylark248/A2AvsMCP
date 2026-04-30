@@ -18,6 +18,9 @@ data/
 !/data/race/fixtures/
 !/data/race/fixtures/**
 
+# Phase 10 — OG image disk cache (regenerated on demand)
+data/og/*.png
+
 frontend/node_modules/
 frontend/dist/
 frontend/*.tsbuildinfo

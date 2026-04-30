@@ -29,6 +29,9 @@ dev = [
 remote-a2a = [
   "a2a-sdk[http-server]==0.3.26"
 ]
+og = [
+  "playwright>=1.59,<2"
+]
 [tool.setuptools]
 package-dir = {"" = "src"}
 

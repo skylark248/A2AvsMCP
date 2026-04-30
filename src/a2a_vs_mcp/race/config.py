@@ -46,4 +46,10 @@ HEATMAP_BASELINE: HeatmapBaseline = HeatmapBaseline(
 )
 
 
-__all__ = ["HEATMAP_BASELINE", "HeatmapBaseline"]
+# OG_LAYOUT_VERSION (D-66): manual integer; bump when og.py anchor-region layout changes.
+# Cache filename pattern: data/og/<run_id>-<surface>-v<OG_LAYOUT_VERSION>.png.
+# Bumping triggers cleanup_stale() in race/og.py to purge <id>-<surface>-v<old>.png on next request.
+OG_LAYOUT_VERSION: int = 1
+
+
+__all__ = ["HEATMAP_BASELINE", "HeatmapBaseline", "OG_LAYOUT_VERSION"]
