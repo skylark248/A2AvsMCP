@@ -40,6 +40,7 @@ from .platform import DemoPlatform
 from .persistence import PlatformStore
 from .remote_registry import RemoteMCPRegistry
 from .a2a.registry import RemoteA2ARegistry
+from .race.heatmap import get_heatmap
 from .race.replay import load_run, _validate_run_id
 from .race.runs import RUNS_DIR
 from .race.ws import MANAGER, HEARTBEAT_S
@@ -852,6 +853,17 @@ def api_remote_a2a_health(
         except Exception as exc:
             results.append({**item, "status": "unavailable", "error": str(exc)})
     return RemoteA2AHealthResponse(agents=results)
+
+
+@app.get("/api/race/heatmap")
+def api_race_heatmap() -> dict:
+    """Return aggregated heatmap cells + baseline footer (D-52, HEAT-01/02).
+
+    Pinned-baseline filter applied server-side (D-55, D-57): only runs whose
+    run_meta event matches HEATMAP_BASELINE contribute cells. Cache rebuilt
+    on first GET after race_done (D-54).
+    """
+    return get_heatmap()
 
 
 @app.websocket("/api/race/ws")
