@@ -460,26 +460,26 @@ it("renders MCP tools side-by-side with A2A placeholder when only MCP events pre
 | A4 | `DiscoveryPhasePanel` mount on `CompareTracesPanel` should be always-on (UI-SPEC line 130 says "no scenario string gate needed"). | Mount-site code | MEDIUM — D-72 says "single panel above both columns." UI-SPEC says "always shown when results contain tool_discovery events." If both runs are non-discovery scenarios, panel renders empty (which is fine per UI-SPEC empty-state copy line 177). Planner can choose: render-empty vs. presence-gated. **Recommend: presence-gated** (`if any mcp/a2a tool_discovery event present`) to keep other compare flows clean. |
 | A5 | Extraction of `JsonTree` won't break unrelated tests because no other component imports `JsonTree` directly. | Pitfalls | LOW — `JsonTree` is currently a local function inside `ProtocolEnvelopeDrawer.tsx`, not exported. Verified by grep on the codebase (`JsonTree` only appears in that one file). Wave 0 refactor + run-tests guard mitigates. |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Should `DiscoveryPhasePanel` consume `a2a_remote_discovery` events too (for agent-card skills/capabilities), or rely entirely on `tool_discovery` re-emit + `remote_agent` tag?**
    - What we know: `tool_discovery` re-emit (`remote_broker.py:237`) carries the **tool list** the remote agent exposes via MCP. The agent-card metadata (skills, name, capabilities) lives in a separate event `a2a_remote_discovery` (`remote_broker.py:90-99`) with `a2a_agent_card` payload.
    - What's unclear: UI-SPEC line 116 says "agent name (`body2`, weight 600), skills list as `Chip` row" — this requires `a2a_agent_card.skills`. That data is on `a2a_remote_discovery`, not on `tool_discovery`.
-   - Recommendation: **Panel should accept BOTH event types**. Treat `a2a_remote_discovery` as the agent-card source, and `tool_discovery` (with `remote_agent`) as the per-agent tool list. Document the props contract as `mcpEvents`, `a2aEvents` (= union of both for the A2A column), or split into `a2aAgentCards` + `a2aTools`. **Prefer**: `a2aEvents` accepts both, and the panel internally joins by `remote_agent === a2a_agent_card.agent_id`.
+   - RESOLVED: Recommendation: **Panel should accept BOTH event types**. Treat `a2a_remote_discovery` as the agent-card source, and `tool_discovery` (with `remote_agent`) as the per-agent tool list. Document the props contract as `mcpEvents`, `a2aEvents` (= union of both for the A2A column), or split into `a2aAgentCards` + `a2aTools`. **Prefer**: `a2aEvents` accepts both, and the panel internally joins by `remote_agent === a2a_agent_card.agent_id`.
 
 2. **Default state of the Accordion: expanded or collapsed?**
    - What we know: UI-SPEC says `defaultExpanded={true}` (researcher discretion). CONTEXT.md `<decisions>.Claude's Discretion` flags this as open.
    - What's unclear: User feedback may prefer collapsed for "discovery is supplementary" framing.
-   - Recommendation: **Default expanded (`true`)** — the whole point of Phase 11 is to surface discovery as a first-class UI element. Hiding it by default contradicts the goal. Expose `defaultExpanded` prop for future override.
+   - RESOLVED: Recommendation: **Default expanded (`true`)** — the whole point of Phase 11 is to surface discovery as a first-class UI element. Hiding it by default contradicts the goal. Expose `defaultExpanded` prop for future override.
 
 3. **Should the panel mount on `ReportDetailPage` (third TraceExplorer site at line 260)?**
    - What we know: CONTEXT.md `<decisions>.Claude's Discretion` says "default = do not mount unless researcher finds compelling reason."
    - What's unclear: Will demo viewers click into a saved report's detail view and expect the panel to be there?
-   - Recommendation: **Do NOT mount on ReportDetailPage in Phase 11.** TraceWorkspacePage already opens by default and is the primary review surface. Saved-report detail can defer to Phase 12 (annotated diff) which has different rendering needs anyway. Documenting "out of scope" is cheaper than building it. If user requests in review, plan-checker can revisit.
+   - RESOLVED: Recommendation: **Do NOT mount on ReportDetailPage in Phase 11.** TraceWorkspacePage already opens by default and is the primary review surface. Saved-report detail can defer to Phase 12 (annotated diff) which has different rendering needs anyway. Documenting "out of scope" is cheaper than building it. If user requests in review, plan-checker can revisit.
 
 4. **Talking-point copy for the new scenario.**
    - What we know: CONTEXT.md says researcher drafts; user did not pin verbatim text.
-   - Recommendation drafted in Code Examples §1 above. Planner can refine; does not block the plan.
+   - RESOLVED: Recommendation drafted in Code Examples §1 above. Planner can refine; does not block the plan.
 
 ## Environment Availability
 

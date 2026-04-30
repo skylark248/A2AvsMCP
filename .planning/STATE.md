@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Race Demo + Discovery + Visualization
-status: ready_to_plan
-stopped_at: Phase 11 UI-SPEC approved (4 PASS / 2 FLAG, non-blocking)
-last_updated: "2026-04-30T17:07:19.240Z"
-last_activity: 2026-04-30 22:37 — Phase 11 UI-SPEC committed at 0f2dcc5; ready for /gsd-plan-phase 11
+status: ready_to_execute
+stopped_at: Phase 11 plan-phase complete (4 plans, 3 waves; checker PASS iter 2)
+last_updated: "2026-05-01T03:16:00.000Z"
+last_activity: 2026-05-01 03:15 — Phase 11 plans 11-01..11-04 written; verification PASSED (2 non-blocking warnings); ready for /gsd-execute-phase 11
 progress:
   total_phases: 8
   completed_phases: 5
-  total_plans: 35
+  total_plans: 39
   completed_plans: 35
-  percent: 100
+  percent: 89.7
 ---
 
 # Project State
@@ -21,11 +21,26 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** A side-by-side, runnable comparison that makes the differences between MCP and A2A visible — not described, not diagrammed, but live and traceable.
-**Current focus:** Phase 11 — Tool Discovery Scenario (CONTEXT.md ready; next: /gsd-plan-phase 11)
+**Current focus:** Phase 11 — Tool Discovery Scenario (4 plans planned and verified; next: /gsd-execute-phase 11)
 
 ## Current Position
 
-Phase: 11 (tool-discovery-scenario) — CONTEXT.md gathered; ready to plan.
+Phase: 11 (tool-discovery-scenario) — 4 plans verified (PASS iter 2); ready to execute.
+
+Wave structure:
+- Wave 0 / 11-01: Extract JsonTree+FIELD_ANNOTATIONS+annotate from ProtocolEnvelopeDrawer → frontend/src/lib/trace/JsonTree.tsx (refactor; ships green) [DISC-02]
+- Wave 1 / 11-02: tool_discovery scenario seed (TICKET-1013) + customer (CUST-005) + pytest (3 tests covering load + emit + fallback) [DISC-01]
+- Wave 1 / 11-03: DiscoveryPhasePanel.tsx (MUI Accordion + Grid 2-col + protocol stripes) + 5-case vitest (incl. a2a_remote_discovery skill chips) [DISC-02]; depends_on [11-01]
+- Wave 2 / 11-04: Mount-site wiring — TraceWorkspacePage gate (D-73) + CompareTracesPanel single panel above dual-column (D-72) + integration verification [DISC-02]; depends_on [11-02, 11-03]
+
+Pitfalls baked into plans:
+- Filter on event.event_type === "tool_discovery" (NOT event.phase) — _PHASE_MAP does not tag discovery
+- A2A column unions tool_discovery (with remote_agent) AND a2a_remote_discovery (joins by agent_id)
+- JsonTree-only import (FIELD_ANNOTATIONS/annotate not used by panel)
+- Failure modes reuse existing tool_transport_fallback event — no new event_type
+- Vitest renders wrapped in ThemeProvider+CssBaseline
+
+Decisions locked (D-67..D-73):
 Decisions locked (D-67..D-73):
 
 - D-67: Net-new TICKET-1013 + net-new customer in seeds/scenarios.json (researcher fills profile)
@@ -36,8 +51,13 @@ Decisions locked (D-67..D-73):
 - D-72: CompareTracesPanel — single DiscoveryPhasePanel above both columns, full-width, internal MCP|A2A split
 - D-73: Panel mounts only when scenario === "tool_discovery" on TraceWorkspacePage
 
-Researcher/planner discretion: failure-mode injection mechanism (reuse tool_transport_fallback?), ReportDetailPage/RacePage placement, collapsible default, talking_point copy, customer profile.
-Next action: `/gsd-plan-phase 11` (or `/gsd-ui-phase 11` first for DiscoveryPhasePanel design contract).
+Discretion resolved during research/planning:
+- Failure-mode injection: reuse tool_transport_fallback + requested_transport divergence (no new event_type)
+- ReportDetailPage/RacePage: NOT mounted (deferred to potential Phase 12)
+- Accordion default: defaultExpanded={true}
+- talking_point + CUST-005 profile: drafted in 11-02 plan
+
+Next action: `/gsd-execute-phase 11`.
 Status: Phase 10 implementation decisions D-61..D-66 honoured (Playwright singleton + asyncio.Lock, 503 + canvas fallback, mock render in CI, html2canvas lazy, ClipboardItem + download fallback, manual OG_LAYOUT_VERSION). Backend pytest 342/342 (336 baseline + 6 og_cache + 10 og_routes); frontend vitest 286/286 across 31 files (280 baseline + 2 HeatmapAnnotationStrip + 4 CopyHeadlineImageButton; Phase 8 RacePage.responsive copy assertion updated for UIRACE-05 closure). Wave 2 quota recovery: 10-02 + 10-03 each had Task 1 committed pre-quota; Task 2 salvaged from main tree; remaining tasks (test_og_routes.py, RacePage `?og=1` wiring, both SUMMARYs) executed inline.
 Last activity: 2026-04-30 21:58 — Phase 10 verified PASS; ROADMAP + STATE advanced
 
