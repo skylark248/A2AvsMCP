@@ -14,7 +14,7 @@
 import { Box, Container, Stack, Typography } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useEffect, useReducer } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { CharacteristicFailureBanner } from "./components/CharacteristicFailureBanner";
 import { HardnessFailureHeatmap } from "./components/HardnessFailureHeatmap";
 import { MethodologySection } from "./components/MethodologySection";
@@ -52,14 +52,20 @@ export function RacePage({ __testState }: RacePageProps = {}) {
   const run_id = __testState ? (__testState.run_id ?? routeRunId) : routeRunId;
   const isReplay = Boolean(run_id);
 
+  // Phase 10 OG-01/OG-02: ?og=1 mode renders only the screenshot region; ?surface=heatmap
+  // swaps the heatmap card in for the title/lanes/banner anchor.
+  const [searchParams] = useSearchParams();
+  const isOg = searchParams.get("og") === "1";
+  const ogSurface = searchParams.get("surface");
+
   // UIRACE-05 mobile fallback (viewport check).
   // Full ?mode=summary redirect ships in Phase 10. Plan 06 only emits the placeholder branch.
   const isMobile = useMediaQuery("(max-width:479px)");
 
   // Live mode: useRaceStream owns ws + reducer internally.
   // Pass enabled=!isMobile: gates the WebSocket on mobile without violating rules-of-hooks (T-08-16).
-  // Hook is always called (rules-of-hooks compliant); only the side effect is gated by enabled.
-  const liveState = useRaceStream(!isMobile && !isReplay);
+  // Phase 10 Risk-4: gate on !isOg so Playwright wait_until=domcontentloaded doesn't block on an open WS.
+  const liveState = useRaceStream(!isMobile && !isReplay && !isOg);
 
   // Replay mode: fetch trace, fold through reducer locally (D-48).
   const replay = useRaceReplay(isReplay && !isMobile ? run_id : undefined);
@@ -111,17 +117,29 @@ export function RacePage({ __testState }: RacePageProps = {}) {
     ...Object.values(baseState.lanes).map((l) => l.last_turn_index),
   );
 
+  // Phase 10 Risk-10: data-og-ready fires only after replay fold completes, otherwise
+  // Playwright captures blank lane cards. Live + non-OG branches always pass true.
+  const isOgReady = !isOg
+    ? true
+    : ogSurface === "heatmap"
+      ? true // heatmap-anchor uses [data-testid="heatmap-annotation-strip"] as its own ready signal
+      : isReplay
+        ? replay.trace !== null
+        : true;
+
   return (
     <Box data-testid={isReplay ? "race-replay-mode" : "race-live-mode"}>
-      {/* Information hierarchy slot 1: status strip (UIRACE-01) */}
-      <RaceStatusStrip
-        state={pageState}
-        runId={baseState.run_id}
-        timestampLabel={null}
-      />
+      {/* Information hierarchy slot 1: status strip (UIRACE-01). Hidden in OG mode. */}
+      {!isOg ? (
+        <RaceStatusStrip
+          state={pageState}
+          runId={baseState.run_id}
+          timestampLabel={null}
+        />
+      ) : null}
 
-      {/* Information hierarchy slot 2: scrubber (replay only, D-49) */}
-      {isReplay ? (
+      {/* Information hierarchy slot 2: scrubber (replay only, D-49). Hidden in OG mode. */}
+      {isReplay && !isOg ? (
         <ReplayScrubber
           value={maxTurnIndex}
           max={maxTurnIndex}
@@ -132,48 +150,70 @@ export function RacePage({ __testState }: RacePageProps = {}) {
       ) : null}
 
       {/* Information hierarchy slot 3+: central column (UIRACE-01 1200px max) */}
-      <Container component="main" sx={{ maxWidth: 1200, py: 6 }}>
-        <Stack spacing={6}>
-          {/* Page title block */}
-          <Box>
-            <Typography
-              variant="overline"
-              sx={{ color: "secondary.main", letterSpacing: "0.16em" }}
-            >
-              Three-Lane Failure Race
-            </Typography>
-            <Typography variant="h1" sx={{ color: "primary.main", maxWidth: 900 }}>
-              How three protocol lanes recover (or don&apos;t) from injected faults
-            </Typography>
-          </Box>
-
-          {/* Three-lane row — UIRACE-05 responsive breakpoints via MUI sx flexDirection */}
+      <Container component="main" sx={{ maxWidth: 1200, py: isOg ? 2 : 6 }}>
+        {/* OG anchor: title + lanes + banner. Skipped when surface=heatmap. */}
+        {ogSurface !== "heatmap" ? (
           <Box
-            data-testid="race-lane-row"
-            sx={{
-              display: "flex",
-              flexDirection: { xs: "column", md: "row" },
-              gap: { xs: 2, md: 4 },
-            }}
+            data-og-anchor
+            data-og-ready={isOgReady ? "true" : undefined}
+            sx={{ width: isOg ? 1200 : "auto" }}
           >
-            <RaceLaneCard lane={baseState.lanes.pure_mcp} />
-            <RaceLaneCard lane={baseState.lanes.pure_a2a} />
-            <RaceLaneCard lane={baseState.lanes.hybrid} />
+            <Stack spacing={isOg ? 3 : 6}>
+              {/* Page title block */}
+              <Box>
+                <Typography
+                  variant="overline"
+                  sx={{ color: "secondary.main", letterSpacing: "0.16em" }}
+                >
+                  Three-Lane Failure Race
+                </Typography>
+                <Typography variant="h1" sx={{ color: "primary.main", maxWidth: 900 }}>
+                  How three protocol lanes recover (or don&apos;t) from injected faults
+                </Typography>
+              </Box>
+
+              {/* Three-lane row — UIRACE-05 responsive breakpoints via MUI sx flexDirection */}
+              <Box
+                data-testid="race-lane-row"
+                sx={{
+                  display: "flex",
+                  flexDirection: { xs: "column", md: "row" },
+                  gap: { xs: 2, md: 4 },
+                }}
+              >
+                <RaceLaneCard lane={baseState.lanes.pure_mcp} />
+                <RaceLaneCard lane={baseState.lanes.pure_a2a} />
+                <RaceLaneCard lane={baseState.lanes.hybrid} />
+              </Box>
+
+              {/* Banner — visible only for terminal + error states (UI-SPEC Page State Matrix) */}
+              {BANNER_VISIBLE_STATES.includes(pageState) ? (
+                <CharacteristicFailureBanner header={bannerHeader} clause={bannerClause} />
+              ) : null}
+            </Stack>
           </Box>
+        ) : null}
 
-          {/* Banner — visible only for terminal + error states (UI-SPEC Page State Matrix) */}
-          {BANNER_VISIBLE_STATES.includes(pageState) ? (
-            <CharacteristicFailureBanner header={bannerHeader} clause={bannerClause} />
-          ) : null}
+        {/* Methodology section — flat aside, static prose, GlossaryTerm wraps (UIRACE-07).
+            Hidden in OG mode (Risk-7). */}
+        {!isOg ? (
+          <Box sx={{ mt: 6 }}>
+            <MethodologySection />
+          </Box>
+        ) : null}
 
-          {/* Methodology section — flat aside, static prose, GlossaryTerm wraps (UIRACE-07) */}
-          <MethodologySection />
-
-          {/* Heatmap — Phase 9 data-wired wrapper owns its own fetch + transform.
-              D-46 + D-47 preserved (delegates grid rendering to HeatmapScaffold;
-              empty cells {} pass-through surfaces the empty-state overlay). */}
-          <HardnessFailureHeatmap />
-        </Stack>
+        {/* Heatmap — Phase 9 data-wired wrapper owns its own fetch + transform.
+            D-46 + D-47 preserved. In OG mode: hidden when ogSurface != "heatmap";
+            wrapped in data-heatmap-anchor + receives ogAnnotation prop when ogSurface == "heatmap". */}
+        {!isOg ? (
+          <Box sx={{ mt: 6 }}>
+            <HardnessFailureHeatmap />
+          </Box>
+        ) : ogSurface === "heatmap" ? (
+          <Box data-heatmap-anchor sx={{ width: 1200 }}>
+            <HardnessFailureHeatmap ogAnnotation={true} runId={run_id ?? null} />
+          </Box>
+        ) : null}
       </Container>
     </Box>
   );
