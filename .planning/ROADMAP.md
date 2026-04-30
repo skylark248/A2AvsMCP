@@ -99,7 +99,7 @@ Plans:
 Plans:
 - [x] 09-01-PLAN.md — race/config.py HEATMAP_BASELINE + race/heatmap.py aggregator + cache + GET /api/race/heatmap + harness run_meta + invalidate_cache hook (Wave 1) — completed 2026-04-30
 - [x] 09-02-PLAN.md — GET /api/race/runs/{run_id}/trace replay route + 400/404/schema tests (Wave 1) — completed 2026-04-30
-- [ ] 09-03-PLAN.md — pytest --update-snapshots flag + _replay_helpers.replay_with_k + test_replay_symmetry + tests/test_recovery_calibration.py K∈{2,3,4,5} sweep (Wave 1)
+- [x] 09-03-PLAN.md — pytest --update-snapshots flag + _replay_helpers.replay_with_k + test_replay_symmetry + tests/test_recovery_calibration.py K∈{2,3,4,5} sweep (Wave 1) — completed 2026-04-30
 - [ ] 09-04-PLAN.md — HardnessFailureHeatmap.tsx wrapper + useRaceHeatmap hook + fetchRaceHeatmap client + RacePage wiring (Wave 2)
 **UI hint**: yes
 

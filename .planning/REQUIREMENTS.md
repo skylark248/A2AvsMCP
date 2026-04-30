@@ -50,8 +50,8 @@ Closing artifact + deterministic replay.
 
 - [ ] **HEAT-01**: `HardnessFailureHeatmap.tsx` renders rows = HardnessType, columns = lane; cell shows dominant_tag color + icon + pattern fill + recovery rate (e.g., `12/15`); cells keyboard-focusable; "directional · n=3 tasks · v1" pill in `secondary.main`
 - [ ] **HEAT-02**: Heatmap legend strip always visible (5 inline pills); footer shows model · seed · pinned task IDs
-- [ ] **HEAT-03**: Replay route `/race/<run_id>` reads `data/runs/<run_id>.json` (no live LLM); recovery-rule state machine re-fires identically on replay; verified by two-layer fixture test (per-run tag snapshot + `--update-snapshots` flag)
-- [ ] **HEAT-04**: K=3 multi-task calibration — sweep K∈{2,3,4,5} on all 3 v1 tasks using fictional traces from §The Assignment; confirm K=3 produces expected tag for all traces (TODO 8 promoted)
+- [x] **HEAT-03**: Replay route `/race/<run_id>` reads `data/runs/<run_id>.json` (no live LLM); recovery-rule state machine re-fires identically on replay; verified by two-layer fixture test (per-run tag snapshot + `--update-snapshots` flag)
+- [x] **HEAT-04**: K=3 multi-task calibration — sweep K∈{2,3,4,5} on all 3 v1 tasks using fictional traces from §The Assignment; confirm K=3 produces expected tag for all traces (TODO 8 promoted)
 
 ### OG Image & Sharing (OG)
 
@@ -156,8 +156,8 @@ Populated by roadmap creation 2026-04-28. Phases 6-13 carry the v2.0 milestone.
 | UIRACE-07 | Phase 8 | Complete |
 | HEAT-01 | Phase 9 | Pending |
 | HEAT-02 | Phase 9 | Pending |
-| HEAT-03 | Phase 9 | Pending |
-| HEAT-04 | Phase 9 | Pending |
+| HEAT-03 | Phase 9 | Complete |
+| HEAT-04 | Phase 9 | Complete |
 | OG-01 | Phase 10 | Pending |
 | OG-02 | Phase 10 | Pending |
 | OG-03 | Phase 10 | Pending |
