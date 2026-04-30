@@ -10,7 +10,7 @@ import type {
   TelemetrySnapshot,
   TrendsResponse,
 } from "../types/api";
-import type { RaceEvent } from "../types/race";
+import type { RaceEvent, HeatmapPayload } from "../types/race";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "";
 
@@ -161,3 +161,19 @@ export async function fetchRaceReplay(run_id: string): Promise<RaceReplayPayload
   if (!res.ok) throw new Error(`Replay fetch failed: ${res.status}`);
   return (await res.json()) as RaceReplayPayload;
 }
+
+// ---- Race Heatmap ---------------------------------------------------------
+
+/**
+ * Fetch the heatmap aggregate (HEAT-01 / HEAT-02). Backend ships {cells, baseline}
+ * server-side bucketed by (HardnessType × lane); frontend renders without recomputation.
+ *
+ * Singleton endpoint — no path params, no validator needed (T-08-04 doesn't apply).
+ */
+export async function fetchRaceHeatmap(): Promise<HeatmapPayload> {
+  const res = await fetch(`/api/race/heatmap`);
+  if (!res.ok) throw new Error(`Heatmap fetch failed: ${res.status}`);
+  return (await res.json()) as HeatmapPayload;
+}
+
+export type { HeatmapPayload } from "../types/race";

@@ -58,3 +58,32 @@ export interface RaceState {
   ws_status: "connecting" | "open" | "reconnecting" | "closed";
   run_id: string | null; // null in live mode, set in replay mode
 }
+
+// HEAT-01 / HEAT-02 cell + payload types. Backend HardnessType uses "multi_source"
+// (matches src/a2a_vs_mcp/race/types.py:26 MULTI_SOURCE_SYNTHESIS = "multi_source");
+// HeatmapScaffold uses "multi_source_synthesis" — the HardnessFailureHeatmap wrapper
+// renames at the transform boundary (D-59 defers full event-type normalization).
+export type HardnessTypeBackend =
+  | "long_chain"
+  | "rate_pressure"
+  | "schema_variance"
+  | "multi_source";
+
+export interface HeatmapCellPayload {
+  hardness_type: HardnessTypeBackend;
+  lane: RaceLane;
+  dominant_tag: FailureTag;
+  recovery_rate: { num: number; den: number };
+  sample_run_id: string;
+}
+
+export interface HeatmapBaseline {
+  model: string;
+  seed: number;
+  task_ids: string[];
+}
+
+export interface HeatmapPayload {
+  cells: HeatmapCellPayload[];
+  baseline: HeatmapBaseline;
+}
