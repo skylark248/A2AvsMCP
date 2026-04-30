@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 from datetime import datetime, timezone
+import html as _html_mod
 import ipaddress
 from io import BytesIO
 import json
@@ -40,7 +41,17 @@ from .platform import DemoPlatform
 from .persistence import PlatformStore
 from .remote_registry import RemoteMCPRegistry
 from .a2a.registry import RemoteA2ARegistry
+from .race.config import OG_LAYOUT_VERSION  # noqa: F401
 from .race.heatmap import get_heatmap
+from .race.og import (
+    OG_DIR,
+    OG_RENDER_LOCK,
+    cleanup_stale,
+    og_cache_path,
+    og_lifespan,
+    render_heatmap_png,
+    render_og_png,
+)
 from .race.replay import load_run, _validate_run_id
 from .race.runs import RUNS_DIR
 from .race.ws import MANAGER, HEARTBEAT_S
@@ -58,7 +69,7 @@ FRONTEND_DIST = PROJECT_ROOT / "frontend" / "dist"
 FRONTEND_INDEX = FRONTEND_DIST / "index.html"
 FRONTEND_ASSETS = FRONTEND_DIST / "assets"
 
-app = FastAPI(title="A2A vs MCP Demo UI")
+app = FastAPI(title="A2A vs MCP Demo UI", lifespan=og_lifespan)
 app.mount("/static", StaticFiles(directory=str(Path(__file__).resolve().parent / "static")), name="static")
 if FRONTEND_ASSETS.exists():
     app.mount("/assets", StaticFiles(directory=str(FRONTEND_ASSETS)), name="frontend-assets")
@@ -468,6 +479,70 @@ def react_report_detail(report_name: str) -> Response:
 @app.get("/trends", response_class=HTMLResponse)
 def react_trends() -> Response:
     return render_react_app()
+
+
+# Phase 10 — OG image + sharing routes (D-61, D-62, D-63, D-66; OG-01..OG-04)
+_INDEX_HTML_CACHE: str | None = None
+
+
+def _read_index_html() -> str:
+    """Read frontend/dist/index.html once and cache the bytes string (Risk-9: dev workflow restarts uvicorn after `npm run build`)."""
+    global _INDEX_HTML_CACHE
+    if _INDEX_HTML_CACHE is None:
+        _INDEX_HTML_CACHE = FRONTEND_INDEX.read_text(encoding="utf-8")
+    return _INDEX_HTML_CACHE
+
+
+def _inject_og_meta(html_doc: str, run_id: str, base_url: str) -> str:
+    """Insert og:* + twitter:* meta tags immediately before </head> (OG-01).
+
+    All attribute values pass through html.escape(quote=True) to defend against
+    attribute-injection attempts in run_id (T-10-02-04).
+    """
+    title = f"Three-Lane Race · {run_id}"
+    description = (
+        "How three protocol lanes recover (or don't) from injected faults — A2A vs MCP."
+    )
+    run_id_esc = _html_mod.escape(run_id, quote=True)
+    image_url = f"{base_url}/race/{run_id_esc}/og.png"
+    page_url = f"{base_url}/race/{run_id_esc}"
+    title_esc = _html_mod.escape(title, quote=True)
+    desc_esc = _html_mod.escape(description, quote=True)
+    tags = (
+        f'<meta property="og:type" content="article">'
+        f'<meta property="og:url" content="{page_url}">'
+        f'<meta property="og:title" content="{title_esc}">'
+        f'<meta property="og:description" content="{desc_esc}">'
+        f'<meta property="og:image" content="{image_url}">'
+        f'<meta property="og:image:width" content="1200">'
+        f'<meta property="og:image:height" content="630">'
+        f'<meta name="twitter:card" content="summary_large_image">'
+        f'<meta name="twitter:title" content="{title_esc}">'
+        f'<meta name="twitter:description" content="{desc_esc}">'
+        f'<meta name="twitter:image" content="{image_url}">'
+    )
+    return html_doc.replace("</head>", tags + "</head>", 1)
+
+
+@app.get("/race", response_class=HTMLResponse)
+def race_html() -> HTMLResponse:
+    """SPA mount for /race (no run_id) — Risk 7 mitigation: explicit, not catch-all."""
+    return HTMLResponse(_read_index_html())
+
+
+@app.get("/race/{run_id}", response_class=HTMLResponse)
+def race_run_html(run_id: str, request: Request) -> HTMLResponse:
+    """OG-01: inject og:image + twitter:image meta tags for known run_id; crawler-safe omission for unknown."""
+    try:
+        _validate_run_id(run_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail="invalid run_id") from exc
+    base_url = str(request.base_url).rstrip("/")
+    if (RUNS_DIR / f"{run_id}.json").exists():
+        html_out = _inject_og_meta(_read_index_html(), run_id, base_url)
+    else:
+        html_out = _read_index_html()
+    return HTMLResponse(html_out)
 
 
 @app.get("/legacy", response_class=HTMLResponse)
