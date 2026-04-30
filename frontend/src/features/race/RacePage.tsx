@@ -81,12 +81,36 @@ export function RacePage({ __testState }: RacePageProps = {}) {
     }
   }, [replay.trace]);
 
-  // Mobile branch — Phase 8 emits a placeholder; Phase 10 OG Image ships the cropped anchor PNG.
+  // Mobile branch — Phase 8 emitted a placeholder; Phase 10 closes UIRACE-05 by
+  // consuming /race/<run_id>/og.png via <img>. Phase 8 mobile-viewport gate (D-48)
+  // preserved verbatim — only the inner JSX is changed.
   // __testState bypasses this branch in tests so all 12 states can be exercised.
   if (isMobile && !__testState) {
+    const ogImageUrl = run_id ? `/race/${run_id}/og.png` : null;
     return (
-      <Box data-testid="race-mobile-summary-placeholder" sx={{ p: 4, textAlign: "center" }}>
-        <Typography variant="body1">Loading summary…</Typography>
+      <Box data-testid="race-mobile-summary-placeholder" sx={{ p: 2, textAlign: "center" }}>
+        {ogImageUrl ? (
+          <Box
+            component="img"
+            src={ogImageUrl}
+            alt={`Race summary for ${run_id}`}
+            loading="lazy"
+            data-testid="race-mobile-summary-image"
+            sx={{
+              width: "100%",
+              maxWidth: 1200,
+              height: "auto",
+              borderRadius: 2,
+            }}
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).style.display = "none";
+            }}
+          />
+        ) : (
+          <Typography variant="body1">
+            Open on desktop for the live race UI.
+          </Typography>
+        )}
       </Box>
     );
   }

@@ -73,8 +73,9 @@ test("mobile <480 renders summary placeholder marker (UIRACE-05 fallback shape)"
   vi.unstubAllGlobals();
 });
 
-// Additional invariant: placeholder copy matches UI-SPEC Copywriting (line 280)
-test("mobile placeholder copy is 'Loading summary…' (UI-SPEC Copywriting line 280)", () => {
+// Phase 10 UIRACE-05 closure: live-mode (no run_id) on mobile suggests desktop;
+// replay-mode (run_id present) renders <img src=/race/<run_id>/og.png>.
+test("mobile live-mode (no run_id) shows desktop suggestion", () => {
   vi.stubGlobal("innerWidth", 400);
   vi.stubGlobal("matchMedia", (query: string) => ({
     matches: query === "(max-width:479px)",
@@ -89,7 +90,7 @@ test("mobile placeholder copy is 'Loading summary…' (UI-SPEC Copywriting line 
 
   const { getByTestId } = renderWithProvidersAtRoute(<RacePage />, "/race");
   const placeholder = getByTestId("race-mobile-summary-placeholder");
-  expect(placeholder.textContent).toMatch(/Loading summary/);
+  expect(placeholder.textContent).toMatch(/Open on desktop/);
 
   vi.unstubAllGlobals();
 });
