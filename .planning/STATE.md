@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Race Demo + Discovery + Visualization
 status: ready_to_plan
-stopped_at: Phase 11 (Tool Discovery Scenario) context gathered — 7 decisions locked (D-67..D-73); 2 areas to research/planner discretion
-last_updated: "2026-04-30T22:30:00.000Z"
-last_activity: 2026-04-30 22:30 — Phase 11 CONTEXT.md + DISCUSSION-LOG.md committed at 6033118; ready for /gsd-plan-phase 11
+stopped_at: Phase 11 UI-SPEC approved (4 PASS / 2 FLAG, non-blocking)
+last_updated: "2026-04-30T17:07:19.240Z"
+last_activity: 2026-04-30 22:37 — Phase 11 UI-SPEC committed at 0f2dcc5; ready for /gsd-plan-phase 11
 progress:
   total_phases: 8
   completed_phases: 5
@@ -27,6 +27,7 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 
 Phase: 11 (tool-discovery-scenario) — CONTEXT.md gathered; ready to plan.
 Decisions locked (D-67..D-73):
+
 - D-67: Net-new TICKET-1013 + net-new customer in seeds/scenarios.json (researcher fills profile)
 - D-68: Unknown product/SKU in query forces discovery — naturally exercises stale-cache + unknown-tool-fallback
 - D-69: difficulty=advanced, tags=[discovery, fallback]
@@ -34,6 +35,7 @@ Decisions locked (D-67..D-73):
 - D-71: Sibling placeholder = static hint text only ("Run on {A2A|MCP} to populate"); no inline run button
 - D-72: CompareTracesPanel — single DiscoveryPhasePanel above both columns, full-width, internal MCP|A2A split
 - D-73: Panel mounts only when scenario === "tool_discovery" on TraceWorkspacePage
+
 Researcher/planner discretion: failure-mode injection mechanism (reuse tool_transport_fallback?), ReportDetailPage/RacePage placement, collapsible default, talking_point copy, customer profile.
 Next action: `/gsd-plan-phase 11` (or `/gsd-ui-phase 11` first for DiscoveryPhasePanel design contract).
 Status: Phase 10 implementation decisions D-61..D-66 honoured (Playwright singleton + asyncio.Lock, 503 + canvas fallback, mock render in CI, html2canvas lazy, ClipboardItem + download fallback, manual OG_LAYOUT_VERSION). Backend pytest 342/342 (336 baseline + 6 og_cache + 10 og_routes); frontend vitest 286/286 across 31 files (280 baseline + 2 HeatmapAnnotationStrip + 4 CopyHeadlineImageButton; Phase 8 RacePage.responsive copy assertion updated for UIRACE-05 closure). Wave 2 quota recovery: 10-02 + 10-03 each had Task 1 committed pre-quota; Task 2 salvaged from main tree; remaining tasks (test_og_routes.py, RacePage `?og=1` wiring, both SUMMARYs) executed inline.
@@ -106,7 +108,7 @@ Items acknowledged at v1.0 close that remain deferred into v2.0+:
 
 ## Session Continuity
 
-Last session: 2026-04-30T06:20:22Z
-Stopped at: Phase 9 ALL PLANS COMPLETE (09-01..09-04) — ready for /gsd-verify-phase 9
-Resume file: .planning/phases/09-heatmap-replay-k3-calibration/09-04-SUMMARY.md
+Last session: 2026-04-30T17:07:19.236Z
+Stopped at: Phase 11 UI-SPEC approved (4 PASS / 2 FLAG)
+Resume file: .planning/phases/11-tool-discovery-scenario/11-UI-SPEC.md
 Next action: Run `/gsd-verify-phase 9` to validate the 4 ROADMAP success criteria against shipped code (heatmap visual contract, 5-pill legend + footer, replay-symmetric tags, K=3 calibration sweep). After PASS, advance to Phase 10 (OG Image & Sharing) which now has populated heatmap cells available for Playwright PNG capture.
