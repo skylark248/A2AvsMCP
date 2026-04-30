@@ -93,7 +93,14 @@ class TestDetectorOnFixtures(unittest.TestCase):
         self.assertEqual(_replay(fx["events"], fx.get("score_pass")), fx["expected_terminal_tag"])
 
     def test_all_nine_fixtures_present(self) -> None:
-        files = sorted(glob.glob(str(_FIXTURES_DIR / "*.json")))
+        # §The Assignment corpus: 9 fictional task × terminal-tag fixtures.
+        # Phase 9 Plan 03 (HEAT-04) added 9 additional `*_near_k3_boundary_d{3,4,5}`
+        # boundary fixtures to make K∈{2,4,5} drift observable for the calibration
+        # sweep — these are NOT part of §The Assignment and are filtered here.
+        files = sorted(
+            f for f in glob.glob(str(_FIXTURES_DIR / "*.json"))
+            if "near_k3_boundary" not in Path(f).name
+        )
         self.assertEqual(len(files), 9, "expected 9 fictional fault trace fixtures")
 
 

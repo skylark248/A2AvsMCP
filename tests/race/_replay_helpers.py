@@ -13,13 +13,16 @@ from __future__ import annotations
 from a2a_vs_mcp.race.classifier import Detector
 
 
-def replay_with_k(events: list[dict], K: int, score_pass: bool) -> str:
+def replay_with_k(events: list[dict], K: int, score_pass: bool | None) -> str:
     """Replay a fixture trace through Detector(K). Return terminal tag.
 
     1. Find the first fault_injected event → instantiate Detector(K).
     2. Feed every subsequent event into detector.consume().
     3. On ``done`` event arrival, call finalize_at_done(score_pass) and return.
-    4. If no ``done`` event is present, finalize at end-of-events with the same call.
+    4. On ``race_done`` arrival WITHOUT a prior ``done``, call
+       ``finalize_at_race_done_no_done()`` (D-34: indeterminate).
+    5. If neither ``done`` nor ``race_done`` is present, finalize via
+       finalize_at_done(score_pass) at end-of-events.
     """
     fi = next((e for e in events if e.get("event_type") == "fault_injected"), None)
     if fi is None:
@@ -33,7 +36,10 @@ def replay_with_k(events: list[dict], K: int, score_pass: bool) -> str:
     )
     fi_idx = events.index(fi)
     for ev in events[fi_idx + 1:]:
-        if ev.get("event_type") == "done":
-            return detector.finalize_at_done(score_pass)
+        et = ev.get("event_type")
+        if et == "done":
+            return detector.finalize_at_done(bool(score_pass))
+        if et == "race_done":
+            return detector.finalize_at_race_done_no_done()
         detector.consume(ev)
-    return detector.finalize_at_done(score_pass)
+    return detector.finalize_at_done(bool(score_pass))

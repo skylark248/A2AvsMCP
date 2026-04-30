@@ -1,0 +1,59 @@
+{
+  "name": "negotiate_meeting_near_k3_boundary_d5",
+  "lane": "pure_a2a",
+  "task_id": "negotiate_meeting",
+  "expected_terminal_tag": "kept_going_without_noticing",
+  "score_pass": true,
+  "events": [
+    {
+      "event_type": "tool_call",
+      "tool_name": "calendar_api.propose_time",
+      "status": "start",
+      "turn_index": 0,
+      "t_call_start_ms": 1000
+    },
+    {
+      "event_type": "fault_injected",
+      "fault_id": "f1",
+      "fault_kind": "rate_limit_429",
+      "target": "calendar_api.propose_time",
+      "turn_index": 0,
+      "t_inject_ms": 1100
+    },
+    {
+      "event_type": "agent_msg",
+      "content": "Continuing work step 1.",
+      "turn_index": 1,
+      "t_call_start_ms": 1100
+    },
+    {
+      "event_type": "agent_msg",
+      "content": "Continuing work step 2.",
+      "turn_index": 2,
+      "t_call_start_ms": 1200
+    },
+    {
+      "event_type": "agent_msg",
+      "content": "Continuing work step 3.",
+      "turn_index": 3,
+      "t_call_start_ms": 1300
+    },
+    {
+      "event_type": "agent_msg",
+      "content": "Continuing work step 4.",
+      "turn_index": 4,
+      "t_call_start_ms": 1400
+    },
+    {
+      "event_type": "agent_msg",
+      "content": "I hit a rate limit error. Retrying now.",
+      "turn_index": 5,
+      "t_call_start_ms": 1500
+    },
+    {
+      "event_type": "done",
+      "score_pass": true,
+      "lane": "pure_a2a"
+    }
+  ]
+}
