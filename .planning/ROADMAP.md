@@ -26,7 +26,7 @@ Full details: [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md)
 - [x] **Phase 7: Race Backend — Lanes, Harness, Recovery State Machine** — Three runners, harness, recovery classifier, tasks, mock APIs (11/11 plans, completed 2026-04-29)
 - [x] **Phase 8: Race Page UI & Visual Contract** — Three-lane scoreboard, banner, methodology, 12 page states, responsive + a11y (7/7 plans, completed 2026-04-29)
 - [x] **Phase 9: Heatmap, Replay & K=3 Calibration** — Hardness-vs-failure heatmap, deterministic replay, multi-task K=3 sweep (4/4 plans, completed 2026-04-30)
-- [ ] **Phase 10: OG Image & Sharing** — Playwright OG/heatmap PNGs, copy-headline fallback, cache invalidation
+- [x] **Phase 10: OG Image & Sharing** — Playwright OG/heatmap PNGs, copy-headline fallback, cache invalidation
 - [ ] **Phase 11: Tool Discovery Scenario** — `tool_discovery` scenario + `DiscoveryPhasePanel` surfacing MCP/A2A discovery as first-class UI
 - [ ] **Phase 12: Comparison Visualization Upgrades** — Annotated trace diff + interactive sequence diagram
 - [ ] **Phase 13: Design System Lock** — `/design-consultation` produces DESIGN.md formalizing race-demo tokens
@@ -114,11 +114,11 @@ Plans:
   4. Hitting `/race/<run_id>/og.png` or `/heatmap.png` for an unknown `run_id` returns 404 before Playwright spawns, and bumping `OG_LAYOUT_VERSION` causes stale `<id>-v<old>.*` files to be purged on next request.
 **Plans**: 5 plans across 4 waves
 Plans:
-- [ ] 10-01-PLAN.md — race/og.py module (Playwright lifespan + asyncio.Lock + cache helpers) + OG_LAYOUT_VERSION + .gitignore + pyproject optional-dep + cache unit tests (Wave 1)
-- [ ] 10-02-PLAN.md — web.py lifespan registration + /race + /race/{run_id} HTML route w/ meta-tag injection + /race/{run_id}/og.png + /race/{run_id}/heatmap.png + 9-test D-63 mocked-render matrix (Wave 2)
-- [ ] 10-03-PLAN.md — RacePage `?og=1` mode + data-og-anchor/data-og-ready/data-heatmap-anchor sentinels + WS-gating + HardnessFailureHeatmap ogAnnotation prop + HeatmapAnnotationStrip component (Wave 2)
-- [ ] 10-04-PLAN.md — html2canvas dep + CopyHeadlineImageButton (lazy import + ClipboardItem + download fallback) + CharacteristicFailureBanner actionSlot prop + RacePage button mount + 4 vitest cases (Wave 3)
-- [ ] 10-05-PLAN.md — Phase 8 mobile-summary placeholder closure: <img src=/race/{run_id}/og.png> consumer w/ onError graceful degradation (Wave 4)
+- [x] 10-01-PLAN.md — race/og.py module (Playwright lifespan + asyncio.Lock + cache helpers) + OG_LAYOUT_VERSION + .gitignore + pyproject optional-dep + cache unit tests (Wave 1)
+- [x] 10-02-PLAN.md — web.py lifespan registration + /race + /race/{run_id} HTML route w/ meta-tag injection + /race/{run_id}/og.png + /race/{run_id}/heatmap.png + 9-test D-63 mocked-render matrix (Wave 2)
+- [x] 10-03-PLAN.md — RacePage `?og=1` mode + data-og-anchor/data-og-ready/data-heatmap-anchor sentinels + WS-gating + HardnessFailureHeatmap ogAnnotation prop + HeatmapAnnotationStrip component (Wave 2)
+- [x] 10-04-PLAN.md — html2canvas dep + CopyHeadlineImageButton (lazy import + ClipboardItem + download fallback) + CharacteristicFailureBanner actionSlot prop + RacePage button mount + 4 vitest cases (Wave 3)
+- [x] 10-05-PLAN.md — Phase 8 mobile-summary placeholder closure: <img src=/race/{run_id}/og.png> consumer w/ onError graceful degradation (Wave 4)
 **UI hint**: yes
 
 ### Phase 11: Tool Discovery Scenario
