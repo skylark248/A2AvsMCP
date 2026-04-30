@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Race Demo + Discovery + Visualization
-status: ready_to_plan
-stopped_at: Phase 9 context gathered — 6 decisions (D-52..D-57); ready for /gsd-plan-phase 9
-last_updated: "2026-04-29T16:52:00.000Z"
-last_activity: 2026-04-29 22:22 — Phase 9 discuss-phase complete; CONTEXT.md + DISCUSSION-LOG.md written
+status: ready_to_execute
+stopped_at: Phase 9 planned — 4 plans across 2 waves (D-52..D-60); ready for /gsd-execute-phase 9
+last_updated: "2026-04-29T17:25:00.000Z"
+last_activity: 2026-04-29 23:14 — Phase 9 plan-phase complete; 4 PLAN.md files + RESEARCH.md + PATTERNS.md written
 progress:
   total_phases: 8
   completed_phases: 3
-  total_plans: 26
+  total_plans: 30
   completed_plans: 26
-  percent: 100
+  percent: 87
 ---
 
 # Project State
@@ -25,11 +25,11 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 
 ## Current Position
 
-Phase: 09 (heatmap-replay-k3-calibration) — READY TO PLAN (CONTEXT.md gathered, 0/4 plans)
-Plan: 0 of TBD
-Next action: `/gsd-plan-phase 9` — 6 decisions locked (D-52..D-57): GET /api/race/heatmap aggregate endpoint, minimal cell shape, in-memory cache invalidated on race_done, pinned (model=claude-sonnet-4-6, seed=42, 3 v1 task_ids) baseline filter, HEATMAP_BASELINE module constant in race/config.py, off-baseline runs silently excluded. Researcher picks: replay tag computation (HEAT-03), K=3 calibration fixture format (HEAT-04), two-layer fixture plugin, cache invalidation transport, HardnessFailureHeatmap vs HeatmapScaffold replacement strategy.
-Status: Phase 08 complete; ready for Phase 09 planning. Wave breakdown: W1 08-01 (tokens/glossary/types), W2 08-02 (routes+shell+derivePageState), W3a 08-03+04a+05 (parallel: hooks/lane components/heatmap+scrubber), W3b 08-04b (status strip+banner+methodology), W4 08-06 (RacePage integration + 12 fixtures + a11y + responsive). UIRACE-01..07 all verified; D-44..D-51 all honored. 24 commits across waves. Deferred: heatmap data backend → P9, replay endpoint → P9, OG/mobile PNG → P10.
-Last activity: 2026-04-29 21:41 — Phase 08 verified PASS
+Phase: 09 (heatmap-replay-k3-calibration) — READY TO EXECUTE (4 plans, 2 waves)
+Plan: 0 of 4
+Next action: `/gsd-execute-phase 9` — 9 decisions locked (D-52..D-60). Wave 1 (parallel): 09-01 heatmap backend (HEATMAP_BASELINE constant + race/heatmap.py aggregator + cache invalidator + GET /api/race/heatmap + harness run_meta emit) [HEAT-01, HEAT-02], 09-02 replay route GET /api/race/runs/{run_id}/trace [HEAT-03], 09-03 pytest --update-snapshots + replay symmetry fixture + K∈{2,3,4,5} calibration sweep [HEAT-03, HEAT-04]. Wave 2: 09-04 HardnessFailureHeatmap.tsx data-wired wrapper + useRaceHeatmap + fetchRaceHeatmap + RacePage wiring [HEAT-01, HEAT-02]. New decisions added during plan-phase: D-58 run_meta event (first event of every run), D-59 defer event_type/type normalization to later phase, D-60 skip /gsd-ui-phase 9 (Phase 8 UI-SPEC + ROADMAP cover heatmap visual contract). Note: 09-01 + 09-02 both append routes to web.py — non-conflicting, executor handles via worktree merge per Phase 8 pattern.
+Status: Phase 09 plan-phase complete (research + pattern map + 4 plans + manual verify). Plan-checker subagent hit quota wall; manual fallback per workflow Step 11a confirmed all checker focus areas (D-58 run_meta first event, no-LLM replay test, --update-snapshots hand-rolled, multi_source→multi_source_synthesis transform). Coverage gates: 4/4 REQs (HEAT-01..04), 9/9 decisions (D-52..D-60).
+Last activity: 2026-04-29 23:14 — Phase 09 plan-phase complete
 
 ## Accumulated Context
 
