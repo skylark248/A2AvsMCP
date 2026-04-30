@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Race Demo + Discovery + Visualization
 status: in_progress
-stopped_at: Phase 11 plan 11-01 complete (Wave 0 refactor; vitest 286/286 green)
-last_updated: "2026-05-01T03:24:00.000Z"
-last_activity: 2026-05-01 03:24 — Plan 11-01 executed: JsonTree extracted to lib/trace/JsonTree.tsx; drawer imports updated; vitest 286/286 green; ROADMAP + STATE updated.
+stopped_at: Phase 11 plan 11-02 complete (Wave 1 backend seed + pytest 3/3 green; pytest full 345/345)
+last_updated: "2026-05-01T03:30:00.000Z"
+last_activity: 2026-05-01 03:30 — Plan 11-02 executed: TICKET-1013 (tool_discovery, advanced) + CUST-005 (Casey Rivera) seeded; tests/test_tool_discovery_scenario.py covers load + emit + search_docs fallback; pytest 345/345; commits f413311 + 866fbb3.
 progress:
   total_phases: 8
   completed_phases: 5
   total_plans: 39
-  completed_plans: 36
-  percent: 92.3
+  completed_plans: 37
+  percent: 94.9
 ---
 
 # Project State
@@ -21,15 +21,15 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** A side-by-side, runnable comparison that makes the differences between MCP and A2A visible — not described, not diagrammed, but live and traceable.
-**Current focus:** Phase 11 — Tool Discovery Scenario (1/4 plans complete; Wave 0 shipped 2026-05-01; Wave 1 next: 11-02 + 11-03)
+**Current focus:** Phase 11 — Tool Discovery Scenario (2/4 plans complete; Wave 1 backend shipped 2026-05-01; Wave 1 frontend next: 11-03)
 
 ## Current Position
 
-Phase: 11 (tool-discovery-scenario) — Wave 0 complete (11-01 shipped 2026-05-01, vitest 286/286 green). Next: 11-02 (Wave 1 backend seed) + 11-03 (Wave 1 frontend panel) can run in parallel; 11-04 gated on both.
+Phase: 11 (tool-discovery-scenario) — Wave 1 backend complete (11-02 shipped 2026-05-01, pytest 345/345 green). Next: 11-03 (Wave 1 frontend panel) can run independently; 11-04 gated on both 11-02 and 11-03.
 
 Wave structure:
 - Wave 0 / 11-01: ✅ Extract JsonTree+FIELD_ANNOTATIONS+annotate from ProtocolEnvelopeDrawer → frontend/src/lib/trace/JsonTree.tsx (commits 3b5aff9, f5dd49a) [DISC-02 partial]
-- Wave 1 / 11-02: tool_discovery scenario seed (TICKET-1013) + customer (CUST-005) + pytest (3 tests covering load + emit + fallback) [DISC-01]
+- Wave 1 / 11-02: ✅ tool_discovery scenario seed (TICKET-1013) + customer (CUST-005) + pytest (3 tests: load + emit + fallback) (commits f413311, 866fbb3) [DISC-01]
 - Wave 1 / 11-03: DiscoveryPhasePanel.tsx (MUI Accordion + Grid 2-col + protocol stripes) + 5-case vitest (incl. a2a_remote_discovery skill chips) [DISC-02]; depends_on [11-01]
 - Wave 2 / 11-04: Mount-site wiring — TraceWorkspacePage gate (D-73) + CompareTracesPanel single panel above dual-column (D-72) + integration verification [DISC-02]; depends_on [11-02, 11-03]
 
@@ -57,7 +57,7 @@ Discretion resolved during research/planning:
 - Accordion default: defaultExpanded={true}
 - talking_point + CUST-005 profile: drafted in 11-02 plan
 
-Next action: continue Phase 11 execution (Wave 1: plans 11-02 + 11-03).
+Next action: continue Phase 11 execution (Wave 1 frontend: plan 11-03 — DiscoveryPhasePanel.tsx; then Wave 2: plan 11-04 mount-site wiring).
 Status: Phase 10 implementation decisions D-61..D-66 honoured (Playwright singleton + asyncio.Lock, 503 + canvas fallback, mock render in CI, html2canvas lazy, ClipboardItem + download fallback, manual OG_LAYOUT_VERSION). Backend pytest 342/342 (336 baseline + 6 og_cache + 10 og_routes); frontend vitest 286/286 across 31 files (280 baseline + 2 HeatmapAnnotationStrip + 4 CopyHeadlineImageButton; Phase 8 RacePage.responsive copy assertion updated for UIRACE-05 closure). Wave 2 quota recovery: 10-02 + 10-03 each had Task 1 committed pre-quota; Task 2 salvaged from main tree; remaining tasks (test_og_routes.py, RacePage `?og=1` wiring, both SUMMARYs) executed inline.
 Last activity: 2026-04-30 21:58 — Phase 10 verified PASS; ROADMAP + STATE advanced
 
@@ -128,7 +128,7 @@ Items acknowledged at v1.0 close that remain deferred into v2.0+:
 
 ## Session Continuity
 
-Last session: 2026-05-01T03:24:00.000Z
-Stopped at: Plan 11-01 complete (Wave 0 refactor; commits 3b5aff9 + f5dd49a; vitest 286/286)
-Resume file: .planning/phases/11-tool-discovery-scenario/11-01-SUMMARY.md
+Last session: 2026-05-01T03:30:00.000Z
+Stopped at: Plan 11-02 complete (Wave 1 backend; commits f413311 + 866fbb3; pytest 345/345)
+Resume file: .planning/phases/11-tool-discovery-scenario/11-02-SUMMARY.md
 Next action: Run `/gsd-verify-phase 9` to validate the 4 ROADMAP success criteria against shipped code (heatmap visual contract, 5-pill legend + footer, replay-symmetric tags, K=3 calibration sweep). After PASS, advance to Phase 10 (OG Image & Sharing) which now has populated heatmap cells available for Playwright PNG capture.
