@@ -364,6 +364,18 @@ async def run_race(
                 recorder = recorder_factory(
                     run_id=run_id, lane=lane, task_id=spec.task_id
                 )
+                # D-58: run_meta is the FIRST event of every run. The heatmap
+                # aggregator filters on (model, seed, task_id) read from this
+                # event; runs missing run_meta are silently excluded (D-57).
+                # TraceRecorder.record() auto-stamps trace_schema_version,
+                # lane, run_id, turn_index, index, timestamp_ms — we only
+                # need to pass the run_meta-specific fields here.
+                recorder.record(
+                    "run_meta",
+                    model=MODEL,
+                    seed=SEED_DISCLOSURE,
+                    task_id=spec.task_id,
+                )
                 schedule.append((lane, spec, run_id, recorder))
 
         # Stash per-task failure_script + hybrid plan in a closure-readable map.
@@ -472,6 +484,14 @@ async def run_race(
             for (lane, task_id), h in headlines.items()
         },
     })
+
+    # D-54: invalidate the heatmap aggregator's in-process cache so the next
+    # GET /api/race/heatmap rebuilds from data/runs/. Late import to avoid
+    # any module-load-order surprises (heatmap.py imports from this module
+    # transitively via config.py -> harness, so the late import keeps the
+    # dependency graph one-directional).
+    from .heatmap import invalidate_cache
+    invalidate_cache()
 
     return grouped
 
