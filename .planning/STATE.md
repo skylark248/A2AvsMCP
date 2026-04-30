@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Race Demo + Discovery + Visualization
-status: ready_to_execute
-stopped_at: Phase 9 planned — 4 plans across 2 waves (D-52..D-60); ready for /gsd-execute-phase 9
-last_updated: "2026-04-29T17:25:00.000Z"
-last_activity: 2026-04-29 23:14 — Phase 9 plan-phase complete; 4 PLAN.md files + RESEARCH.md + PATTERNS.md written
+status: in_progress
+stopped_at: Phase 9 Plan 01 complete — heatmap backend (HEATMAP_BASELINE + aggregator + /api/race/heatmap + run_meta + invalidate_cache hook) shipped; 09-02/09-03/09-04 still pending
+last_updated: "2026-04-30T05:55:25.000Z"
+last_activity: 2026-04-30 11:25 — Phase 9 Plan 01 complete (4 commits, 20 new tests, 276/276 pytest, 167/167 race regression)
 progress:
   total_phases: 8
   completed_phases: 3
   total_plans: 30
-  completed_plans: 26
-  percent: 87
+  completed_plans: 27
+  percent: 90
 ---
 
 # Project State
@@ -25,11 +25,11 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 
 ## Current Position
 
-Phase: 09 (heatmap-replay-k3-calibration) — READY TO EXECUTE (4 plans, 2 waves)
-Plan: 0 of 4
-Next action: `/gsd-execute-phase 9` — 9 decisions locked (D-52..D-60). Wave 1 (parallel): 09-01 heatmap backend (HEATMAP_BASELINE constant + race/heatmap.py aggregator + cache invalidator + GET /api/race/heatmap + harness run_meta emit) [HEAT-01, HEAT-02], 09-02 replay route GET /api/race/runs/{run_id}/trace [HEAT-03], 09-03 pytest --update-snapshots + replay symmetry fixture + K∈{2,3,4,5} calibration sweep [HEAT-03, HEAT-04]. Wave 2: 09-04 HardnessFailureHeatmap.tsx data-wired wrapper + useRaceHeatmap + fetchRaceHeatmap + RacePage wiring [HEAT-01, HEAT-02]. New decisions added during plan-phase: D-58 run_meta event (first event of every run), D-59 defer event_type/type normalization to later phase, D-60 skip /gsd-ui-phase 9 (Phase 8 UI-SPEC + ROADMAP cover heatmap visual contract). Note: 09-01 + 09-02 both append routes to web.py — non-conflicting, executor handles via worktree merge per Phase 8 pattern.
-Status: Phase 09 plan-phase complete (research + pattern map + 4 plans + manual verify). Plan-checker subagent hit quota wall; manual fallback per workflow Step 11a confirmed all checker focus areas (D-58 run_meta first event, no-LLM replay test, --update-snapshots hand-rolled, multi_source→multi_source_synthesis transform). Coverage gates: 4/4 REQs (HEAT-01..04), 9/9 decisions (D-52..D-60).
-Last activity: 2026-04-29 23:14 — Phase 09 plan-phase complete
+Phase: 09 (heatmap-replay-k3-calibration) — IN PROGRESS (1/4 plans complete)
+Plan: 1 of 4 complete (09-01 SHIPPED 2026-04-30); 09-02 / 09-03 / 09-04 pending
+Next action: `/gsd-execute-phase 9` continues with Wave 1 remaining plans (09-02 replay route + 09-03 K=3 calibration tests can run in parallel) and Wave 2 (09-04 frontend heatmap wrapper, depends on 09-01 contract — now landed). 09-01 shipped: HEATMAP_BASELINE singleton (D-56) in race/config.py; race/heatmap.py aggregator with in-process _CACHE keyed by tuple(sorted(task_ids)) (D-52, D-54); GET /api/race/heatmap route in web.py (returns {cells, baseline} per D-53); harness emits run_meta as first per-run event (D-58); harness fires invalidate_cache() after race_done (D-54); 20 new tests + 276/276 pytest green.
+Status: Plan 09-01 complete with 4 atomic commits (RED + GREEN per task). 2 auto-fixes documented in 09-01-SUMMARY.md: (1) plan's recorder.record({...}) dict-arg call corrected to recorder.record('run_meta', **kwargs) per actual TraceRecorder API; (2) heatmap.py landed in full during Task 1 GREEN (not split as plan structured it) because harness late import requires the module present. Both auto-fixes were Rule 1/Rule 3 — necessary for correctness, no scope creep.
+Last activity: 2026-04-30 11:25 — Phase 09 Plan 01 complete
 
 ## Accumulated Context
 
@@ -98,7 +98,7 @@ Items acknowledged at v1.0 close that remain deferred into v2.0+:
 
 ## Session Continuity
 
-Last session: 2026-04-29T06:21:06.559Z
-Stopped at: Phase 8 UI-SPEC approved
-Resume file: .planning/phases/08-race-page-ui-visual-contract/08-UI-SPEC.md
-Next action: Execute Wave 5/6 — Plan 07-10 (harness Semaphore(8) parallel scheduler + Haiku judge integration), Plan 07-11 (chokepoint + integration tests)
+Last session: 2026-04-30T05:55:25.000Z
+Stopped at: Phase 9 Plan 01 (heatmap backend) complete — 09-02 / 09-03 / 09-04 pending
+Resume file: .planning/phases/09-heatmap-replay-k3-calibration/09-01-SUMMARY.md
+Next action: Spawn executor agents for Plan 09-02 (replay route), Plan 09-03 (replay symmetry + K=3 calibration), and Plan 09-04 (HardnessFailureHeatmap.tsx wrapper). 09-02 and 09-03 are independent and can run in parallel; 09-04 depends only on 09-01's locked payload contract (now landed).

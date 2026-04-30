@@ -97,7 +97,7 @@ Plans:
   4. A K∈{2,3,4,5} sweep over the §The Assignment fictional traces for all three v1 tasks confirms K=3 produces the expected tag for every trace, with the test committed to `tests/test_recovery_calibration.py`.
 **Plans**: 4 plans across 2 waves
 Plans:
-- [ ] 09-01-PLAN.md — race/config.py HEATMAP_BASELINE + race/heatmap.py aggregator + cache + GET /api/race/heatmap + harness run_meta + invalidate_cache hook (Wave 1)
+- [x] 09-01-PLAN.md — race/config.py HEATMAP_BASELINE + race/heatmap.py aggregator + cache + GET /api/race/heatmap + harness run_meta + invalidate_cache hook (Wave 1) — completed 2026-04-30
 - [ ] 09-02-PLAN.md — GET /api/race/runs/{run_id}/trace replay route + 400/404/schema tests (Wave 1)
 - [ ] 09-03-PLAN.md — pytest --update-snapshots flag + _replay_helpers.replay_with_k + test_replay_symmetry + tests/test_recovery_calibration.py K∈{2,3,4,5} sweep (Wave 1)
 - [ ] 09-04-PLAN.md — HardnessFailureHeatmap.tsx wrapper + useRaceHeatmap hook + fetchRaceHeatmap client + RacePage wiring (Wave 2)
