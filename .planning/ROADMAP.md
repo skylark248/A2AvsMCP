@@ -100,7 +100,7 @@ Plans:
 - [x] 09-01-PLAN.md — race/config.py HEATMAP_BASELINE + race/heatmap.py aggregator + cache + GET /api/race/heatmap + harness run_meta + invalidate_cache hook (Wave 1) — completed 2026-04-30
 - [x] 09-02-PLAN.md — GET /api/race/runs/{run_id}/trace replay route + 400/404/schema tests (Wave 1) — completed 2026-04-30
 - [x] 09-03-PLAN.md — pytest --update-snapshots flag + _replay_helpers.replay_with_k + test_replay_symmetry + tests/test_recovery_calibration.py K∈{2,3,4,5} sweep (Wave 1) — completed 2026-04-30
-- [ ] 09-04-PLAN.md — HardnessFailureHeatmap.tsx wrapper + useRaceHeatmap hook + fetchRaceHeatmap client + RacePage wiring (Wave 2)
+- [x] 09-04-PLAN.md — HardnessFailureHeatmap.tsx wrapper + useRaceHeatmap hook + fetchRaceHeatmap client + RacePage wiring (Wave 2) — completed 2026-04-30
 **UI hint**: yes
 
 ### Phase 10: OG Image & Sharing
@@ -157,7 +157,7 @@ Plans:
 | 6. TraceRecorder Schema Gate & Race Foundation | v2.0 | 0/8 | Pending | — |
 | 7. Race Backend — Lanes, Harness, Recovery | v2.0 | 10/11 | In progress | — |
 | 8. Race Page UI & Visual Contract | v2.0 | 0/7 | Planned | — |
-| 9. Heatmap, Replay & K=3 Calibration | v2.0 | 0/4 | Planned | — |
+| 9. Heatmap, Replay & K=3 Calibration | v2.0 | 4/4 | Awaiting verification | — |
 | 10. OG Image & Sharing | v2.0 | 0/3 | Pending | — |
 | 11. Tool Discovery Scenario | v2.0 | 0/3 | Pending | — |
 | 12. Comparison Visualization Upgrades | v2.0 | 0/3 | Pending | — |

@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Race Demo + Discovery + Visualization
 status: in_progress
-stopped_at: Phase 9 Plan 03 complete — HEAT-03 replay symmetry + HEAT-04 K-calibration sweep landed; 09-04 (frontend wrapper) remains
-last_updated: "2026-04-30T06:10:41Z"
-last_activity: 2026-04-30 11:40 — Phase 9 Plan 03 complete (2 commits, 45 new tests, 326/326 pytest)
+stopped_at: Phase 9 ALL PLANS COMPLETE (09-01..09-04) — ready for /gsd-verify-phase 9
+last_updated: "2026-04-30T06:20:22Z"
+last_activity: 2026-04-30 11:50 — Phase 9 Plan 04 complete (4 commits, 13 new frontend tests, 280/280 vitest, 326/326 pytest)
 progress:
   total_phases: 8
   completed_phases: 3
   total_plans: 30
-  completed_plans: 29
-  percent: 96
+  completed_plans: 30
+  percent: 100
 ---
 
 # Project State
@@ -25,11 +25,11 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 
 ## Current Position
 
-Phase: 09 (heatmap-replay-k3-calibration) — IN PROGRESS (3/4 plans complete)
-Plan: 3 of 4 complete (09-01, 09-02, 09-03 SHIPPED 2026-04-30); 09-04 (frontend wrapper) remains
-Next action: `/gsd-execute-phase 9` continues with Wave 2 (09-04 HardnessFailureHeatmap.tsx wrapper + useRaceHeatmap hook + fetchRaceHeatmap client + RacePage wiring). 09-04 depends on 09-01's heatmap payload contract (already landed). 09-03 shipped: tests/race/_replay_helpers.py (single-source-of-truth replay_with_k(events, K, score_pass) reusing production Detector class verbatim per D-33); tests/conftest.py registers --update-snapshots flag (hand-rolled snapshot, no external deps); tests/race/test_replay_symmetry.py (HEAT-03 two-layer fixture sweep, 18 cases); tests/test_recovery_calibration.py at the ROADMAP-named path (HEAT-04 K=3 lock + K∈{2,4,5} drift sweep, 27 cases). Authored 9 near-K3-boundary fixtures (3 per task at evidence distances {3,4,5}) per RESEARCH LANDMINE 9 — without these the K-drift assertion has no positive evidence; expected_terminal_tag computed via replay_with_k(K=3) per T-09-11 mitigation, never hand-authored.
-Status: Plan 09-03 complete with 2 atomic commits (98b861e helper+flag, a048cc5 tests+fixtures). 3 auto-fixed deviations: (Rule 1) helper missed race_done-without-done finalization branch — fixed to call finalize_at_race_done_no_done(); (Rule 3) missing tests/__init__.py blocked imports — created package marker; (Rule 3) preexisting test_all_nine_fixtures_present asserted exactly 9 fixtures — scoped to non-boundary glob to preserve §The Assignment count assertion. Full pytest 326/326 green (281 prior + 45 new). --update-snapshots smoke confirmed zero expected_terminal_tag value drift — D-33 symmetry-by-construction verified end-to-end.
-Last activity: 2026-04-30 11:40 — Phase 09 Plan 03 complete
+Phase: 09 (heatmap-replay-k3-calibration) — ALL PLANS COMPLETE (4/4)
+Plan: 4 of 4 complete (09-01, 09-02, 09-03, 09-04 SHIPPED 2026-04-30)
+Next action: `/gsd-verify-phase 9` — all 4 ROADMAP success criteria are now testable in CI. After PASS verdict, advance to Phase 10 (OG Image & Sharing) which is unblocked: heatmap card now renders populated cells under `/race/<run_id>?og=1` mode for Playwright PNG capture.
+Status: Plan 09-04 complete with 4 atomic commits (1a77308 RED hook, 2ea9f4d GREEN hook+types+client, cfa20e3 RED component, 864fa2d GREEN component+RacePage wiring). 2 auto-fixed deviations: (Rule 1) hook initial loading state had to be true (not false) for synchronous test assertion to pass before useEffect flushes — one-line fix; (Rule 1) component test getByText('Recovered') matched both legend chip + sr-only label inside populated cell (UIRACE-04 channel 4) — switched to getAllByText >= 1 for the two collision-prone tags. HEAT-01 + HEAT-02 satisfied: HardnessFailureHeatmap renders rows × cols via HeatmapScaffold with directional pill in MUI secondary, 5-pill always-visible legend strip, and data-driven model · seed · task_ids footer. LANDMINE 1 (backend "multi_source" → frontend "multi_source_synthesis") resolved at the wrapper transform boundary via HARDNESS_BACKEND_TO_FRONTEND closed Record. D-46 (HeatmapScaffold rendering primitive) and D-47 (empty-state never-unmount) preserved. Frontend suite 280/280 (+13), backend pytest 326/326 (no regression).
+Last activity: 2026-04-30 11:50 — Phase 09 Plan 04 complete; Phase 9 fully shipped
 
 ## Accumulated Context
 
@@ -98,7 +98,7 @@ Items acknowledged at v1.0 close that remain deferred into v2.0+:
 
 ## Session Continuity
 
-Last session: 2026-04-30T06:10:41Z
-Stopped at: Phase 9 Plan 03 (replay symmetry + K=3 calibration) complete — 09-04 (frontend wrapper) pending
-Resume file: .planning/phases/09-heatmap-replay-k3-calibration/09-03-SUMMARY.md
-Next action: Spawn executor agent for Plan 09-04 (HardnessFailureHeatmap.tsx wrapper + useRaceHeatmap hook + fetchRaceHeatmap client + RacePage wiring). 09-04 is the only remaining plan; depends on 09-01's locked heatmap payload contract (already landed). After 09-04 lands, Phase 9 closes — proceed to /gsd-verify-phase 9.
+Last session: 2026-04-30T06:20:22Z
+Stopped at: Phase 9 ALL PLANS COMPLETE (09-01..09-04) — ready for /gsd-verify-phase 9
+Resume file: .planning/phases/09-heatmap-replay-k3-calibration/09-04-SUMMARY.md
+Next action: Run `/gsd-verify-phase 9` to validate the 4 ROADMAP success criteria against shipped code (heatmap visual contract, 5-pill legend + footer, replay-symmetric tags, K=3 calibration sweep). After PASS, advance to Phase 10 (OG Image & Sharing) which now has populated heatmap cells available for Playwright PNG capture.
