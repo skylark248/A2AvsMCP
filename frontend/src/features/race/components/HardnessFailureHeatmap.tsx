@@ -8,6 +8,8 @@
  *   - "directional · n=3 tasks · v1" pill (UI-SPEC + ROADMAP success criterion 1)
  *   - 5-pill legend strip — always visible (HEAT-02)
  *   - data-driven footer reading model · seed · task_ids from API baseline (HEAT-02 contract)
+ *   - Phase 10 OG-02 annotation strip — additive, gated on ogAnnotation && runId && data
+ *     (D-47 empty-state never-unmount preserved; strip lives in populated branch only)
  *
  * Grid rendering delegates to HeatmapScaffold — D-46 (CSS Grid + role=gridcell +
  * failureTagColor lookup) and D-47 (empty-state never-unmount) preserved by
@@ -18,6 +20,7 @@ import type { ComponentType } from "react";
 import { Box, Chip, Stack, Typography } from "@mui/material";
 
 import { HeatmapScaffold, type HeatmapCells, type HardnessType } from "./HeatmapScaffold";
+import { HeatmapAnnotationStrip } from "./HeatmapAnnotationStrip";
 import { useRaceHeatmap } from "../hooks/useRaceHeatmap";
 import { failureTagColor } from "../../../lib/trace/eventColors";
 import type {
@@ -50,7 +53,36 @@ function toHeatmapCells(payload: HeatmapPayload): HeatmapCells {
   return cells;
 }
 
-export function HardnessFailureHeatmap() {
+/**
+ * Derive baseline n from the heatmap payload.
+ *
+ * NOTE: HeatmapPayload does not carry an explicit `n_runs` field (see
+ * frontend/src/lib/types/race.ts:86-89). The OG-02 annotation strip
+ * needs the per-cell sample size (the baseline's n). Per Phase 9 D-58
+ * the baseline is locked: every cell shares the same denominator
+ * (recovery_rate.den), so taking the max across populated cells is
+ * equivalent to reading a single canonical n. Empty cells → n=0.
+ *
+ * Plan 10-03 references `data.n_runs` in the action template; this is
+ * the planner's verify-via-actual-type substitution (Task 1 read_first
+ * step explicitly defers field-name verification to the executor).
+ */
+function deriveN(payload: HeatmapPayload): number {
+  if (payload.cells.length === 0) return 0;
+  return payload.cells.reduce((max, c) => Math.max(max, c.recovery_rate.den), 0);
+}
+
+interface HardnessFailureHeatmapProps {
+  /** Phase 10 OG-02: when true (with runId + data), render the annotation strip. */
+  ogAnnotation?: boolean;
+  /** Phase 10 OG-02: replay run_id for the strip. Null in live mode. */
+  runId?: string | null;
+}
+
+export function HardnessFailureHeatmap({
+  ogAnnotation = false,
+  runId = null,
+}: HardnessFailureHeatmapProps = {}) {
   const { data } = useRaceHeatmap();
   const cells = data ? toHeatmapCells(data) : {};
 
@@ -92,6 +124,17 @@ export function HardnessFailureHeatmap() {
         >
           {data.baseline.model} · {data.baseline.seed} · {data.baseline.task_ids.join(", ")}
         </Typography>
+      ) : null}
+
+      {/* Phase 10 OG-02 annotation strip — additive, gated on og flag + runId + data.
+          Lives in the populated branch only; D-47 empty-state never-unmount is
+          enforced by the OUTER `data ? ... : null` chain above. */}
+      {ogAnnotation && runId && data ? (
+        <HeatmapAnnotationStrip
+          runId={runId}
+          baseline={data.baseline}
+          n={deriveN(data)}
+        />
       ) : null}
     </Box>
   );
