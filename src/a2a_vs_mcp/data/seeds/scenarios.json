@@ -166,5 +166,19 @@
       "sentence": "A2A sends all three specialists at once; MCP calls tools one by one — the swimlane shows the difference instantly.",
       "callout": "Overlapping timestamps in the trace = parallel execution."
     }
+  },
+  {
+    "scenario": "tool_discovery",
+    "ticket_id": "TICKET-1013",
+    "customer_id": "CUST-005",
+    "title": "Discovery: Unknown Product Triage",
+    "difficulty": "advanced",
+    "tags": ["discovery", "fallback"],
+    "query": "I just bought a NebulaSync Hub. It won't pair with my devices. Where do I start?",
+    "talking_point": {
+      "headline": "Discovery before answer",
+      "sentence": "MCP enumerates tools and falls back to search_docs when no warranty/order matches; A2A enumerates agent skills and escalates to documentation specialist.",
+      "callout": "Discovery-phase events fire BEFORE any execution-phase tool_call."
+    }
   }
 ]

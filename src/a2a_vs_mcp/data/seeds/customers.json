@@ -1,0 +1,32 @@
+[
+  {
+    "customer_id": "CUST-001",
+    "name": "Alice Johnson",
+    "email": "alice@example.com",
+    "segment": "consumer"
+  },
+  {
+    "customer_id": "CUST-002",
+    "name": "Bob Smith",
+    "email": "bob@example.com",
+    "segment": "consumer"
+  },
+  {
+    "customer_id": "CUST-003",
+    "name": "Acme Corp",
+    "email": "support@acme.example.com",
+    "segment": "enterprise"
+  },
+  {
+    "customer_id": "CUST-004",
+    "name": "Dana Lee",
+    "email": "dana@example.com",
+    "segment": "consumer"
+  },
+  {
+    "customer_id": "CUST-005",
+    "name": "Casey Rivera",
+    "email": "casey@example.com",
+    "segment": "consumer"
+  }
+]
