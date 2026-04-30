@@ -16,6 +16,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useEffect, useReducer } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { CharacteristicFailureBanner } from "./components/CharacteristicFailureBanner";
+import { CopyHeadlineImageButton } from "./components/CopyHeadlineImageButton";
 import { HardnessFailureHeatmap } from "./components/HardnessFailureHeatmap";
 import { MethodologySection } from "./components/MethodologySection";
 import { RaceLaneCard } from "./components/RaceLaneCard";
@@ -186,9 +187,14 @@ export function RacePage({ __testState }: RacePageProps = {}) {
                 <RaceLaneCard lane={baseState.lanes.hybrid} />
               </Box>
 
-              {/* Banner — visible only for terminal + error states (UI-SPEC Page State Matrix) */}
+              {/* Banner — visible only for terminal + error states (UI-SPEC Page State Matrix).
+                  OG-03: actionSlot mounts CopyHeadlineImageButton in live UI only (never inside the OG screenshot itself). */}
               {BANNER_VISIBLE_STATES.includes(pageState) ? (
-                <CharacteristicFailureBanner header={bannerHeader} clause={bannerClause} />
+                <CharacteristicFailureBanner
+                  header={bannerHeader}
+                  clause={bannerClause}
+                  actionSlot={!isOg && run_id ? <CopyHeadlineImageButton runId={run_id} /> : undefined}
+                />
               ) : null}
             </Stack>
           </Box>

@@ -1,10 +1,13 @@
-import { Box, Typography } from "@mui/material";
+import type { ReactNode } from "react";
+import { Box, Stack, Typography } from "@mui/material";
 
 interface CharacteristicFailureBannerProps {
   /** Static header text (e.g. "Characteristic failure:"). Plan 06 passes from headline template. */
   header: string;
   /** Dynamic italic clause (e.g. "gave up after 3 turns"). Rendered as React text — no innerHTML (T-08-08). */
   clause: string;
+  /** Phase 10 OG-03: optional right-aligned slot for the CopyHeadlineImageButton (additive, default undefined). */
+  actionSlot?: ReactNode;
 }
 
 /**
@@ -26,7 +29,11 @@ interface CharacteristicFailureBannerProps {
  * T-08-08 mitigation: clause + header rendered exclusively as React text children (auto-escaped).
  * No XSS surface — acceptance criteria grep enforces zero innerHTML-bypass usage.
  */
-export function CharacteristicFailureBanner({ header, clause }: CharacteristicFailureBannerProps) {
+export function CharacteristicFailureBanner({
+  header,
+  clause,
+  actionSlot,
+}: CharacteristicFailureBannerProps) {
   return (
     <Box
       role="banner"                                    // UI-SPEC ARIA Landmarks line 240
@@ -39,19 +46,27 @@ export function CharacteristicFailureBanner({ header, clause }: CharacteristicFa
         borderRadius: 0,                               // UIRACE-03 banner=0
       }}
     >
-      <Typography
-        variant="h2"
-        component="h1"
-        sx={{ fontSize: "1.6rem", fontWeight: 700, lineHeight: 1.2 }}  // Display 25.6px/700 per UI-SPEC
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        spacing={2}
       >
-        {header}{" "}
         <Typography
-          component="span"
-          sx={{ fontStyle: "italic", fontSize: "1.6rem", fontWeight: 700 }}  // UIRACE-03 italic dynamic clause
+          variant="h2"
+          component="h1"
+          sx={{ fontSize: "1.6rem", fontWeight: 700, lineHeight: 1.2 }}  // Display 25.6px/700 per UI-SPEC
         >
-          {clause}
+          {header}{" "}
+          <Typography
+            component="span"
+            sx={{ fontStyle: "italic", fontSize: "1.6rem", fontWeight: 700 }}  // UIRACE-03 italic dynamic clause
+          >
+            {clause}
+          </Typography>
         </Typography>
-      </Typography>
+        {actionSlot ? <Box>{actionSlot}</Box> : null}
+      </Stack>
     </Box>
   );
 }
