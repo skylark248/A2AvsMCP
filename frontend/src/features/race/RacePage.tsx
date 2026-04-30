@@ -16,7 +16,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useEffect, useReducer } from "react";
 import { useParams } from "react-router-dom";
 import { CharacteristicFailureBanner } from "./components/CharacteristicFailureBanner";
-import { HeatmapScaffold } from "./components/HeatmapScaffold";
+import { HardnessFailureHeatmap } from "./components/HardnessFailureHeatmap";
 import { MethodologySection } from "./components/MethodologySection";
 import { RaceLaneCard } from "./components/RaceLaneCard";
 import { RaceStatusStrip } from "./components/RaceStatusStrip";
@@ -105,10 +105,6 @@ export function RacePage({ __testState }: RacePageProps = {}) {
   const bannerHeader = "Characteristic failure mode:";
   const bannerClause = derivedBannerClause(baseState);
 
-  // Heatmap cells — empty in Phase 8; HeatmapScaffold renders heatmap-empty overlay (D-47).
-  // Phase 9 wires actual cells from the heatmap data API.
-  const heatmapCells = {};
-
   // Current turn index for scrubber (max across all lanes).
   const maxTurnIndex = Math.max(
     0,
@@ -173,8 +169,10 @@ export function RacePage({ __testState }: RacePageProps = {}) {
           {/* Methodology section — flat aside, static prose, GlossaryTerm wraps (UIRACE-07) */}
           <MethodologySection />
 
-          {/* Heatmap — Phase 8 ships empty scaffold; Phase 9 wires data (D-47) */}
-          <HeatmapScaffold cells={heatmapCells} />
+          {/* Heatmap — Phase 9 data-wired wrapper owns its own fetch + transform.
+              D-46 + D-47 preserved (delegates grid rendering to HeatmapScaffold;
+              empty cells {} pass-through surfaces the empty-state overlay). */}
+          <HardnessFailureHeatmap />
         </Stack>
       </Container>
     </Box>
