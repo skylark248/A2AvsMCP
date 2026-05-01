@@ -217,8 +217,28 @@ export function AnnotatedDiffView({
           const labelSource = row.left ?? row.right;
           const label = labelSource ? traceLabel(labelSource) : "";
 
+          // Determine whether this row has actionable content to expand.
+          const hasContent = !!(row.left ?? row.right);
+
           return (
-            <Box key={rowKey} sx={{ display: "contents" }}>
+            // One role="row" per logical row (HI-03): display:contents makes this wrapper
+            // transparent to the CSS grid while preserving the ARIA table row identity.
+            // tabIndex and keyboard handler live here — single focus owner per row (MD-01/MD-02).
+            <Box
+              key={rowKey}
+              role="row"
+              tabIndex={hasContent ? 0 : -1}
+              data-row-status={row.status}
+              data-divergence-cause={row.divergenceCause ?? ""}
+              onClick={hasContent ? () => setExpandedRowKey(isExpanded ? null : rowKey) : undefined}
+              onKeyDown={hasContent ? (e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  setExpandedRowKey(isExpanded ? null : rowKey);
+                }
+              } : undefined}
+              sx={{ display: "contents", cursor: hasContent ? "pointer" : "default" }}
+            >
               {/*
                 W-3 mitigation: render the gutter chip in EXACTLY ONE gutter per row to
                 avoid duplicate glyphs on matched-divergent rows. Layout rule:
@@ -229,7 +249,7 @@ export function AnnotatedDiffView({
               */}
 
               {/* Gutter A — removed and matched-divergent show here */}
-              <Box sx={{ ...rowSx, p: 0.5, textAlign: "center" }}>
+              <Box role="cell" sx={{ ...rowSx, p: 0.5, textAlign: "center" }}>
                 {(row.status === "removed" || row.status === "matched-divergent") && glyph !== "" ? (
                   <Tooltip title={tooltip ?? ""}>
                     <Chip
@@ -251,20 +271,10 @@ export function AnnotatedDiffView({
                 ) : null}
               </Box>
 
-              {/* Left row body */}
+              {/* Left row body (role="cell") */}
               <Box
-                role="row"
-                tabIndex={0}
-                data-row-status={row.status}
-                data-divergence-cause={row.divergenceCause ?? ""}
-                onClick={() => setExpandedRowKey(isExpanded ? null : rowKey)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    setExpandedRowKey(isExpanded ? null : rowKey);
-                  }
-                }}
-                sx={{ ...rowSx, p: 1, cursor: row.left ? "pointer" : "default" }}
+                role="cell"
+                sx={{ ...rowSx, p: 1 }}
               >
                 {row.left ? (
                   <Stack spacing={0.5}>
@@ -275,7 +285,7 @@ export function AnnotatedDiffView({
               </Box>
 
               {/* Gutter B — only "added" rows render their chip here per W-3 */}
-              <Box sx={{ ...rowSx, p: 0.5, textAlign: "center" }}>
+              <Box role="cell" sx={{ ...rowSx, p: 0.5, textAlign: "center" }}>
                 {row.status === "added" && glyph !== "" ? (
                   <Tooltip title={tooltip ?? ""}>
                     <Chip
@@ -293,20 +303,10 @@ export function AnnotatedDiffView({
                 ) : null}
               </Box>
 
-              {/* Right row body */}
+              {/* Right row body (role="cell") */}
               <Box
-                role="row"
-                tabIndex={0}
-                data-row-status={row.status}
-                data-divergence-cause={row.divergenceCause ?? ""}
-                onClick={() => setExpandedRowKey(isExpanded ? null : rowKey)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    setExpandedRowKey(isExpanded ? null : rowKey);
-                  }
-                }}
-                sx={{ ...rowSx, p: 1, cursor: row.right ? "pointer" : "default" }}
+                role="cell"
+                sx={{ ...rowSx, p: 1 }}
               >
                 {row.right ? (
                   <Stack spacing={0.5}>
