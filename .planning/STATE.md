@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Race Demo + Discovery + Visualization
-status: in_progress
-stopped_at: Phase 11 plan 11-04 complete (Wave 2 mount-site wiring; all 4 plans landed; ready for verifier)
-last_updated: "2026-05-01T10:55:00.000Z"
-last_activity: 2026-05-01 10:55 — Plan 11-04 executed: TraceWorkspacePage D-73 scenario gate + CompareTracesPanel D-72 single full-width panel; presence-gated; null-safe accessors; event_type filter (Pitfall #1) + a2a_remote_discovery union (Pitfall #2). Frontend vitest 291/291; backend pytest 345/345. Subagent quota-killed mid-task; recovered inline. Commits e1b6e31 + 1357a2f.
+status: ready_for_next_phase
+stopped_at: Phase 11 complete (verifier human_needed → user approved 2026-05-01; all 4 HUMAN-UAT items resolved)
+last_updated: "2026-05-01T11:05:00.000Z"
+last_activity: 2026-05-01 11:05 — Phase 11 SIGNED OFF. User approved 4 HUMAN-UAT items via fast-track. ROADMAP Phase 11 [x]; HUMAN-UAT status=resolved. Next: Phase 12 (Comparison Visualization Upgrades — VIZ-01, VIZ-02; plans TBD).
 progress:
   total_phases: 8
-  completed_phases: 5
+  completed_phases: 6
   total_plans: 39
   completed_plans: 39
   percent: 100.0
@@ -21,11 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** A side-by-side, runnable comparison that makes the differences between MCP and A2A visible — not described, not diagrammed, but live and traceable.
-**Current focus:** Phase 11 — Tool Discovery Scenario (4/4 plans complete; ready for phase verifier)
+**Current focus:** Phase 12 — Comparison Visualization Upgrades (next; plans TBD)
 
 ## Current Position
 
-Phase: 11 (tool-discovery-scenario) — ALL 4 plans complete. Frontend vitest 291/291; backend pytest 345/345. Next: phase verifier → mark phase complete in ROADMAP.
+Phase: 11 ✅ COMPLETE (signed off 2026-05-01). Frontend vitest 291/291; backend pytest 345/345; 16/16 must-haves verified; all 4 HUMAN-UAT items approved.
+
+Next phase: 12 (Comparison Visualization Upgrades) — VIZ-01, VIZ-02. No CONTEXT.md yet — start with `/gsd-discuss-phase 12`.
 
 Wave structure:
 - Wave 0 / 11-01: ✅ Extract JsonTree+FIELD_ANNOTATIONS+annotate from ProtocolEnvelopeDrawer → frontend/src/lib/trace/JsonTree.tsx (commits 3b5aff9, f5dd49a) [DISC-02 partial]
