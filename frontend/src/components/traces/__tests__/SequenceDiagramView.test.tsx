@@ -122,11 +122,32 @@ describe("SequenceDiagramView", () => {
     warn.mockRestore();
   });
 
-  it("renders no draw-in animation class under prefers-reduced-motion (D-83)", async () => {
+  it("suppresses draw-in animation inline style under prefers-reduced-motion (D-83)", async () => {
     await setReducedMotion(true);
     const { container } = renderView({ events: sample });
-    // When reduced motion is active, no element should have the seqdiag-draw-in class
-    expect(container.querySelectorAll(".seqdiag-draw-in").length).toBe(0);
+    // When reduced motion is active, the component sets style={undefined} on each arrow <g>.
+    // Therefore no g[role="button"] should have an inline animation property.
+    const arrows = container.querySelectorAll('g[role="button"]');
+    expect(arrows.length).toBeGreaterThan(0);
+    arrows.forEach((g) => {
+      const style = (g as SVGGElement).getAttribute("style") ?? "";
+      expect(style).not.toContain("animation");
+    });
+  });
+
+  it("sets stroke-dasharray on arrows when motion is allowed (D-83 inverse — emotion resolves animation in browser only)", async () => {
+    await setReducedMotion(false);
+    const { container } = renderView({ events: sample });
+    // When reduced motion is NOT active the component passes style={{ animation: ..., strokeDasharray: 1000 }}.
+    // JSDOM/emotion does not resolve the keyframes name into the style string, but
+    // strokeDasharray:1000 IS present as a reliable proxy for the motion-active branch.
+    const arrows = container.querySelectorAll('g[role="button"]');
+    expect(arrows.length).toBeGreaterThan(0);
+    const anyHasDashArray = Array.from(arrows).some((g) => {
+      const style = (g as SVGGElement).getAttribute("style") ?? "";
+      return style.includes("stroke-dasharray");
+    });
+    expect(anyHasDashArray).toBe(true);
   });
 
   it("renders the empty-state copy when events is empty", () => {
