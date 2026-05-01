@@ -150,7 +150,7 @@ Plans:
 - [x] 12-02: SequenceDiagramView + TraceExplorer toggle (List|Sequence) + vitest — closes VIZ-02
 
 **Wave 2** *(blocked on Wave 1 completion)*
-- [ ] 12-03: AnnotatedDiffView + CompareTracesPanel toggle (Side-by-side|Annotated diff) + vitest — closes VIZ-01 (depends_on: 12-01)
+- [x] 12-03: AnnotatedDiffView + CompareTracesPanel toggle (Side-by-side|Annotated diff) + vitest — closes VIZ-01 (depends_on: 12-01)
 
 **Cross-cutting constraints**:
 - D-78 role-first labels via `traceLabel()` from `frontend/src/lib/trace/utils.ts`

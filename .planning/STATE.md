@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Race Demo + Discovery + Visualization
 status: "Phase 10 implementation decisions D-61..D-66 honoured (Playwright singleton + asyncio.Lock, 503 + canvas fallback, mock render in CI, html2canvas lazy, ClipboardItem + download fallback, manual OG_LAYOUT_VERSION). Backend pytest 342/342 (336 baseline + 6 og_cache + 10 og_routes); frontend vitest 286/286 across 31 files (280 baseline + 2 HeatmapAnnotationStrip + 4 CopyHeadlineImageButton; Phase 8 RacePage.responsive copy assertion updated for UIRACE-05 closure). Wave 2 quota recovery: 10-02 + 10-03 each had Task 1 committed pre-quota; Task 2 salvaged from main tree; remaining tasks (test_og_routes.py, RacePage `?og=1` wiring, both SUMMARYs) executed inline."
-stopped_at: Phase 12 Wave 1 complete — 12-01 + 12-02 merged, 312/312 frontend tests pass
-last_updated: "2026-05-01T07:31:00.000Z"
-last_activity: "2026-05-01 13:01 — Phase 12 Wave 1 complete: 12-01 alignTraces + 12-02 SequenceDiagramView merged to master; awaiting Wave 2 (12-03)"
+stopped_at: Phase 12 implementation complete — all 3 plans merged, 324/324 frontend tests pass; awaiting verification + code review
+last_updated: "2026-05-01T07:46:00.000Z"
+last_activity: "2026-05-01 13:16 — Phase 12 fully implemented: 12-01 alignTraces + 12-02 SequenceDiagramView (Wave 1) + 12-03 AnnotatedDiffView (Wave 2) all merged to master"
 progress:
   total_phases: 8
   completed_phases: 6
