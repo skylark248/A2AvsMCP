@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Race Demo + Discovery + Visualization
 status: in_progress
-stopped_at: Phase 11 plan 11-03 complete (Wave 1 frontend DiscoveryPhasePanel + 5-case vitest; full vitest 291/291 green)
-last_updated: "2026-05-01T03:38:00.000Z"
-last_activity: 2026-05-01 03:38 — Plan 11-03 executed: DiscoveryPhasePanel.tsx (MUI Accordion + 2-col Grid + D-71 placeholder copy + stale-cache fallback highlight + a2a_remote_discovery skill-chip join) + 5 vitest cases; full frontend vitest 291/291 (286 baseline + 5 new); tsc clean; commits a84c511 + b84acd3.
+stopped_at: Phase 11 plan 11-04 complete (Wave 2 mount-site wiring; all 4 plans landed; ready for verifier)
+last_updated: "2026-05-01T10:55:00.000Z"
+last_activity: 2026-05-01 10:55 — Plan 11-04 executed: TraceWorkspacePage D-73 scenario gate + CompareTracesPanel D-72 single full-width panel; presence-gated; null-safe accessors; event_type filter (Pitfall #1) + a2a_remote_discovery union (Pitfall #2). Frontend vitest 291/291; backend pytest 345/345. Subagent quota-killed mid-task; recovered inline. Commits e1b6e31 + 1357a2f.
 progress:
   total_phases: 8
   completed_phases: 5
   total_plans: 39
-  completed_plans: 38
-  percent: 97.4
+  completed_plans: 39
+  percent: 100.0
 ---
 
 # Project State
@@ -21,17 +21,17 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** A side-by-side, runnable comparison that makes the differences between MCP and A2A visible — not described, not diagrammed, but live and traceable.
-**Current focus:** Phase 11 — Tool Discovery Scenario (3/4 plans complete; Wave 1 frontend shipped 2026-05-01; Wave 2 mount-site wiring next: 11-04)
+**Current focus:** Phase 11 — Tool Discovery Scenario (4/4 plans complete; ready for phase verifier)
 
 ## Current Position
 
-Phase: 11 (tool-discovery-scenario) — Wave 1 backend + frontend complete (11-02 shipped 2026-05-01 backend; 11-03 shipped 2026-05-01 frontend, vitest 291/291 green). Next: 11-04 (Wave 2 mount-site wiring) gated on both 11-02 and 11-03 — both now satisfied.
+Phase: 11 (tool-discovery-scenario) — ALL 4 plans complete. Frontend vitest 291/291; backend pytest 345/345. Next: phase verifier → mark phase complete in ROADMAP.
 
 Wave structure:
 - Wave 0 / 11-01: ✅ Extract JsonTree+FIELD_ANNOTATIONS+annotate from ProtocolEnvelopeDrawer → frontend/src/lib/trace/JsonTree.tsx (commits 3b5aff9, f5dd49a) [DISC-02 partial]
 - Wave 1 / 11-02: ✅ tool_discovery scenario seed (TICKET-1013) + customer (CUST-005) + pytest (3 tests: load + emit + fallback) (commits f413311, 866fbb3) [DISC-01]
 - Wave 1 / 11-03: ✅ DiscoveryPhasePanel.tsx (MUI Accordion + Grid 2-col + protocol stripes + stale-cache highlight + a2a_remote_discovery skill-chip join) + 5-case vitest (commits a84c511, b84acd3) [DISC-02]
-- Wave 2 / 11-04: Mount-site wiring — TraceWorkspacePage gate (D-73) + CompareTracesPanel single panel above dual-column (D-72) + integration verification [DISC-02]; depends_on [11-02, 11-03]
+- Wave 2 / 11-04: ✅ Mount-site wiring — TraceWorkspacePage D-73 gate + CompareTracesPanel D-72 single panel above dual-column + integration verification (commits e1b6e31, 1357a2f) [DISC-02]
 
 Pitfalls baked into plans:
 - Filter on event.event_type === "tool_discovery" (NOT event.phase) — _PHASE_MAP does not tag discovery

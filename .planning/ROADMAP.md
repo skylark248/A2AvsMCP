@@ -133,7 +133,7 @@ Plans:
 - [x] 11-01-PLAN.md — Wave 0 refactor: extract JsonTree + FIELD_ANNOTATIONS + annotate from ProtocolEnvelopeDrawer to lib/trace/JsonTree.tsx (DISC-02)
 - [x] 11-02-PLAN.md — Wave 1 backend: TICKET-1013 + CUST-005 seed rows + pytest coverage proving discovery+fallback emission (DISC-01)
 - [x] 11-03-PLAN.md — Wave 1 frontend: DiscoveryPhasePanel.tsx component + DiscoveryPhasePanelProps + 5 vitest cases (incl. a2a_remote_discovery skill chips) (DISC-02)
-- [ ] 11-04-PLAN.md — Wave 2 mount-site wiring: TraceWorkspacePage gate (D-73) + CompareTracesPanel single-panel above dual-column (D-72) + integration verification (DISC-02)
+- [x] 11-04-PLAN.md — Wave 2 mount-site wiring: TraceWorkspacePage gate (D-73) + CompareTracesPanel single-panel above dual-column (D-72) + integration verification (DISC-02)
 **UI hint**: yes
 
 ### Phase 12: Comparison Visualization Upgrades
