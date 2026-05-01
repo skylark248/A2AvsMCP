@@ -6,14 +6,24 @@ import {
   MenuItem,
   Select,
   Stack,
+  ToggleButton,
+  ToggleButtonGroup,
   Typography,
 } from "@mui/material";
 import { useCallback, useRef, useState } from "react";
 
+import { AnnotatedDiffView } from "../../components/traces/AnnotatedDiffView";
 import { DiscoveryPhasePanel } from "../../components/traces/DiscoveryPhasePanel";
 import { TraceExplorer } from "../../components/traces/TraceExplorer";
 import { getProtocolColor } from "../../lib/trace/eventColors";
-import type { RunResult } from "../../lib/types/api";
+import type { RunResult, TraceEvent } from "../../lib/types/api";
+
+// W-6 mitigation: stable empty-array reference prevents useMemo invalidation
+// in AnnotatedDiffView when resultA/resultB are undefined.
+const EMPTY_EVENTS: TraceEvent[] = [];
+
+// View mode type — 'side-by-side' is the non-regressing default (D-75)
+type CompareViewMode = "side-by-side" | "diff";
 
 interface CompareTracesPanelProps {
   results: RunResult[];
@@ -24,11 +34,17 @@ export function CompareTracesPanel({ results }: CompareTracesPanelProps) {
   const [modeA, setModeA] = useState<string>(modes[0] ?? "");
   const [modeB, setModeB] = useState<string>(modes[1] ?? modes[0] ?? "");
 
+  // D-75: in-place viewMode toggle — defaults to Side-by-side (no regression)
+  const [viewMode, setViewMode] = useState<CompareViewMode>("side-by-side");
+
   const scrollRefA = useRef<HTMLDivElement>(null);
   const scrollRefB = useRef<HTMLDivElement>(null);
   const syncing = useRef(false);
 
   // D-09: Synchronized scrolling with mutex guard (RESEARCH.md Pitfall 2)
+  // Refs are simply inert when viewMode === 'diff' because the dual-column
+  // Boxes are not in the rendered tree. Refs reattach automatically on toggle
+  // round-trip (RESEARCH §2 — acceptable behavior).
   const handleScroll = useCallback((source: "a" | "b") => {
     if (syncing.current) return;
     syncing.current = true;
@@ -108,7 +124,27 @@ export function CompareTracesPanel({ results }: CompareTracesPanelProps) {
         </Grid>
       </Grid>
 
-      {/* D-72: Single full-width DiscoveryPhasePanel above dual-column Grid (presence-gated) */}
+      {/* D-75: View mode toggle — right-aligned, between Mode A/B Grid and discovery panel.
+          Per UI-SPEC lines 200-207: size="small", exclusive, aria-label="View mode".
+          B-3 mitigation: do NOT pass leftProtocolLabel/rightProtocolLabel — let AnnotatedDiffView
+          defaults apply ("MCP — Trace A", "A2A — Trace B") to preserve Copywriting Contract. */}
+      <Stack direction="row" justifyContent="flex-end">
+        <ToggleButtonGroup
+          value={viewMode}
+          exclusive
+          size="small"
+          aria-label="View mode"
+          onChange={(_e, next) => {
+            if (next === "side-by-side" || next === "diff") setViewMode(next);
+          }}
+        >
+          <ToggleButton value="side-by-side">Side-by-side</ToggleButton>
+          <ToggleButton value="diff">Annotated diff</ToggleButton>
+        </ToggleButtonGroup>
+      </Stack>
+
+      {/* D-72: Single full-width DiscoveryPhasePanel above dual-column Grid (presence-gated).
+          This block is ABOVE the viewMode conditional — it remains visible in BOTH view modes. */}
       {showDiscoveryPanel ? (
         <DiscoveryPhasePanel
           mcpEvents={discoveryMcpEvents}
@@ -117,49 +153,58 @@ export function CompareTracesPanel({ results }: CompareTracesPanelProps) {
         />
       ) : null}
 
-      {/* D-08: Two synchronized TraceExplorer columns */}
-      <Grid container spacing={2} alignItems="flex-start">
-        <Grid size={{ xs: 12, md: 6 }}>
-          <Box
-            ref={scrollRefA}
-            onScroll={() => handleScroll("a")}
-            sx={{ overflowY: "auto", maxHeight: 600 }}
-          >
-            {resultA ? (
-              <TraceExplorer
-                events={resultA.trace}
-                title={`${resultA.mode.toUpperCase()} Trace`}
-                subtitle={`${resultA.trace.length} events`}
-                runtime={resultA.runtime}
-              />
-            ) : (
-              <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                Select Mode A above.
-              </Typography>
-            )}
-          </Box>
+      {/* D-75: Conditional body — swap dual-column for AnnotatedDiffView when viewMode==='diff' */}
+      {viewMode === "side-by-side" ? (
+        /* D-08: Two synchronized TraceExplorer columns */
+        <Grid container spacing={2} alignItems="flex-start">
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Box
+              ref={scrollRefA}
+              onScroll={() => handleScroll("a")}
+              sx={{ overflowY: "auto", maxHeight: 600 }}
+            >
+              {resultA ? (
+                <TraceExplorer
+                  events={resultA.trace}
+                  title={`${resultA.mode.toUpperCase()} Trace`}
+                  subtitle={`${resultA.trace.length} events`}
+                  runtime={resultA.runtime}
+                />
+              ) : (
+                <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                  Select Mode A above.
+                </Typography>
+              )}
+            </Box>
+          </Grid>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Box
+              ref={scrollRefB}
+              onScroll={() => handleScroll("b")}
+              sx={{ overflowY: "auto", maxHeight: 600 }}
+            >
+              {resultB ? (
+                <TraceExplorer
+                  events={resultB.trace}
+                  title={`${resultB.mode.toUpperCase()} Trace`}
+                  subtitle={`${resultB.trace.length} events`}
+                  runtime={resultB.runtime}
+                />
+              ) : (
+                <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                  Select Mode B above.
+                </Typography>
+              )}
+            </Box>
+          </Grid>
         </Grid>
-        <Grid size={{ xs: 12, md: 6 }}>
-          <Box
-            ref={scrollRefB}
-            onScroll={() => handleScroll("b")}
-            sx={{ overflowY: "auto", maxHeight: 600 }}
-          >
-            {resultB ? (
-              <TraceExplorer
-                events={resultB.trace}
-                title={`${resultB.mode.toUpperCase()} Trace`}
-                subtitle={`${resultB.trace.length} events`}
-                runtime={resultB.runtime}
-              />
-            ) : (
-              <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                Select Mode B above.
-              </Typography>
-            )}
-          </Box>
-        </Grid>
-      </Grid>
+      ) : (
+        /* W-6: Use EMPTY_EVENTS (not inline []) to keep useMemo in AnnotatedDiffView stable */
+        <AnnotatedDiffView
+          leftEvents={resultA?.trace ?? EMPTY_EVENTS}
+          rightEvents={resultB?.trace ?? EMPTY_EVENTS}
+        />
+      )}
     </Stack>
   );
 }
