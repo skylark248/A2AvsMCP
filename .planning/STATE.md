@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Race Demo + Discovery + Visualization
-status: ready_to_plan
-stopped_at: Phase 12 context gathered (2026-05-01) — 12 decisions locked (D-74..D-85)
-last_updated: "2026-05-01T11:23:00.000Z"
-last_activity: 2026-05-01 11:23 — /gsd-discuss-phase 12 complete. CONTEXT.md + DISCUSSION-LOG.md committed (c800eef). 12 decisions locked covering VIZ-01 diff (alignment + layout + scope + visual) and VIZ-02 sequence diagram (rendering + lanes + mount + pin). Next: /gsd-plan-phase 12.
+status: "Phase 10 implementation decisions D-61..D-66 honoured (Playwright singleton + asyncio.Lock, 503 + canvas fallback, mock render in CI, html2canvas lazy, ClipboardItem + download fallback, manual OG_LAYOUT_VERSION). Backend pytest 342/342 (336 baseline + 6 og_cache + 10 og_routes); frontend vitest 286/286 across 31 files (280 baseline + 2 HeatmapAnnotationStrip + 4 CopyHeadlineImageButton; Phase 8 RacePage.responsive copy assertion updated for UIRACE-05 closure). Wave 2 quota recovery: 10-02 + 10-03 each had Task 1 committed pre-quota; Task 2 salvaged from main tree; remaining tasks (test_og_routes.py, RacePage `?og=1` wiring, both SUMMARYs) executed inline."
+stopped_at: Phase 12 ready to execute (3 plans)
+last_updated: "2026-05-01T06:58:00.000Z"
+last_activity: "2026-05-01 12:25 — Phase 12 plans 12-01..12-03 written; planner subagent quota recovery (12-03 inline)"
 progress:
   total_phases: 8
   completed_phases: 6
   total_plans: 39
   completed_plans: 39
-  percent: 100.0
+  percent: 100
 ---
 
 # Project State
@@ -21,21 +21,31 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** A side-by-side, runnable comparison that makes the differences between MCP and A2A visible — not described, not diagrammed, but live and traceable.
-**Current focus:** Phase 12 — Comparison Visualization Upgrades (next; plans TBD)
+**Current focus:** Phase 12 — Comparison Visualization Upgrades (3 plans ready to execute)
 
 ## Current Position
 
-Phase: 11 ✅ COMPLETE (signed off 2026-05-01). Frontend vitest 291/291; backend pytest 345/345; 16/16 must-haves verified; all 4 HUMAN-UAT items approved.
+Phase: 12 — READY TO EXECUTE. Plans 12-01..12-03 written. Phase 11 ✅ COMPLETE (signed off 2026-05-01).
 
-Next phase: 12 (Comparison Visualization Upgrades) — VIZ-01, VIZ-02. No CONTEXT.md yet — start with `/gsd-discuss-phase 12`.
+Phase 12 wave structure:
+
+- Wave 1 / 12-01: alignTraces pure function + vitest (`frontend/src/components/traces/diffAlign.ts` + `__tests__/diffAlign.test.ts`) — VIZ-01 algorithm foundation [D-74, D-76, D-77, D-78]
+- Wave 1 / 12-02: SequenceDiagramView (hand-rolled SVG, 5 fixed lifelines) + TraceExplorer toggle (List|Sequence) + pinned-event lift + vitest covering reduced-motion + click-to-pin + cross-view scroll — closes VIZ-02 [D-78, D-79, D-80, D-81, D-82, D-83, D-85]
+- Wave 2 / 12-03 (depends_on 12-01): AnnotatedDiffView component + CompareTracesPanel toggle (Side-by-side|Annotated diff) + vitest (≥7 + ≥3) — closes VIZ-01 [D-75, D-77, D-78, D-84, D-85]
+
+Plan-checker subagent skipped (quota exhausted; resets May 4). Plans written inline against locked CONTEXT.md + UI-SPEC.md + verified RESEARCH.md line numbers; verify integrity before/during execute.
+
+Quota recovery: planner subagent crashed mid-write after 12-01 + 12-02 landed. 12-03 authored inline by primary session per `feedback_subagent_quota_recovery` rule.
 
 Wave structure:
+
 - Wave 0 / 11-01: ✅ Extract JsonTree+FIELD_ANNOTATIONS+annotate from ProtocolEnvelopeDrawer → frontend/src/lib/trace/JsonTree.tsx (commits 3b5aff9, f5dd49a) [DISC-02 partial]
 - Wave 1 / 11-02: ✅ tool_discovery scenario seed (TICKET-1013) + customer (CUST-005) + pytest (3 tests: load + emit + fallback) (commits f413311, 866fbb3) [DISC-01]
 - Wave 1 / 11-03: ✅ DiscoveryPhasePanel.tsx (MUI Accordion + Grid 2-col + protocol stripes + stale-cache highlight + a2a_remote_discovery skill-chip join) + 5-case vitest (commits a84c511, b84acd3) [DISC-02]
 - Wave 2 / 11-04: ✅ Mount-site wiring — TraceWorkspacePage D-73 gate + CompareTracesPanel D-72 single panel above dual-column + integration verification (commits e1b6e31, 1357a2f) [DISC-02]
 
 Pitfalls baked into plans:
+
 - Filter on event.event_type === "tool_discovery" (NOT event.phase) — _PHASE_MAP does not tag discovery
 - A2A column unions tool_discovery (with remote_agent) AND a2a_remote_discovery (joins by agent_id)
 - JsonTree-only import (FIELD_ANNOTATIONS/annotate not used by panel)
@@ -54,6 +64,7 @@ Decisions locked (D-67..D-73):
 - D-73: Panel mounts only when scenario === "tool_discovery" on TraceWorkspacePage
 
 Discretion resolved during research/planning:
+
 - Failure-mode injection: reuse tool_transport_fallback + requested_transport divergence (no new event_type)
 - ReportDetailPage/RacePage: NOT mounted (deferred to potential Phase 12)
 - Accordion default: defaultExpanded={true}
@@ -130,7 +141,7 @@ Items acknowledged at v1.0 close that remain deferred into v2.0+:
 
 ## Session Continuity
 
-Last session: 2026-05-01T03:38:00.000Z
-Stopped at: Plan 11-03 complete (Wave 1 frontend; commits a84c511 + b84acd3; vitest 291/291)
-Resume file: .planning/phases/11-tool-discovery-scenario/11-03-SUMMARY.md
+Last session: 2026-05-01T06:10:40.245Z
+Stopped at: Phase 12 UI-SPEC approved
+Resume file: .planning/phases/12-comparison-visualization-upgrades/12-UI-SPEC.md
 Next action: Execute plan 11-04 (Wave 2 mount-site wiring) — gated on 11-02 + 11-03, both now complete. Wires DiscoveryPhasePanel into TraceWorkspacePage (gated on scenario === "tool_discovery" per D-73) and CompareTracesPanel (single panel above dual-column per D-72), with integration verification via vitest.

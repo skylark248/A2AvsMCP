@@ -143,7 +143,20 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. A viewer on `CompareTracesPanel` can open an annotated diff view that aligns matching events line-by-line and visually highlights divergence points (added vs removed steps, role-first labels) between two protocol traces.
   2. A viewer on `TraceExplorer` can open an interactive sequence diagram with vertical lifelines per actor and horizontal arrows per message, click-to-pin a message, and have the animation honor `prefers-reduced-motion`.
-**Plans**: TBD
+**Plans**:
+
+**Wave 1**
+- 12-01: alignTraces pure function + vitest (`frontend/src/components/traces/diffAlign.ts`) — VIZ-01 algorithm foundation
+- 12-02: SequenceDiagramView + TraceExplorer toggle (List|Sequence) + vitest — closes VIZ-02
+
+**Wave 2** *(blocked on Wave 1 completion)*
+- 12-03: AnnotatedDiffView + CompareTracesPanel toggle (Side-by-side|Annotated diff) + vitest — closes VIZ-01 (depends_on: 12-01)
+
+**Cross-cutting constraints**:
+- D-78 role-first labels via `traceLabel()` from `frontend/src/lib/trace/utils.ts`
+- D-84 reuse existing tokens (`failureTagColor`, `getProtocolColor`, MUI palette) — no new colors
+- D-85 zero new dependencies — no `@xyflow/react`, no `motion` library imports
+
 **UI hint**: yes
 
 ### Phase 13: Design System Lock
