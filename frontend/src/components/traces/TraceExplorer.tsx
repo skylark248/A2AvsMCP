@@ -18,9 +18,15 @@ import {
   MenuItem,
   Select,
   Stack,
+  ToggleButton,
+  ToggleButtonGroup,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+
+import { SequenceDiagramView } from "./SequenceDiagramView";
+import { traceEventProtocol } from "../../lib/trace/utils";
 
 import { eventBorderColor, getProtocolColor } from "../../lib/trace/eventColors";
 import {
@@ -49,6 +55,48 @@ export function TraceExplorer({ events, title = "Trace Explorer", subtitle, runt
   const [toolFilter, setToolFilter] = useState<string>("all");
   const [protocolFilter, setProtocolFilter] = useState<string>("all");
   const [failureFilter, setFailureFilter] = useState<string>("all");
+
+  // VIZ-02: view mode, pinned event, accordion control, reduced-motion
+  const [viewMode, setViewMode] = useState<"list" | "sequence">("list");
+  const [pinnedEventId, setPinnedEventId] = useState<string | null>(null);
+  // pinnedTierExpanded: controls Tier 1 accordion expansion for scroll-to-row (Risk Landmine row 7)
+  const [pinnedTierExpanded, setPinnedTierExpanded] = useState<0 | 1 | 2 | null>(null);
+  const prefersReducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
+
+  // B-2 mitigation: traceEventProtocol returns string (can be "runtime"); filter to only the
+  // three accepted values BEFORE narrowing to SequenceDiagramView's protocol prop.
+  const inferredProtocol = useMemo<"mcp" | "a2a" | "hybrid" | undefined>(() => {
+    const valid = events
+      .map((e) => traceEventProtocol(e))
+      .filter((p): p is "mcp" | "a2a" | "hybrid" => p === "mcp" || p === "a2a" || p === "hybrid");
+    const set = new Set(valid);
+    return set.size === 1 ? valid[0] : undefined;
+  }, [events]);
+
+  // Risk Landmine row 5 mitigation: reset pin when events identity changes (new trace loaded)
+  useEffect(() => {
+    setPinnedEventId(null);
+  }, [events]);
+
+  // D-82: when toggling back to list with a pinned id, scroll to + flash the matching row
+  useEffect(() => {
+    if (viewMode !== "list" || !pinnedEventId) return;
+    // Force-expand Tier 1 (Protocol Events) so the pinned row is visible even if collapsed
+    setPinnedTierExpanded(1);
+    const rafId = window.requestAnimationFrame(() => {
+      const el = document.querySelector(
+        `[data-event-index="${pinnedEventId}"]`,
+      ) as HTMLElement | null;
+      if (!el) return;
+      el.scrollIntoView({
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+        block: "center",
+      });
+      el.classList.add("tr-pinned-flash");
+      window.setTimeout(() => el.classList.remove("tr-pinned-flash"), 1500);
+    });
+    return () => window.cancelAnimationFrame(rafId);
+  }, [viewMode, pinnedEventId, prefersReducedMotion]);
 
   const eventTypes = useMemo(() => uniqueTraceValues(events, (event) => traceLabel(event)), [events]);
   const actors = useMemo(() => uniqueTraceValues(events, (event) => traceEventActor(event)), [events]);
@@ -89,7 +137,17 @@ export function TraceExplorer({ events, title = "Trace Explorer", subtitle, runt
   }, [events]);
 
   return (
-    <Card>
+    <Card
+      sx={{
+        // CSS hook for the scroll-to-pinned-row flash effect (D-82)
+        "& .tr-pinned-flash": {
+          outline: "2px solid",
+          outlineColor: "secondary.main",
+          outlineOffset: "2px",
+          transition: prefersReducedMotion ? "none" : "outline-color 1.5s ease-out",
+        },
+      }}
+    >
       <CardContent>
         <Stack spacing={2}>
           <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
@@ -99,14 +157,29 @@ export function TraceExplorer({ events, title = "Trace Explorer", subtitle, runt
                 {subtitle ?? "Filter the protocol timeline by event type, actor, tool, and failure state."}
               </Typography>
             </Stack>
-            {runtime === "llm" && (
-              <Chip
-                label="Expect 2-5s per LLM call"
+            <Stack direction="row" spacing={1} alignItems="center">
+              {/* VIZ-02: List|Sequence toggle (D-81) */}
+              <ToggleButtonGroup
+                value={viewMode}
+                exclusive
                 size="small"
-                color="warning"
-                icon={<WarningAmberRoundedIcon fontSize="small" />}
-              />
-            )}
+                onChange={(_, next) => {
+                  if (next) setViewMode(next);
+                }}
+                aria-label="View mode"
+              >
+                <ToggleButton value="list">List</ToggleButton>
+                <ToggleButton value="sequence">Sequence</ToggleButton>
+              </ToggleButtonGroup>
+              {runtime === "llm" && (
+                <Chip
+                  label="Expect 2-5s per LLM call"
+                  size="small"
+                  color="warning"
+                  icon={<WarningAmberRoundedIcon fontSize="small" />}
+                />
+              )}
+            </Stack>
           </Stack>
 
           <Grid container spacing={1.5}>
@@ -169,7 +242,7 @@ export function TraceExplorer({ events, title = "Trace Explorer", subtitle, runt
             </Alert>
           )}
 
-          {/* === Tier 0: Summary Strip (always visible) === */}
+          {/* === Tier 0: Summary Strip (always visible, both views) === */}
           <Stack direction="row" spacing={2} flexWrap="wrap" useFlexGap
             sx={{ px: 1, py: 0.75, bgcolor: "action.hover", borderRadius: 1 }}>
             <Typography variant="caption" sx={{ color: "text.secondary" }}>
@@ -186,35 +259,58 @@ export function TraceExplorer({ events, title = "Trace Explorer", subtitle, runt
             </Typography>
           </Stack>
 
-          {/* === Tier 1: Protocol-Level (collapsed by default) === */}
-          <Accordion defaultExpanded={false} disableGutters>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="subtitle2">
-                Protocol Events
-                <Typography component="span" variant="caption" sx={{ ml: 1, color: "text.secondary" }}>
-                  ({filteredEvents.length} visible)
-                </Typography>
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails sx={{ p: 0 }}>
-              <ProtocolTier events={filteredEvents} />
-            </AccordionDetails>
-          </Accordion>
+          {/* === VIZ-02: View mode branch (D-81) === */}
+          {viewMode === "sequence" ? (
+            <SequenceDiagramView
+              events={filteredEvents}
+              pinnedEventId={pinnedEventId}
+              onPinEvent={setPinnedEventId}
+              protocol={inferredProtocol}
+            />
+          ) : (
+            <>
+              {/* === Tier 1: Protocol-Level (controlled for pin-scroll, Risk Landmine row 7) === */}
+              {/* Decision: converted Tier 1 to controlled Accordion so we can force-expand it
+                  when toggling back to List with a pinned event id. Tier 2 remains uncontrolled
+                  (user only expands it manually, no scroll-to-row needed there). */}
+              <Accordion
+                expanded={pinnedTierExpanded === 1 || false}
+                onChange={(_, isExpanded) => setPinnedTierExpanded(isExpanded ? 1 : null)}
+                disableGutters
+              >
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography variant="subtitle2">
+                    Protocol Events
+                    <Typography component="span" variant="caption" sx={{ ml: 1, color: "text.secondary" }}>
+                      ({filteredEvents.length} visible)
+                    </Typography>
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails sx={{ p: 0 }}>
+                  {/* Parent element of ProtocolEventRow is Stack (flex container) — wrapping in Box
+                      with data-event-index is valid. But ProtocolEventRow's outer element is a
+                      Stack (div), so we wrap each row at the call site here (Option b: element-aware
+                      wrapper). Parent element type: Stack (= div), so Box wrapper is valid. */}
+                  <ProtocolTier events={filteredEvents} pinnedEventId={pinnedEventId} />
+                </AccordionDetails>
+              </Accordion>
 
-          {/* === Tier 2: Full Trace (collapsed by default) === */}
-          <Accordion defaultExpanded={false} disableGutters>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="subtitle2">
-                Full Trace
-                <Typography component="span" variant="caption" sx={{ ml: 1, color: "text.secondary" }}>
-                  (raw JSON)
-                </Typography>
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <FullTraceTier events={filteredEvents} />
-            </AccordionDetails>
-          </Accordion>
+              {/* === Tier 2: Full Trace (collapsed by default, uncontrolled) === */}
+              <Accordion defaultExpanded={false} disableGutters>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography variant="subtitle2">
+                    Full Trace
+                    <Typography component="span" variant="caption" sx={{ ml: 1, color: "text.secondary" }}>
+                      (raw JSON)
+                    </Typography>
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <FullTraceTier events={filteredEvents} />
+                </AccordionDetails>
+              </Accordion>
+            </>
+          )}
 
         </Stack>
       </CardContent>
@@ -224,7 +320,7 @@ export function TraceExplorer({ events, title = "Trace Explorer", subtitle, runt
 
 const RENDER_CAP = 150;
 
-function ProtocolTier({ events }: { events: TraceEvent[] }) {
+function ProtocolTier({ events, pinnedEventId }: { events: TraceEvent[]; pinnedEventId?: string | null }) {
   const nonA2AEvents = events.filter(
     (e) => !isA2AEvent(e) && e.event_type !== "task_status" &&
            e.event_type !== "task_submit" && e.event_type !== "task_complete"
@@ -246,7 +342,12 @@ function ProtocolTier({ events }: { events: TraceEvent[] }) {
         </Typography>
       )}
       {nonA2ARows.map((event) => (
-        <ProtocolEventRow key={`${event.index}-${event.event_type}`} event={event} />
+        /* data-event-index: parent element is Stack (= div flex container), so Box wrapper is valid
+           DOM nesting (Option b: element-aware wrapper). This is how the scroll-to-pin effect
+           finds the row after toggling back to List view (D-82). */
+        <div key={`${event.index}-${event.event_type}`} data-event-index={String(event.index)}>
+          <ProtocolEventRow event={event} />
+        </div>
       ))}
       {cappedGroups.map(([taskId, groupEvents]) => {
         const lastStatus = [...groupEvents].reverse().find((e) => e.status)?.status ?? "unknown";
@@ -266,7 +367,9 @@ function ProtocolTier({ events }: { events: TraceEvent[] }) {
             <AccordionDetails sx={{ p: 0.5 }}>
               <Stack spacing={0.5}>
                 {groupEvents.map((e) => (
-                  <ProtocolEventRow key={`${e.index}-${e.event_type}`} event={e} />
+                  <div key={`${e.index}-${e.event_type}`} data-event-index={String(e.index)}>
+                    <ProtocolEventRow event={e} />
+                  </div>
                 ))}
               </Stack>
             </AccordionDetails>
