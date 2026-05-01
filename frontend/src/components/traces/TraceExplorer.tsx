@@ -26,7 +26,6 @@ import {
 import { useEffect, useMemo, useState } from "react";
 
 import { SequenceDiagramView } from "./SequenceDiagramView";
-import { traceEventProtocol } from "../../lib/trace/utils";
 
 import { eventBorderColor, getProtocolColor } from "../../lib/trace/eventColors";
 import {
