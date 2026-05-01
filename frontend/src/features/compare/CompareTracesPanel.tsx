@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { useCallback, useRef, useState } from "react";
 
+import { DiscoveryPhasePanel } from "../../components/traces/DiscoveryPhasePanel";
 import { TraceExplorer } from "../../components/traces/TraceExplorer";
 import { getProtocolColor } from "../../lib/trace/eventColors";
 import type { RunResult } from "../../lib/types/api";
@@ -43,6 +44,19 @@ export function CompareTracesPanel({ results }: CompareTracesPanelProps) {
 
   const resultA = results.find((r) => r.mode === modeA);
   const resultB = results.find((r) => r.mode === modeB);
+
+  const allEvents = [...(resultA?.trace ?? []), ...(resultB?.trace ?? [])];
+  const discoveryMcpEvents = allEvents.filter(
+    (e) => e.event_type === "tool_discovery" && !(e as { remote_agent?: unknown }).remote_agent,
+  );
+  const discoveryA2aEvents = allEvents.filter(
+    (e) =>
+      (e.event_type === "tool_discovery" && Boolean((e as { remote_agent?: unknown }).remote_agent)) ||
+      e.event_type === "a2a_remote_discovery",
+  );
+  const showDiscoveryPanel = discoveryMcpEvents.length > 0 || discoveryA2aEvents.length > 0;
+  const discoveryScenario =
+    resultA?.ticket?.scenario ?? resultB?.ticket?.scenario ?? "tool_discovery";
 
   return (
     <Stack spacing={2}>
@@ -93,6 +107,15 @@ export function CompareTracesPanel({ results }: CompareTracesPanelProps) {
           </FormControl>
         </Grid>
       </Grid>
+
+      {/* D-72: Single full-width DiscoveryPhasePanel above dual-column Grid (presence-gated) */}
+      {showDiscoveryPanel ? (
+        <DiscoveryPhasePanel
+          mcpEvents={discoveryMcpEvents}
+          a2aEvents={discoveryA2aEvents}
+          scenario={discoveryScenario}
+        />
+      ) : null}
 
       {/* D-08: Two synchronized TraceExplorer columns */}
       <Grid container spacing={2} alignItems="flex-start">
