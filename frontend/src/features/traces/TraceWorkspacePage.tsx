@@ -23,6 +23,7 @@ import {
   MetricGridSkeleton,
   PageIntroSkeleton,
 } from "../../components/loading/LoadingSkeletons";
+import { DiscoveryPhasePanel } from "../../components/traces/DiscoveryPhasePanel";
 import { TraceExplorer } from "../../components/traces/TraceExplorer";
 import { fetchReportDetail, fetchReports } from "../../lib/api/client";
 import { isA2AEvent, isTraceFailureEvent } from "../../lib/trace/utils";
@@ -387,6 +388,29 @@ export function TraceWorkspacePage() {
               </CardContent>
             </Card>
           </Grid>
+
+          {detail?.summary?.scenario === "tool_discovery" ? (
+            <Grid size={{ xs: 12 }}>
+              {(() => {
+                const allEvents = visibleResults.flatMap((r) => r.trace ?? []);
+                const mcpEvents = allEvents.filter(
+                  (e) => e.event_type === "tool_discovery" && !(e as { remote_agent?: unknown }).remote_agent,
+                );
+                const a2aEvents = allEvents.filter(
+                  (e) =>
+                    (e.event_type === "tool_discovery" && Boolean((e as { remote_agent?: unknown }).remote_agent)) ||
+                    e.event_type === "a2a_remote_discovery",
+                );
+                return (
+                  <DiscoveryPhasePanel
+                    mcpEvents={mcpEvents}
+                    a2aEvents={a2aEvents}
+                    scenario={detail.summary.scenario}
+                  />
+                );
+              })()}
+            </Grid>
+          ) : null}
 
           <Grid size={{ xs: 12 }}>
             <Stack spacing={2}>
