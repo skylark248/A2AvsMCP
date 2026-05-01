@@ -166,7 +166,9 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. `.planning/DESIGN.md` exists and codifies the `failureTagColor` map (5 entries), the methodology-as-flat-section rule, `secondary.main` as replay-pill semantic, the role-first first-mention contract scoped to Run + Compare + Race pages, and the primary/secondary palette intent.
   2. A new contributor opening DESIGN.md can answer "where does this color come from / when do I render flat vs in a card / how do I introduce role-first labels on a new page" without reading source.
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 13-01-PLAN.md — /design-consultation + author .planning/DESIGN.md (5 mandated items: failureTagColor table, methodology-as-flat, secondary.main semantic, role-first contract, palette intent) (Wave 1)
 **UI hint**: yes
 
 ## Progress
@@ -185,4 +187,4 @@ Plans:
 | 10. OG Image & Sharing | v2.0 | 0/3 | Pending | — |
 | 11. Tool Discovery Scenario | v2.0 | 3/4 | In progress | — |
 | 12. Comparison Visualization Upgrades | v2.0 | 0/3 | Pending | — |
-| 13. Design System Lock | v2.0 | 0/2 | Pending | — |
+| 13. Design System Lock | v2.0 | 0/1 | Pending | — |
