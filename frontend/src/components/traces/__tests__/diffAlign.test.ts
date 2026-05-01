@@ -181,6 +181,17 @@ describe("alignTraces", () => {
     expect(rows[1].differingFields).toContain("tool");
   });
 
+  it("treats objects with reordered keys as matched-equal (not field-divergent) (HI-02 regression)", () => {
+    // Simulate backend dict-merge / pydantic round-trip that doesn't preserve key order.
+    // {a:1, b:2} vs {b:2, a:1} must NOT produce a differingFields entry for metadata.
+    const left = [evt({ event_type: "tool_call", turn_index: 0, metadata: { a: 1, b: 2 } })];
+    const right = [evt({ event_type: "tool_call", turn_index: 0, metadata: { b: 2, a: 1 } })];
+    const rows = alignTraces(left, right);
+    expect(rows).toHaveLength(1);
+    expect(rows[0].status).toBe("matched-equal");
+    expect(rows[0].differingFields).toBeUndefined();
+  });
+
   it("classifies matched-divergent with cause=fault when isTraceFailureEvent disagrees", () => {
     // error field makes isTraceFailureEvent return true for left but false for right.
     const leftWithError = evt({ event_type: "tool_call", turn_index: 0, error: "timeout" });

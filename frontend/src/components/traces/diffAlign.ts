@@ -61,8 +61,36 @@ function turnIndexOf(e: TraceEvent): number {
 }
 
 /**
+ * Stable deep-equal that is not sensitive to object key insertion order.
+ * Handles nested objects and arrays recursively. Primitive values use
+ * strict equality. Arrays are compared element-by-element (order matters).
+ *
+ * This replaces a JSON.stringify-based comparison which produced false-positive
+ * divergence when backend events came from dict-merge or pydantic round-trips
+ * that do not preserve key order between protocols (HI-02).
+ */
+function deepEqual(a: unknown, b: unknown): boolean {
+  if (a === b) return true;
+  if (a === null || b === null) return a === b;
+  if (typeof a !== typeof b) return false;
+  if (typeof a !== "object") return a === b;
+  if (Array.isArray(a)) {
+    if (!Array.isArray(b) || a.length !== (b as unknown[]).length) return false;
+    return a.every((v, i) => deepEqual(v, (b as unknown[])[i]));
+  }
+  const ao = a as Record<string, unknown>;
+  const bo = b as Record<string, unknown>;
+  const ak = Object.keys(ao);
+  const bk = Object.keys(bo);
+  if (ak.length !== bk.length) return false;
+  return ak.every((k) => deepEqual(ao[k], bo[k]));
+}
+
+/**
  * Compare two events field-by-field, ignoring IGNORE_FIELDS.
  * Returns the set of field names that differ (non-empty → events diverge).
+ * Uses deepEqual (not JSON.stringify) so that object-valued fields with
+ * differing key insertion order are treated as equal (HI-02).
  */
 function compareFields(
   l: TraceEvent,
@@ -72,10 +100,7 @@ function compareFields(
   const diffs: string[] = [];
   for (const k of keys) {
     if (IGNORE_FIELDS.has(k)) continue;
-    if (
-      JSON.stringify((l as Record<string, unknown>)[k]) !==
-      JSON.stringify((r as Record<string, unknown>)[k])
-    ) {
+    if (!deepEqual((l as Record<string, unknown>)[k], (r as Record<string, unknown>)[k])) {
       diffs.push(k);
     }
   }
