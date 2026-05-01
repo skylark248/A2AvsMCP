@@ -3,7 +3,7 @@
 ## Milestones
 
 - ✅ **v1.0 Demo-Day-Ready Platform** — Phases 1-5 (shipped 2026-04-27) — see [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md)
-- 📋 **v2.0 Race Demo + Discovery + Visualization** — Phases 6-13 (active, started 2026-04-28)
+- ✅ **v2.0 Race Demo + Discovery + Visualization** — Phases 6-13 (completed 2026-05-01)
 
 ## Phases
 
@@ -20,7 +20,7 @@ Full details: [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md)
 
 </details>
 
-### 🟢 v2.0 Race Demo + Discovery + Visualization (Active)
+### ✅ v2.0 Race Demo + Discovery + Visualization (Complete)
 
 - [x] **Phase 6: TraceRecorder Schema Gate & Race Foundation** — Pre-design gate that lands the trace + websocket schema everything else depends on (8/8 plans, completed 2026-04-28)
 - [x] **Phase 7: Race Backend — Lanes, Harness, Recovery State Machine** — Three runners, harness, recovery classifier, tasks, mock APIs (11/11 plans, completed 2026-04-29)
@@ -28,8 +28,8 @@ Full details: [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md)
 - [x] **Phase 9: Heatmap, Replay & K=3 Calibration** — Hardness-vs-failure heatmap, deterministic replay, multi-task K=3 sweep (4/4 plans, completed 2026-04-30)
 - [x] **Phase 10: OG Image & Sharing** — Playwright OG/heatmap PNGs, copy-headline fallback, cache invalidation
 - [x] **Phase 11: Tool Discovery Scenario** — `tool_discovery` scenario + `DiscoveryPhasePanel` surfacing MCP/A2A discovery as first-class UI (4/4 plans, completed 2026-05-01)
-- [ ] **Phase 12: Comparison Visualization Upgrades** — Annotated trace diff + interactive sequence diagram
-- [ ] **Phase 13: Design System Lock** — `/design-consultation` produces DESIGN.md formalizing race-demo tokens
+- [x] **Phase 12: Comparison Visualization Upgrades** — Annotated trace diff + interactive sequence diagram (3/3 plans, completed 2026-05-01)
+- [x] **Phase 13: Design System Lock** — `/design-consultation` produces DESIGN.md formalizing race-demo tokens (1/1 plans, completed 2026-05-01)
 
 ## Phase Details
 
@@ -180,11 +180,11 @@ Plans:
 | 3. New Scenarios | v1.0 | 4/4 | Complete | 2026-04-23 |
 | 4. Comparison UI | v1.0 | 4/4 | Complete | 2026-04-26 |
 | 5. Presentation Polish | v1.0 | 3/3 | Complete | 2026-04-27 |
-| 6. TraceRecorder Schema Gate & Race Foundation | v2.0 | 0/8 | Pending | — |
-| 7. Race Backend — Lanes, Harness, Recovery | v2.0 | 10/11 | In progress | — |
-| 8. Race Page UI & Visual Contract | v2.0 | 0/7 | Planned | — |
-| 9. Heatmap, Replay & K=3 Calibration | v2.0 | 4/4 | Awaiting verification | — |
-| 10. OG Image & Sharing | v2.0 | 0/3 | Pending | — |
-| 11. Tool Discovery Scenario | v2.0 | 3/4 | In progress | — |
-| 12. Comparison Visualization Upgrades | v2.0 | 0/3 | Pending | — |
-| 13. Design System Lock | v2.0 | 1/1 | In progress | — |
+| 6. TraceRecorder Schema Gate & Race Foundation | v2.0 | 8/8 | Complete | 2026-04-28 |
+| 7. Race Backend — Lanes, Harness, Recovery | v2.0 | 11/11 | Complete | 2026-04-29 |
+| 8. Race Page UI & Visual Contract | v2.0 | 7/7 | Complete | 2026-04-29 |
+| 9. Heatmap, Replay & K=3 Calibration | v2.0 | 4/4 | Complete | 2026-04-30 |
+| 10. OG Image & Sharing | v2.0 | 3/3 | Complete | 2026-04-30 |
+| 11. Tool Discovery Scenario | v2.0 | 4/4 | Complete | 2026-05-01 |
+| 12. Comparison Visualization Upgrades | v2.0 | 3/3 | Complete | 2026-05-01 |
+| 13. Design System Lock | v2.0 | 1/1 | Complete | 2026-05-01 |

@@ -80,7 +80,7 @@ v1 backlog: annotated diff + sequence diagram.
 
 TODO 5 promoted: formalize race-demo's de-facto design rules.
 
-- [ ] **DSGN-01**: Run `/design-consultation` and produce `.planning/DESIGN.md` formalizing the race-demo design tokens — `failureTagColor` map, methodology-as-flat rule, `secondary.main` as replay-pill semantic, role-first first-mention contract scoped to Run + Compare + Race pages, primary/secondary palette intent
+- [x] **DSGN-01**: Run `/design-consultation` and produce `.planning/DESIGN.md` formalizing the race-demo design tokens — `failureTagColor` map, methodology-as-flat rule, `secondary.main` as replay-pill semantic, role-first first-mention contract scoped to Run + Compare + Race pages, primary/secondary palette intent
 
 ---
 
@@ -166,7 +166,7 @@ Populated by roadmap creation 2026-04-28. Phases 6-13 carry the v2.0 milestone.
 | DISC-02 | Phase 11 | Pending |
 | VIZ-01 | Phase 12 | Pending |
 | VIZ-02 | Phase 12 | Pending |
-| DSGN-01 | Phase 13 | Pending |
+| DSGN-01 | Phase 13 | Complete |
 
 **Coverage:**
 - v2.0 requirements: 31 total
