@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Race Demo + Discovery + Visualization
 status: "Phase 10 implementation decisions D-61..D-66 honoured (Playwright singleton + asyncio.Lock, 503 + canvas fallback, mock render in CI, html2canvas lazy, ClipboardItem + download fallback, manual OG_LAYOUT_VERSION). Backend pytest 342/342 (336 baseline + 6 og_cache + 10 og_routes); frontend vitest 286/286 across 31 files (280 baseline + 2 HeatmapAnnotationStrip + 4 CopyHeadlineImageButton; Phase 8 RacePage.responsive copy assertion updated for UIRACE-05 closure). Wave 2 quota recovery: 10-02 + 10-03 each had Task 1 committed pre-quota; Task 2 salvaged from main tree; remaining tasks (test_og_routes.py, RacePage `?og=1` wiring, both SUMMARYs) executed inline."
-stopped_at: Phase 12 implementation complete — all 3 plans merged, 324/324 frontend tests pass; awaiting verification + code review
-last_updated: "2026-05-01T07:46:00.000Z"
-last_activity: "2026-05-01 13:16 — Phase 12 fully implemented: 12-01 alignTraces + 12-02 SequenceDiagramView (Wave 1) + 12-03 AnnotatedDiffView (Wave 2) all merged to master"
+stopped_at: Phase 12 verification PASS — 2/2 SC + 12/12 decisions covered; 324/324 vitest, 0 tsc errors; advisory REVIEW.md flags 1 CRITICAL (cosmetic dup import) + 14 lower-severity items
+last_updated: "2026-05-01T07:51:00.000Z"
+last_activity: "2026-05-01 13:21 — Phase 12 verified PASS; gsd-verifier confirmed VIZ-01 + VIZ-02 delivered; D-78/D-84/D-85 cross-cutting constraints all covered"
 progress:
   total_phases: 8
-  completed_phases: 6
-  total_plans: 39
-  completed_plans: 39
+  completed_phases: 7
+  total_plans: 42
+  completed_plans: 42
   percent: 100
 ---
 
@@ -21,11 +21,11 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** A side-by-side, runnable comparison that makes the differences between MCP and A2A visible — not described, not diagrammed, but live and traceable.
-**Current focus:** Phase 12 — Comparison Visualization Upgrades (3 plans ready to execute)
+**Current focus:** Phase 12 ✅ VERIFIED — Phase 13 (Design System Lock) next, or run `/gsd-code-review-fix 12` to land advisory cleanup first
 
 ## Current Position
 
-Phase: 12 — READY TO EXECUTE. Plans 12-01..12-03 written. Phase 11 ✅ COMPLETE (signed off 2026-05-01).
+Phase: 12 — ✅ VERIFIED PASS (2026-05-01). All 3 plans merged + verifier confirmed VIZ-01 + VIZ-02 delivered. Phase 11 ✅ COMPLETE (signed off 2026-05-01).
 
 Phase 12 wave structure:
 
