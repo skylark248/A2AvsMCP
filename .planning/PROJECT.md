@@ -21,9 +21,9 @@ A side-by-side, runnable comparison that makes the differences between MCP and A
 - Presentation polish: 17-term glossary popovers, role-first protocol labels, runtime indicators (latency badge + LLM Alert), failure summary chips
 - 88 commits, ~12,200 LOC (Python + TypeScript), 5 days execution
 
-## Current Milestone: v2.0 Race Demo + Discovery + Visualization
+## Milestone v2.0 Complete: Race Demo + Discovery + Visualization (2026-05-01)
 
-**Goal:** Ship the Three-Lane Failure-Shape Race Demo as the new flagship surface, add the tool-discovery scenario, and deepen the comparison story with annotated-diff and sequence-diagram visualizations.
+**Goal:** Ship the Three-Lane Failure-Shape Race Demo as the new flagship surface, add the tool-discovery scenario, and deepen the comparison story with annotated-diff and sequence-diagram visualizations. **SHIPPED.**
 
 **Target features:**
 - Three-Lane Failure-Shape Race Demo (Pure-MCP / Pure-A2A / Hybrid) with hardness×failure heatmap, recovery state machine (K=3, multi-task calibrated), shareable `/race/<run_id>` URLs with server-rendered OG images
@@ -55,14 +55,14 @@ A side-by-side, runnable comparison that makes the differences between MCP and A
 - ✓ Comparison UI (metrics chips + swimlane + side-by-side) — UI-01..05 — v1.0
 - ✓ Presentation polish (glossary + role-first + runtime + failure walkthrough) — PRES-01..04 — v1.0
 
-### Active
+### Validated in v2.0 (2026-05-01)
 
-Set during `/gsd-new-milestone` for v2.0 — see `.planning/REQUIREMENTS.md` for the v2.0 REQ-ID list. Categories:
+All v2.0 requirements complete — see `.planning/REQUIREMENTS.md` for full REQ-ID traceability:
 
-- **RACE-** — Three-Lane Failure-Shape Race Demo (lanes, hardness/failure, heatmap, recovery state machine, OG image, shareable URLs)
-- **DISC-** — Tool discovery scenario + DiscoveryPhasePanel
-- **VIZ-** — Annotated diff view + interactive sequence diagram
-- **DSGN-** — DESIGN.md lock + design-system formalization
+- ✓ **RACE-** — Three-Lane Failure-Shape Race Demo (lanes, hardness/failure, heatmap, recovery state machine, OG image, shareable URLs) — Phases 6-10
+- ✓ **DISC-** — Tool discovery scenario + DiscoveryPhasePanel — Phase 11
+- ✓ **VIZ-** — Annotated diff view + interactive sequence diagram — Phase 12
+- ✓ **DSGN-01** — `.planning/DESIGN.md` formalizing race-demo tokens (failureTagColor, methodology-as-flat, secondary.main, role-first, palette intent) — Phase 13
 
 ### Promoted into v2.0 (from v1 backlog)
 
@@ -142,4 +142,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-28 — v2.0 milestone started (Race Demo + Discovery + Visualization)*
+*Last updated: 2026-05-01 — v2.0 milestone complete (8 phases, 43 plans shipped)*
