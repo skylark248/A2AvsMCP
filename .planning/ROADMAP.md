@@ -146,11 +146,11 @@ Plans:
 **Plans**:
 
 **Wave 1**
-- 12-01: alignTraces pure function + vitest (`frontend/src/components/traces/diffAlign.ts`) — VIZ-01 algorithm foundation
-- 12-02: SequenceDiagramView + TraceExplorer toggle (List|Sequence) + vitest — closes VIZ-02
+- [x] 12-01: alignTraces pure function + vitest (`frontend/src/components/traces/diffAlign.ts`) — VIZ-01 algorithm foundation
+- [x] 12-02: SequenceDiagramView + TraceExplorer toggle (List|Sequence) + vitest — closes VIZ-02
 
 **Wave 2** *(blocked on Wave 1 completion)*
-- 12-03: AnnotatedDiffView + CompareTracesPanel toggle (Side-by-side|Annotated diff) + vitest — closes VIZ-01 (depends_on: 12-01)
+- [ ] 12-03: AnnotatedDiffView + CompareTracesPanel toggle (Side-by-side|Annotated diff) + vitest — closes VIZ-01 (depends_on: 12-01)
 
 **Cross-cutting constraints**:
 - D-78 role-first labels via `traceLabel()` from `frontend/src/lib/trace/utils.ts`
