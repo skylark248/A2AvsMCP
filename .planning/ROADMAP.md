@@ -3,7 +3,7 @@
 ## Milestones
 
 - ✅ **v1.0 Demo-Day-Ready Platform** — Phases 1-5 (shipped 2026-04-27) — see [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md)
-- ✅ **v2.0 Race Demo + Discovery + Visualization** — Phases 6-13 (completed 2026-05-01)
+- 🚧 **v2.0 Race Demo + Discovery + Visualization** — Phases 6-16 (gap closure in progress — audit found B1/B2/B3 blockers)
 
 ## Phases
 
@@ -20,7 +20,7 @@ Full details: [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md)
 
 </details>
 
-### ✅ v2.0 Race Demo + Discovery + Visualization (Complete)
+### 🚧 v2.0 Race Demo + Discovery + Visualization (Gap Closure In Progress)
 
 - [x] **Phase 6: TraceRecorder Schema Gate & Race Foundation** — Pre-design gate that lands the trace + websocket schema everything else depends on (8/8 plans, completed 2026-04-28)
 - [x] **Phase 7: Race Backend — Lanes, Harness, Recovery State Machine** — Three runners, harness, recovery classifier, tasks, mock APIs (11/11 plans, completed 2026-04-29)
@@ -30,6 +30,9 @@ Full details: [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md)
 - [x] **Phase 11: Tool Discovery Scenario** — `tool_discovery` scenario + `DiscoveryPhasePanel` surfacing MCP/A2A discovery as first-class UI (4/4 plans, completed 2026-05-01)
 - [x] **Phase 12: Comparison Visualization Upgrades** — Annotated trace diff + interactive sequence diagram (3/3 plans, completed 2026-05-01)
 - [x] **Phase 13: Design System Lock** — `/design-consultation` produces DESIGN.md formalizing race-demo tokens (1/1 plans, completed 2026-05-01)
+- [ ] **Phase 14: Race Demo Integration Fix** — Wire `run_race()` HTTP endpoint, fix WS `run_id` mismatch, wire `heatmap_has_data`, wire `ReplayScrubber` seek (closes B1, B2, B3, W2)
+- [ ] **Phase 15: Verification & Cleanup** — Write `07-VERIFICATION.md`, fix `DiscoveryPhasePanel` gate inconsistency, fix REQUIREMENTS.md stale checkboxes, Phase 12 code quality (closes Phase 7 VERIF gap, W1, W-VERIF-1..3)
+- [ ] **Phase 16: Discovery UAT** — Live UI runs for 4 Phase 11 human verification items; document A2A protocol path, D-72 layout, ordering confirmation (closes DISC-01, DISC-02 human items)
 
 ## Phase Details
 
@@ -171,6 +174,55 @@ Plans:
 - [x] 13-01-PLAN.md — /design-consultation + author .planning/DESIGN.md (5 mandated items: failureTagColor table, methodology-as-flat, secondary.main semantic, role-first contract, palette intent) (Wave 1)
 **UI hint**: yes
 
+### Phase 14: Race Demo Integration Fix
+**Goal**: Make the race demo functionally end-to-end: a user can start a race via HTTP, watch live WebSocket events stream into the Race page, and see the heatmap page-state reflect real data. Also wire the replay scrubber to seek.
+**Depends on**: Phase 7, Phase 8, Phase 9
+**Gap Closure**: B1 (no HTTP race trigger), B2 (WS run_id mismatch), B3 (heatmap_has_data hardcoded), W2 (scrubber no-op)
+**Requirements**: RACE-01, RACE-02, RACE-03, RACE-04, RACE-05, RACE-06, RACE-07, TRC-04, UIRACE-01, UIRACE-02, UIRACE-03, HEAT-01, HEAT-02, HEAT-03
+**Success Criteria** (what must be TRUE):
+  1. A user can POST to `/api/race/run` (or equivalent) with task/lane config, receive a `run_id`, open `/race?run_id=<id>`, and watch live WebSocket events stream through all 12 page states.
+  2. `useRaceStream` successfully connects to `/api/race/ws` with the correct `run_id` query param — no HTTP 422 errors on connect.
+  3. When a completed race has heatmap data, `RacePage` `derivePageState` receives `heatmap_has_data: true` and transitions to the correct heatmap-populated state.
+  4. Dragging the `ReplayScrubber` in replay mode (`/race/<run_id>`) seeks the displayed state to the selected turn index.
+**Plans**: 4 plans
+Plans:
+- [ ] 14-01-PLAN.md — Add `POST /api/race/run` endpoint: generate `run_id`, call `run_race(ws_emitter=MANAGER.publish)` as background task, return `{run_id}` (backend)
+- [ ] 14-02-PLAN.md — Fix `useRaceStream.ts:buildWsUrl()`: receive `run_id` prop, append to WS URL; update `RacePage` to fetch run_id from start-race call before opening WS
+- [ ] 14-03-PLAN.md — Wire `useRaceHeatmap()` data into `heatmap_has_data` in `RacePage.tsx`; add `heatmap_has_data` to `derivePageState` inputs correctly
+- [ ] 14-04-PLAN.md — Wire `ReplayScrubber.onScrub`: implement turn-index seek in `useRaceReplay`, pass seek handler down to scrubber
+
+### Phase 15: Verification & Cleanup
+**Goal**: Close all documentation and code-quality gaps found by the audit: write the missing Phase 7 verification document, fix the DiscoveryPhasePanel gate inconsistency, fix stale REQUIREMENTS.md checkboxes, and clean up Phase 12 code-quality warnings.
+**Depends on**: Phase 7, Phase 11, Phase 12
+**Gap Closure**: Phase 7 missing VERIFICATION.md, W1 (TraceWorkspacePage gate), REQUIREMENTS.md stale checkboxes (OG/DISC/VIZ), W-VERIF-1..3
+**Requirements**: RACE-01..07 (verification doc), DISC-02 (gate fix)
+**Success Criteria** (what must be TRUE):
+  1. `07-VERIFICATION.md` exists aggregating Phase 7 plan SUMMARY evidence and test results for RACE-01..07.
+  2. `TraceWorkspacePage` DiscoveryPhasePanel gate uses event-presence (same strategy as `CompareTracesPanel`) — panel appears for imported NDJSON runs with `tool_discovery` events.
+  3. REQUIREMENTS.md checkboxes for OG-01..04, VIZ-01..02 updated to `[x]`; traceability Status updated to Complete.
+  4. Phase 12 code quality items resolved: duplicate `traceEventProtocol` import removed, D-83 reduced-motion test fixed, dead `pinnedEventId` prop removed from `ProtocolTier`.
+**Plans**: 4 plans
+Plans:
+- [ ] 15-01-PLAN.md — Write `07-VERIFICATION.md`: read all 11 Phase 7 SUMMARY.md files, aggregate RACE-01..07 evidence, confirm pytest 345/345, write structured verification document
+- [ ] 15-02-PLAN.md — Fix `TraceWorkspacePage` DiscoveryPhasePanel gate: replace `detail?.summary?.scenario === "tool_discovery"` with event-presence check matching `CompareTracesPanel`
+- [ ] 15-03-PLAN.md — Fix REQUIREMENTS.md: update OG-01..04, DISC-01..02, VIZ-01..02 checkboxes to `[x]` and Status to Complete; update traceability coverage count
+- [ ] 15-04-PLAN.md — Phase 12 cleanup: remove duplicate import (W-VERIF-1), fix D-83 test (W-VERIF-2), remove dead `pinnedEventId` prop from `ProtocolTier` (W-VERIF-3)
+
+### Phase 16: Discovery UAT
+**Goal**: Complete the 4 outstanding human verification items from Phase 11 by running the tool_discovery scenario live in both MCP and A2A modes, confirming D-72 single-panel layout, ordering, and stale-cache UX story. Document results to advance Phase 11 VERIFICATION.md status from `human_needed` to `passed`.
+**Depends on**: Phase 11, Phase 14 (race demo must be functional for live runs)
+**Gap Closure**: W3 (Phase 11 human verification items)
+**Requirements**: DISC-01, DISC-02
+**Success Criteria** (what must be TRUE):
+  1. `tool_discovery` scenario runs successfully on both MCP and A2A protocols via live UI; `DiscoveryPhasePanel` populates both columns with real events.
+  2. In compare mode, exactly ONE full-width `DiscoveryPhasePanel` renders above the dual-column Grid (D-72 confirmed by eye).
+  3. The panel renders strictly above all execution-phase events in the visual flow (ordering confirmed).
+  4. The stale-cache warning icon (`aria-label="Stale capability cache"`) appears when `requested_transport` differs from `transport`.
+  5. `11-VERIFICATION.md` status updated from `human_needed` to `passed` with evidence from live runs.
+**Plans**: 1 plan
+Plans:
+- [ ] 16-01-PLAN.md — Live UAT: run tool_discovery in MCP + A2A mode, verify 4 human items, update `11-VERIFICATION.md` status and evidence
+
 ## Progress
 
 | Phase | Milestone | Plans Complete | Status | Completed |
@@ -188,3 +240,6 @@ Plans:
 | 11. Tool Discovery Scenario | v2.0 | 4/4 | Complete | 2026-05-01 |
 | 12. Comparison Visualization Upgrades | v2.0 | 3/3 | Complete | 2026-05-01 |
 | 13. Design System Lock | v2.0 | 1/1 | Complete | 2026-05-01 |
+| 14. Race Demo Integration Fix | v2.0 | 0/4 | Not started | - |
+| 15. Verification & Cleanup | v2.0 | 0/4 | Not started | - |
+| 16. Discovery UAT | v2.0 | 0/1 | Not started | - |

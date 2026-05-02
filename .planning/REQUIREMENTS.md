@@ -57,10 +57,10 @@ Closing artifact + deterministic replay.
 
 Shareable URLs with social-embed images (TODO 3 promoted).
 
-- [ ] **OG-01**: `/race/<run_id>/og.png` Playwright route renders 1200×630 cropped anchor (3 lanes + banner) via `RacePage.tsx?og=1` mode; cached at `data/og/<run_id>-v<OG_LAYOUT_VERSION>.png`; served via `<meta property="og:image">` and `<meta name="twitter:image">`
-- [ ] **OG-02**: `/race/<run_id>/heatmap.png` Playwright route renders 1200×900 heatmap card screenshot with annotation strip (`run_id · model · seed · n · task_ids`); shares `OG_LAYOUT_VERSION` cache key with og.png
-- [ ] **OG-03**: "Copy headline image" button beside banner — client-side canvas snapshot of the same 1200×630 anchor region; ships as fallback if OG generation fails
-- [ ] **OG-04**: 404 on unknown `run_id` before Playwright spawn; cleanup task purges stale `<id>-v<old>.*` files when `OG_LAYOUT_VERSION` bumps
+- [x] **OG-01**: `/race/<run_id>/og.png` Playwright route renders 1200×630 cropped anchor (3 lanes + banner) via `RacePage.tsx?og=1` mode; cached at `data/og/<run_id>-v<OG_LAYOUT_VERSION>.png`; served via `<meta property="og:image">` and `<meta name="twitter:image">`
+- [x] **OG-02**: `/race/<run_id>/heatmap.png` Playwright route renders 1200×900 heatmap card screenshot with annotation strip (`run_id · model · seed · n · task_ids`); shares `OG_LAYOUT_VERSION` cache key with og.png
+- [x] **OG-03**: "Copy headline image" button beside banner — client-side canvas snapshot of the same 1200×630 anchor region; ships as fallback if OG generation fails
+- [x] **OG-04**: 404 on unknown `run_id` before Playwright spawn; cleanup task purges stale `<id>-v<old>.*` files when `OG_LAYOUT_VERSION` bumps
 
 ### Tool Discovery (DISC)
 
@@ -73,8 +73,8 @@ v1 backlog: surface MCP/A2A discovery as first-class UI element.
 
 v1 backlog: annotated diff + sequence diagram.
 
-- [ ] **VIZ-01**: Annotated diff view between two protocol traces — line-by-line comparison panel that aligns matching events and highlights divergence points (added vs. removed steps, role-first labels), reachable from CompareTracesPanel header
-- [ ] **VIZ-02**: Interactive sequence diagram (vertical lifelines per actor, horizontal arrows per message) for a single trace; reachable from TraceExplorer; honors `prefers-reduced-motion` and click-to-pin
+- [x] **VIZ-01**: Annotated diff view between two protocol traces — line-by-line comparison panel that aligns matching events and highlights divergence points (added vs. removed steps, role-first labels), reachable from CompareTracesPanel header
+- [x] **VIZ-02**: Interactive sequence diagram (vertical lifelines per actor, horizontal arrows per message) for a single trace; reachable from TraceExplorer; honors `prefers-reduced-motion` and click-to-pin
 
 ### Design System Lock (DSGN)
 
@@ -158,21 +158,28 @@ Populated by roadmap creation 2026-04-28. Phases 6-13 carry the v2.0 milestone.
 | HEAT-02 | Phase 9 | Complete |
 | HEAT-03 | Phase 9 | Complete |
 | HEAT-04 | Phase 9 | Complete |
-| OG-01 | Phase 10 | Pending |
-| OG-02 | Phase 10 | Pending |
-| OG-03 | Phase 10 | Pending |
-| OG-04 | Phase 10 | Pending |
-| DISC-01 | Phase 11 | Pending |
-| DISC-02 | Phase 11 | Pending |
-| VIZ-01 | Phase 12 | Pending |
-| VIZ-02 | Phase 12 | Pending |
+| OG-01 | Phase 10 | Complete |
+| OG-02 | Phase 10 | Complete |
+| OG-03 | Phase 10 | Complete |
+| OG-04 | Phase 10 | Complete |
+| DISC-01 | Phase 11 + Phase 16 | Pending (Phase 11 code complete; Phase 16 closes A2A live-run human item) |
+| DISC-02 | Phase 11 + Phase 15 + Phase 16 | Pending (Phase 11 code complete; Phase 15 closes W1 gate fix; Phase 16 closes D-72/ordering human items) |
+| VIZ-01 | Phase 12 | Complete |
+| VIZ-02 | Phase 12 | Complete |
 | DSGN-01 | Phase 13 | Complete |
+| RACE-01 (integration) | Phase 7 + Phase 14 | Pending (Phase 7 implemented; Phase 14 wires HTTP trigger) |
+| RACE-02 (integration) | Phase 7 + Phase 14 | Pending (Phase 7 implemented; Phase 14 wires HTTP trigger) |
+| RACE-03 (integration) | Phase 7 + Phase 14 | Pending (Phase 7 implemented; Phase 14 wires HTTP trigger) |
+| RACE-04 (integration) | Phase 7 + Phase 14 | Pending (Phase 7 implemented; Phase 14 wires HTTP trigger) |
+| RACE-05 (integration) | Phase 7 + Phase 14 | Pending (Phase 7 implemented; Phase 14 wires HTTP trigger) |
+| RACE-06 (integration) | Phase 7 + Phase 14 | Pending (Phase 7 implemented; Phase 14 wires HTTP trigger) |
+| RACE-07 (integration) | Phase 7 + Phase 14 | Pending (Phase 7 implemented; Phase 14 wires HTTP trigger) |
 
 **Coverage:**
-- v2.0 requirements: 31 total
+- v2.0 requirements: 31 total (+ 7 integration gap entries for RACE-01..07)
 - Mapped to phases: 31 ✓
-- Unmapped: 0
+- Gap closure phases: 14, 15, 16
 
 ---
 *Requirements defined: 2026-04-28*
-*Last updated: 2026-04-28 — roadmap created, traceability populated (Phases 6-13)*
+*Last updated: 2026-05-02 — gap closure phases 14-16 added after audit; OG/VIZ stale checkboxes fixed; RACE integration gaps and DISC human items tracked*
