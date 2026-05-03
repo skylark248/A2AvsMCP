@@ -12,12 +12,14 @@ from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 from typing import Any
 from urllib.parse import quote, urlparse
+import uuid
 import zipfile
 
 from fastapi import FastAPI, Form, HTTPException, Query, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import FileResponse, HTMLResponse, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel, field_validator
 
 from .api_schemas import (
     ApiRunRequest,
@@ -52,9 +54,13 @@ from .race.og import (
     render_heatmap_png,
     render_og_png,
 )
+from .race.harness import run_race
 from .race.replay import load_run, _validate_run_id
 from .race.runs import RUNS_DIR
+from .race.tasks import TASK_CONFIGS
+from .race.types import HardnessProfile, HardnessType, TaskSpec
 from .race.ws import MANAGER, HEARTBEAT_S
+from .trace import TraceRecorder
 from .reporting import ReportService
 from .schemas import FailureConfig
 
@@ -90,6 +96,37 @@ DEFAULT_REPORT_SORTING = {
 }
 
 LOCAL_REMOTE_HOSTS = {"localhost", "host.docker.internal"}
+
+_VALID_LANES: frozenset[str] = frozenset({"pure_mcp", "pure_a2a", "hybrid"})
+
+
+class RaceRunRequest(BaseModel):
+    task_ids: list[str]
+    lanes: list[str] = ["pure_mcp", "pure_a2a", "hybrid"]
+    n: int = 1
+
+    @field_validator("lanes")
+    @classmethod
+    def validate_lanes(cls, v: list[str]) -> list[str]:
+        bad = [ln for ln in v if ln not in _VALID_LANES]
+        if bad:
+            raise ValueError(f"unknown lanes: {bad!r}")
+        return v
+
+    @field_validator("task_ids")
+    @classmethod
+    def validate_task_ids(cls, v: list[str]) -> list[str]:
+        bad = [t for t in v if t not in TASK_CONFIGS]
+        if bad:
+            raise ValueError(f"unknown task_ids: {bad!r}")
+        return v
+
+    @field_validator("n")
+    @classmethod
+    def validate_n(cls, v: int) -> int:
+        if v < 1:
+            raise ValueError("n must be >= 1")
+        return v
 
 
 
@@ -997,6 +1034,55 @@ def api_race_heatmap() -> dict:
     on first GET after race_done (D-54).
     """
     return get_heatmap()
+
+
+@app.post("/api/race/run")
+async def api_race_run(body: RaceRunRequest) -> dict:
+    """Start a race in the background; return run_id for WS subscription (B1).
+
+    run_id format: uuid4().hex[:16] — matches _RUN_ID_RE ^[A-Za-z0-9_-]{1,64}$.
+    Frontend opens /api/race/ws?run_id=<id> after receiving this response.
+    """
+    run_id: str = uuid.uuid4().hex[:16]
+
+    # Build TaskSpec list from validated task_ids.
+    task_specs: list[TaskSpec] = []
+    for tid in body.task_ids:
+        cfg, _targets, _binds = TASK_CONFIGS[tid]
+        task_specs.append(
+            TaskSpec(
+                task_id=tid,
+                prompt="",  # v1 runners load their own prompt from TASK_CONFIGS — spec.prompt is never read
+                allowed_tools=[],
+                expected_shape={},
+                hardness_profile=HardnessProfile(
+                    types=list(cfg.hardness_profile)
+                ),
+            )
+        )
+
+    def _recorder_factory(*, run_id: str, lane: str, task_id: str) -> TraceRecorder:
+        return TraceRecorder(mode=lane, runtime="live", task_id=task_id)
+
+    async def _ws_emitter(event: dict) -> None:
+        await MANAGER.publish(run_id, event)
+
+    def _sync_ws_emitter(event: dict) -> None:
+        # run_race calls ws_emitter synchronously; schedule the coroutine on the running loop.
+        loop = asyncio.get_event_loop()
+        loop.create_task(_ws_emitter(event))
+
+    async def _do_run() -> None:
+        await run_race(
+            task_specs=task_specs,
+            lanes=body.lanes,
+            n=body.n,
+            recorder_factory=_recorder_factory,
+            ws_emitter=_sync_ws_emitter,
+        )
+
+    asyncio.create_task(_do_run())
+    return {"run_id": run_id}
 
 
 @app.get("/api/race/runs/{run_id}/trace")
