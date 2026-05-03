@@ -28,6 +28,10 @@ vi.mock("./hooks/useRaceReplay", () => ({
   useRaceReplay: vi.fn(() => ({ trace: null, loading: false, error: null })),
 }));
 
+vi.mock("./hooks/useRaceHeatmap", () => ({
+  useRaceHeatmap: vi.fn(() => ({ data: null, loading: false, error: null })),
+}));
+
 const ALL_STATES: PageState[] = [
   "pre-race", "countdown", "live-n1", "live-n5", "done", "replay",
   "sparse-heatmap", "ws-disconnected", "ws-reconnecting", "indeterminate",

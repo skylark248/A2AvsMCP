@@ -22,6 +22,7 @@ import { MethodologySection } from "./components/MethodologySection";
 import { RaceLaneCard } from "./components/RaceLaneCard";
 import { RaceStatusStrip } from "./components/RaceStatusStrip";
 import { ReplayScrubber } from "./components/ReplayScrubber";
+import { useRaceHeatmap } from "./hooks/useRaceHeatmap";
 import { useRaceReplay } from "./hooks/useRaceReplay";
 import { useRaceStream } from "./hooks/useRaceStream";
 import { initialRaceState, raceReducer } from "./raceReducer";
@@ -74,6 +75,11 @@ export function RacePage({ __testState }: RacePageProps = {}) {
 
   // Replay mode: fetch trace, fold through reducer locally (D-48).
   const replay = useRaceReplay(isReplay && !isMobile ? run_id : undefined);
+
+  // B3 fix: read heatmap data at RacePage scope to drive derivePageState.
+  // HardnessFailureHeatmap manages its own fetch separately — this call is independent.
+  const { data: heatmapData } = useRaceHeatmap();
+
   const [replayState, dispatch] = useReducer(
     raceReducer,
     { ...initialRaceState, run_id: run_id ?? null },
@@ -138,9 +144,8 @@ export function RacePage({ __testState }: RacePageProps = {}) {
 
   // Derive the 12-state page state from observable runtime signals (Plan 02).
   // expected_n: demo default n=5 per RACE-03; Phase 8 ships live-n1 fixture via state shape directly.
-  // heatmap_has_data: Phase 8 ships empty path ({}); Phase 9 wires actual cells.
   const expected_n = 5;
-  const heatmap_has_data = false;
+  const heatmap_has_data = !!heatmapData?.cells?.length;
   const pageState: PageState = derivePageState({
     ws_status: baseState.ws_status,
     lanes: baseState.lanes,

@@ -25,6 +25,10 @@ vi.mock("./hooks/useRaceReplay", () => ({
   useRaceReplay: vi.fn(() => ({ trace: null, loading: false, error: null })),
 }));
 
+vi.mock("./hooks/useRaceHeatmap", () => ({
+  useRaceHeatmap: vi.fn(() => ({ data: null, loading: false, error: null })),
+}));
+
 // UIRACE-05 desktop, tablet, small-tablet: three-lane row visible
 // __testState bypasses the isMobile branch (isMobile=false from jsdom default matchMedia).
 test.each([
