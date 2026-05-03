@@ -13,7 +13,7 @@
 
 import { Box, Container, Stack, Typography } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { CharacteristicFailureBanner } from "./components/CharacteristicFailureBanner";
 import { CopyHeadlineImageButton } from "./components/CopyHeadlineImageButton";
@@ -26,6 +26,7 @@ import { useRaceReplay } from "./hooks/useRaceReplay";
 import { useRaceStream } from "./hooks/useRaceStream";
 import { initialRaceState, raceReducer } from "./raceReducer";
 import { derivePageState } from "./pageState";
+import { startRace } from "../../lib/api/client";
 import type { PageState, RaceState } from "../../lib/types/race";
 
 // States where the CharacteristicFailureBanner is visible (UI-SPEC Page State Matrix lines 295-302).
@@ -63,10 +64,13 @@ export function RacePage({ __testState }: RacePageProps = {}) {
   // Full ?mode=summary redirect ships in Phase 10. Plan 06 only emits the placeholder branch.
   const isMobile = useMediaQuery("(max-width:479px)");
 
+  // B2 fix: run_id returned from POST /api/race/run; passed to useRaceStream.
+  const [wsRunId, setWsRunId] = useState<string>("");
+
   // Live mode: useRaceStream owns ws + reducer internally.
-  // Pass enabled=!isMobile: gates the WebSocket on mobile without violating rules-of-hooks (T-08-16).
-  // Phase 10 Risk-4: gate on !isOg so Playwright wait_until=domcontentloaded doesn't block on an open WS.
-  const liveState = useRaceStream(!isMobile && !isReplay && !isOg);
+  // wsRunId gates enabled: WS does not open until startRace() returns a run_id (B2 fix).
+  // Additional gates: mobile (T-08-16), replay mode, OG screenshot mode (Phase 10 Risk-4).
+  const liveState = useRaceStream(wsRunId, !!wsRunId && !isMobile && !isReplay && !isOg);
 
   // Replay mode: fetch trace, fold through reducer locally (D-48).
   const replay = useRaceReplay(isReplay && !isMobile ? run_id : undefined);
@@ -80,6 +84,20 @@ export function RacePage({ __testState }: RacePageProps = {}) {
       replay.trace.events.forEach((ev) => dispatch(ev));
     }
   }, [replay.trace]);
+
+  const handleStartRace = async () => {
+    try {
+      const { run_id } = await startRace({
+        task_ids: ["summarize_repo"],
+        lanes: ["pure_mcp", "pure_a2a", "hybrid"],
+        n: 5,
+      });
+      setWsRunId(run_id);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error("Failed to start race:", err);
+    }
+  };
 
   // Mobile branch — Phase 8 emitted a placeholder; Phase 10 closes UIRACE-05 by
   // consuming /race/<run_id>/og.png via <img>. Phase 8 mobile-viewport gate (D-48)
@@ -161,6 +179,19 @@ export function RacePage({ __testState }: RacePageProps = {}) {
           runId={baseState.run_id}
           timestampLabel={null}
         />
+      ) : null}
+
+      {/* Start Race trigger — visible only in pre-race state (B2 fix: sets wsRunId). */}
+      {pageState === "pre-race" && !isReplay && !isOg ? (
+        <Box sx={{ px: 2, pb: 1 }}>
+          <button
+            type="button"
+            onClick={() => { void handleStartRace(); }}
+            data-testid="race-start-button"
+          >
+            Start Race
+          </button>
+        </Box>
       ) : null}
 
       {/* Information hierarchy slot 2: scrubber (replay only, D-49). Hidden in OG mode. */}
