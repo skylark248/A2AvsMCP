@@ -13,7 +13,7 @@
 
 import { Box, Container, Stack, Typography } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useMemo, useReducer, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { CharacteristicFailureBanner } from "./components/CharacteristicFailureBanner";
 import { CopyHeadlineImageButton } from "./components/CopyHeadlineImageButton";
@@ -91,6 +91,20 @@ export function RacePage({ __testState }: RacePageProps = {}) {
     }
   }, [replay.trace]);
 
+  // W2 fix: seek position for ReplayScrubber. null = show full replay (all events).
+  const [seekPosition, setSeekPosition] = useState<number | null>(null);
+
+  // Derive partial replay state by folding only the first (seekPosition+1) events.
+  // When seekPosition is null, full replayState is used.
+  const seekedReplayState = useMemo<RaceState | null>(() => {
+    if (seekPosition === null || !replay.trace) return null;
+    const slice = replay.trace.events.slice(0, seekPosition + 1);
+    return slice.reduce<RaceState>(
+      raceReducer,
+      { ...initialRaceState, run_id: run_id ?? null },
+    );
+  }, [seekPosition, replay.trace, run_id]);
+
   const handleStartRace = async () => {
     try {
       const { run_id } = await startRace({
@@ -139,8 +153,10 @@ export function RacePage({ __testState }: RacePageProps = {}) {
     );
   }
 
-  // Determine the effective base state: injected (test) > replay > live
-  const baseState: RaceState = __testState ?? (isReplay ? { ...replayState, run_id: run_id ?? null } : liveState);
+  // Determine the effective base state: injected (test) > seeked replay > full replay > live
+  const baseState: RaceState = __testState ?? (isReplay
+    ? { ...(seekedReplayState ?? replayState), run_id: run_id ?? null }
+    : liveState);
 
   // Derive the 12-state page state from observable runtime signals (Plan 02).
   // expected_n: demo default n=5 per RACE-03; Phase 8 ships live-n1 fixture via state shape directly.
@@ -202,11 +218,9 @@ export function RacePage({ __testState }: RacePageProps = {}) {
       {/* Information hierarchy slot 2: scrubber (replay only, D-49). Hidden in OG mode. */}
       {isReplay && !isOg ? (
         <ReplayScrubber
-          value={maxTurnIndex}
-          max={maxTurnIndex}
-          onScrub={() => {
-            // Phase 9 wires actual scrub-to-turn-index navigation.
-          }}
+          value={seekPosition ?? Math.max(0, (replay.trace?.events.length ?? 1) - 1)}
+          max={Math.max(0, (replay.trace?.events.length ?? 1) - 1)}
+          onScrub={setSeekPosition}
         />
       ) : null}
 
