@@ -176,4 +176,31 @@ export async function fetchRaceHeatmap(): Promise<HeatmapPayload> {
   return (await res.json()) as HeatmapPayload;
 }
 
+// ---- Race Start (B1/B2 fix — Phase 14 plan 02) ----------------------------
+
+export interface StartRaceBody {
+  task_ids: string[];
+  lanes?: string[];
+  n?: number;
+}
+
+export interface StartRaceResponse {
+  run_id: string;
+}
+
+/**
+ * Start a race via POST /api/race/run.
+ * Returns the run_id so the caller can subscribe to /api/race/ws?run_id=<id>.
+ * Phase 14 B1/B2 gap closure.
+ */
+export async function startRace(body: StartRaceBody): Promise<StartRaceResponse> {
+  const res = await fetch("/api/race/run", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(`startRace failed: ${res.status}`);
+  return (await res.json()) as StartRaceResponse;
+}
+
 export type { HeatmapPayload } from "../types/race";
