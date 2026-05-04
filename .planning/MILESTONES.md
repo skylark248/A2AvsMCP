@@ -41,3 +41,38 @@ Historical record of shipped versions. Each entry summarizes what was delivered.
 **Requirements archive:** [.planning/milestones/v1.0-REQUIREMENTS.md](milestones/v1.0-REQUIREMENTS.md)
 
 ---
+
+## v2.0 — Race Demo + Discovery + Visualization
+
+**Shipped:** 2026-05-04
+**Phases:** 11 (Phases 6-16)
+**Plans:** 52
+**Timeline:** 2026-04-28 → 2026-05-04 (7 days)
+**Commits:** 261
+**Files Changed:** 330 (+63,371 / -230)
+
+**Delivered:** Eleven-phase build of the Three-Lane Failure-Shape Race Demo (Pure-MCP / Pure-A2A / Hybrid runners with K=3 recovery state machine, hardness×failure heatmap, deterministic replay, shareable `/race/<run_id>` URLs with Playwright-rendered OG images), the Tool Discovery scenario with first-class `DiscoveryPhasePanel`, comparison visualization upgrades (annotated diff + interactive sequence diagram), and a formalized `DESIGN.md` design-system lock. Three gap-closure phases (14-16) wired the race-demo HTTP/WS integration, closed verification documentation, and ran live human UAT to flip Phase 11 from `human_needed` to `passed`.
+
+**Key Accomplishments:**
+
+1. **Phases 6-7 — Race Foundation + Backend:** TraceRecorder schema gate (8 WsEvent dataclasses, IRON RULE atomicity, threading.Lock RunWriter); three runner lanes + harness driving N parallel runs at deterministic `model=claude-sonnet-4-6, seed=42, temperature=0`; recovery state machine with K=3 turn window and `agent_msg_acknowledging_fault` regex; three v1 tasks (`summarize_repo`, `negotiate_meeting`, `book_travel`) with mock APIs
+
+2. **Phase 8 — Race Page UI:** Three-lane scoreboard with locked information hierarchy in 1200px central column; 12 page states (pre-race / countdown / live n=1 / live n=5 / done / replay / sparse-heatmap / ws-disconnected / ws-reconnecting / indeterminate / lane-failed / heatmap-empty); `failureTagColor` map (5 entries) as single source of truth; full a11y contract (Tab order, focus-visible, aria-live, prefers-reduced-motion, prefers-contrast); 4-breakpoint responsive
+
+3. **Phases 9-10 — Heatmap, Replay, Sharing:** Hardness-vs-failure heatmap (`HardnessFailureHeatmap.tsx` with rows = HardnessType, columns = lane, "directional · n=3 tasks · v1" pill); deterministic `/race/<run_id>` replay with two-layer fixture test; K∈{2,3,4,5} multi-task calibration confirming K=3; Playwright-rendered `/race/<run_id>/og.png` (1200×630) and `/heatmap.png` (1200×900) with `OG_LAYOUT_VERSION` cache; client-side canvas snapshot fallback via "Copy headline image"
+
+4. **Phase 11 — Tool Discovery:** New `tool_discovery` scenario (TICKET-1013 + CUST-005 seed) exercising stale-capability-cache and unknown-tool-fallback failure modes on both MCP and A2A protocols; `DiscoveryPhasePanel.tsx` rendering MCP tool catalog + A2A agent cards side-by-side above the trace explorer; integrated into `TraceWorkspacePage` (D-73 gate) and `CompareTracesPanel` (D-72 single panel above dual column)
+
+5. **Phase 12 — Visualization Upgrades:** Pure-TS `alignTraces()` for VIZ-01 algorithmic foundation; `AnnotatedDiffView` with side-by-side|annotated-diff toggle; hand-rolled SVG `SequenceDiagramView` (5 lifelines, click-to-pin, prefers-reduced-motion); zero new dependencies, zero new colors
+
+6. **Phase 13 — Design System Lock:** `.planning/DESIGN.md` (158 lines) codifying the `failureTagColor` table, methodology-as-flat rule, `secondary.main` as replay-pill semantic, role-first first-mention contract, primary/secondary palette intent
+
+7. **Phases 14-16 — Gap Closure:** B1/B2/B3/W2 race-demo wiring fixed (POST `/api/race/run`, WS `run_id` query param, `heatmap_has_data` data wiring, `ReplayScrubber.onScrub` seek); Phase 7 `07-VERIFICATION.md` aggregating RACE-01..07 evidence; `TraceWorkspacePage` discovery-panel gate harmonized with `CompareTracesPanel` event-presence check; Phase 12 code-quality cleanup; Phase 11 live human UAT (4/4 checks passed) closing `DISC-01/02` human items; bonus inline fix for `ReportService.save_report` compare-mode protocol overwrite
+
+**Verification status:** All 31 v2.0 requirements complete. Backend 352/352 pytest. Frontend 335/335 vitest. Phase 11 verification status flipped from `human_needed` to `passed` after Phase 16 UAT (2026-05-04). Phase 7 VERIFICATION.md landed retroactively in Phase 15 (closing v1.0 process debt for v2.0).
+
+**Audit:** [.planning/milestones/v2.0-MILESTONE-AUDIT.md](milestones/v2.0-MILESTONE-AUDIT.md) — status `gaps_found` at 2026-05-02; gaps closed by Phases 14-16 (B1/B2/B3, Phase 7 VERIF, REQUIREMENTS bookkeeping, W1, Phase 11 human items)
+**Roadmap archive:** [.planning/milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
+**Requirements archive:** [.planning/milestones/v2.0-REQUIREMENTS.md](milestones/v2.0-REQUIREMENTS.md)
+
+---

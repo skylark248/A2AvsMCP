@@ -57,20 +57,81 @@ Five-phase deepening of the A2A vs MCP demo platform: stability foundation (P1),
 
 ---
 
+## Milestone: v2.0 — Race Demo + Discovery + Visualization
+
+**Shipped:** 2026-05-04
+**Phases:** 11 (6-16) | **Plans:** 52 | **Commits:** 261 | **LOC delta:** +63,371 / -230 | **Timeline:** 7 days
+
+### What Was Built
+
+Eleven-phase build of the Three-Lane Failure-Shape Race Demo flagship surface: TraceRecorder schema gate (P6) → race backend with K=3 recovery state machine across three lanes/three tasks (P7) → Race page UI with 12 page states + a11y contract (P8) → hardness×failure heatmap + deterministic replay + K=3 multi-task calibration (P9) → Playwright OG/heatmap PNGs + canvas fallback (P10) → tool_discovery scenario + DiscoveryPhasePanel (P11) → annotated diff + interactive sequence diagram (P12) → DESIGN.md formalization (P13). Phases 14-16 closed audit-discovered gaps: race-demo HTTP/WS wiring (B1/B2/B3 + W2), Phase 7 VERIFICATION.md + REQUIREMENTS bookkeeping + Phase 12 cleanup, Phase 11 live human UAT (4/4 passed). All 31 v2.0 requirements complete.
+
+### What Worked
+
+- **PRE-DESIGN GATE (Phase 6) front-loaded.** Schema-first ordering prevented downstream renegotiation across 11 phases. Phase 7-10 consumed the 8 WsEvent dataclasses + IRON RULE atomicity without rework.
+- **Risk consolidation in Phase 7.** Hybrid runner (highest-risk seam per design doc) + recovery state machine landed in the same phase. No cross-phase coordination tax.
+- **K=3 calibration as test, not heuristic.** `tests/test_recovery_calibration.py` swept K∈{2,3,4,5} on all three v1 tasks; K=3 verified, not assumed.
+- **`failureTagColor` map as single source of truth.** Heatmap cells + failure-state badges consume one Record<ClosedUnion>; cannot drift.
+- **D-85 zero-new-deps for VIZ.** Hand-rolled SVG sequence diagram + pure-TS `alignTraces` instead of `@xyflow/react` / `motion`. Bundle stayed lean; full vitest coverage on hand-rolled code.
+- **Playwright as optional dep + lazy import.** Module loadable in Chromium-free CI via `[project.optional-dependencies] og`; D-63 mocked-render matrix tests run without binary.
+- **Audit-driven gap closure as separate phases (14-16) instead of re-opening shipped phases.** Cleaner traceability: each gap-closure phase has its own SUMMARY + verification surface; original phases stay archived.
+- **DSGN-01 deliberately last (Phase 13).** `/design-consultation` codified shipped patterns, not speculation. DESIGN.md (158 lines) describes what already shipped.
+- **Phase 11 D-67..D-73 explicit decision freeze before implementation.** Decision log included mounting policy, A2A column union behavior, sibling placeholder semantics — eliminated drift across 4 plans.
+- **Inline UAT-bonus fix (Phase 16).** `ReportService.save_report` compare-mode regression caught live during UAT and fixed in same session — pragmatic over process.
+
+### What Was Inefficient
+
+- **Two-gate inconsistency (W1) shipped in Phase 11 and lived until Phase 15.** `TraceWorkspacePage` used scenario-string check; `CompareTracesPanel` used event-presence. Caught only at audit. Should have been event-presence from initial mount-site wiring (Plan 11-04). Cost: one Phase 15 plan (15-02) + one regression-cycle.
+- **REQUIREMENTS.md drift carried v1.0 pattern into v2.0.** Stale checkboxes for OG/DISC/VIZ at audit time. Phase 15-03 verified rather than mass-flipped — but checkbox sync should land at phase-transition, not at audit.
+- **Phase 7 missing VERIFICATION.md until Phase 15.** Same v1.0 process gap (P5) repeated. Phase-level verification should be a hard gate at phase-transition, not a milestone-close repair.
+- **B1/B2/B3 race-demo wiring blockers shipped through Phase 7-9 unnoticed.** Phase 7 emitted on `MANAGER.publish` that nothing called; Phase 8 emitted WS without `run_id`; Phase 9 hardcoded `heatmap_has_data=false` with TODO comment that was never tracked. Integration check for end-to-end "user can hit /race and see live data" was missing across three phases. Cost: Phase 14 (4 plans).
+- **Subagent quota crashes mid-phase.** Phase 10 Wave 2 (10-02 + 10-03) and Phase 12 (12-03) hit quota mid-write; salvaged via the `feedback_subagent_quota_recovery` rule. Cost: minor — recovery was clean — but exposes latent dependency on subagent budget.
+- **Playwright dev-env setup friction.** Phase 16 UAT setup hit `__dirlock` lockfile issue + missing `chromium_headless_shell-1217` binary despite earlier installs; SQLAlchemy/aiohttp transitively missing from `[dev]` install. Cost: ~30 minutes of manual setup before UAT could start.
+
+### Patterns Established
+
+- **PRE-DESIGN GATE phase as first phase of a major milestone.** Land contracts before features.
+- **Decision freeze before implementation.** D-XX series in `<phase>-CONTEXT.md` enumerated and locked before plans were written. Phases 6, 7, 11 all did this; reduced re-litigation across plans.
+- **Audit-driven gap-closure phases over phase reopening.** When a milestone audit surfaces blockers, add new phases (14-16) instead of re-opening shipped phases. Preserves original phase closure narrative.
+- **Single-source-of-truth tokens enforced via Record<ClosedUnion>.** `failureTagColor` map; static lookup forbids drift. Pattern reusable for future v2.1 surfaces.
+- **`tests/test_*_calibration.py` for tunable parameters.** K=3, OG_LAYOUT_VERSION, etc. — calibration values held to a test, not a comment.
+- **`<phase>-VERIFICATION.md` as phase-transition invariant** (re-established post-v1.0 process gap; Phase 15-01 closed Phase 7 retroactively).
+
+### Key Lessons
+
+1. **Integration tests are not phase tests.** Phase 7 unit-tested run_race; Phase 8 unit-tested WS reducer; Phase 9 unit-tested heatmap. Nobody tested "POST /api/race/run → live WS events render heatmap." Three independent green phases produced a non-functional surface. Add a phase-level smoke gate: "can a user hit the surface end-to-end?"
+2. **Audit doc + gap-closure phases is a viable pattern.** Treating audit as triage input (not as "fail the milestone") let v2.0 close cleanly via 14/15/16 instead of dragging out original phases.
+3. **DiscoveryPhasePanel two-gate inconsistency is the canonical example of "almost-the-same code in two places".** When two consumer call-sites need the same gating logic, factor the gate into a shared helper at first integration, not at audit time.
+4. **Stale REQUIREMENTS.md checkboxes are still a recurring tax.** v1.0 rolled in 14 stale rows; v2.0 rolled in OG/DISC/VIZ stale boxes. The fix is sustained discipline at phase-transition, not stricter audit.
+5. **Hand-rolled SVG + pure-TS algorithms beat new dependencies for visualization.** D-85 was the right call: VIZ shipped on time, full coverage, no bundle bloat.
+6. **Playwright is an optional dep, not a hard dep.** Treat browser binaries the same way: lazy install, lazy import, mock in CI. Phase 10 D-63 was the right pattern; v2.1 should formalize Playwright env-setup ergonomics.
+7. **Live human UAT catches what unit + integration tests miss.** `ReportService.save_report` overwrite bug only manifested when a user clicked compare on a real ticket. Reserve human UAT phases for behaviors that depend on persistence, sequencing, or cross-feature coupling.
+
+### Cost Observations
+
+- Sessions: 7-day execution span across 11 phases (vs v1.0 6 days / 5 phases — denser but bigger surface)
+- Subagent quota: hit twice (Phase 10 Wave 2, Phase 12 Wave 2) — recoverable but adds friction
+- Plan reviews: less plan-review cycling than v1.0 (CEO/eng/design ran on initial roadmap, not per-phase)
+- Audit cost: one milestone audit (2026-05-02) → 3 gap-closure phases (4+4+1 plans) — net win, identified 3 BLOCKERS that would have surfaced on demo day instead
+
+---
+
 ## Cross-Milestone Trends
 
 (Populated as additional milestones ship.)
 
-| Metric | v1.0 |
-|--------|------|
-| Phases | 5 |
-| Plans | 16 |
-| Tasks | ~28 |
-| Commits | 88 |
-| LOC at close | ~12,200 |
-| Timeline (days) | 6 |
-| Requirements satisfied | 22/22 |
-| Phases with VERIFICATION.md | 4/5 |
+| Metric | v1.0 | v2.0 |
+|--------|------|------|
+| Phases | 5 | 11 |
+| Plans | 16 | 52 |
+| Tasks | ~28 | ~140 |
+| Commits | 88 | 261 |
+| LOC delta | +12,200 | +63,371 / -230 |
+| Timeline (days) | 6 | 7 |
+| Requirements satisfied | 22/22 | 31/31 |
+| Phases with VERIFICATION.md at close | 4/5 | 11/11 (Phase 7 retro via Phase 15) |
+| Audit-discovered blockers | 0 | 3 (B1/B2/B3) |
+| Gap-closure phases needed | 0 | 3 (14/15/16) |
 
 ---
 
