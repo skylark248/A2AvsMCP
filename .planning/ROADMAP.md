@@ -30,7 +30,7 @@ Full details: [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md)
 - [x] **Phase 11: Tool Discovery Scenario** — `tool_discovery` scenario + `DiscoveryPhasePanel` surfacing MCP/A2A discovery as first-class UI (4/4 plans, completed 2026-05-01)
 - [x] **Phase 12: Comparison Visualization Upgrades** — Annotated trace diff + interactive sequence diagram (3/3 plans, completed 2026-05-01)
 - [x] **Phase 13: Design System Lock** — `/design-consultation` produces DESIGN.md formalizing race-demo tokens (1/1 plans, completed 2026-05-01)
-- [ ] **Phase 14: Race Demo Integration Fix** — Wire `run_race()` HTTP endpoint, fix WS `run_id` mismatch, wire `heatmap_has_data`, wire `ReplayScrubber` seek (closes B1, B2, B3, W2)
+- [x] **Phase 14: Race Demo Integration Fix** — Wire `run_race()` HTTP endpoint, fix WS `run_id` mismatch, wire `heatmap_has_data`, wire `ReplayScrubber` seek (closes B1, B2, B3, W2) (4/4 plans, completed 2026-05-04)
 - [ ] **Phase 15: Verification & Cleanup** — Write `07-VERIFICATION.md`, fix `DiscoveryPhasePanel` gate inconsistency, fix REQUIREMENTS.md stale checkboxes, Phase 12 code quality (closes Phase 7 VERIF gap, W1, W-VERIF-1..3)
 - [ ] **Phase 16: Discovery UAT** — Live UI runs for 4 Phase 11 human verification items; document A2A protocol path, D-72 layout, ordering confirmation (closes DISC-01, DISC-02 human items)
 

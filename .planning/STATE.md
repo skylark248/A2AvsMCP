@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Race Demo + Discovery + Visualization
-status: "v2.0 COMPLETE — All 8 phases (6-13) shipped. Phase 13 DSGN-01 delivered: .planning/DESIGN.md formalizes 5 race-demo design tokens (failureTagColor map, methodology-as-flat, secondary.main, role-first, palette intent). Backend 345/345 pytest; frontend 326/326 vitest. Milestone complete 2026-05-01."
-stopped_at: Phase 13 complete — DSGN-01 VERIFIED PASS 2026-05-01. v2.0 milestone complete.
-last_updated: "2026-05-01T18:27:00.000Z"
-last_activity: "2026-05-01 23:57 — Phase 13 verified PASS; v2.0 milestone complete (8/8 phases, 43/43 plans)"
+status: "v2.0 gap closure in progress — Phase 14 (Race Demo Integration Fix) complete. Backend 352/352 pytest; frontend 335/335 vitest. Phase 15-16 remaining."
+stopped_at: Phase 14 complete — human UAT approved 2026-05-04
+last_updated: "2026-05-04T10:45:00+05:30"
+last_activity: "2026-05-04 10:45 — Phase 14 complete (4/4 plans, human UAT approved)"
 progress:
-  total_phases: 8
-  completed_phases: 8
-  total_plans: 43
-  completed_plans: 43
+  total_phases: 16
+  completed_phases: 14
+  total_plans: 47
+  completed_plans: 47
   percent: 100
 ---
 
@@ -25,7 +25,7 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 
 ## Current Position
 
-Phase: 13 ✅ VERIFIED PASS (2026-05-01). v2.0 milestone COMPLETE — all 8 phases (Phases 6-13), 43/43 plans. DSGN-01 delivered: `.planning/DESIGN.md`.
+Phase: 14 ✅ COMPLETE (2026-05-04). Gap closure: B1, B2, B3, W2 fixed (POST /api/race/run, WS run_id routing, heatmap_has_data, ReplayScrubber seek). Phase 15-16 remain. Backend 352/352 tests; frontend 335/335 tests.
 
 Phase 12 wave structure:
 
