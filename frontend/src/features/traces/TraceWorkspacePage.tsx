@@ -389,28 +389,30 @@ export function TraceWorkspacePage() {
             </Card>
           </Grid>
 
-          {detail?.summary?.scenario === "tool_discovery" ? (
-            <Grid size={{ xs: 12 }}>
-              {(() => {
-                const allEvents = visibleResults.flatMap((r) => r.trace ?? []);
-                const mcpEvents = allEvents.filter(
-                  (e) => e.event_type === "tool_discovery" && !(e as { remote_agent?: unknown }).remote_agent,
-                );
-                const a2aEvents = allEvents.filter(
-                  (e) =>
-                    (e.event_type === "tool_discovery" && Boolean((e as { remote_agent?: unknown }).remote_agent)) ||
-                    e.event_type === "a2a_remote_discovery",
-                );
-                return (
-                  <DiscoveryPhasePanel
-                    mcpEvents={mcpEvents}
-                    a2aEvents={a2aEvents}
-                    scenario={detail.summary.scenario}
-                  />
-                );
-              })()}
-            </Grid>
-          ) : null}
+          {(() => {
+            const allEvents = visibleResults.flatMap((r) => r.trace ?? []);
+            const mcpEvents = allEvents.filter(
+              (e) => e.event_type === "tool_discovery" && !(e as { remote_agent?: unknown }).remote_agent,
+            );
+            const a2aEvents = allEvents.filter(
+              (e) =>
+                (e.event_type === "tool_discovery" && Boolean((e as { remote_agent?: unknown }).remote_agent)) ||
+                e.event_type === "a2a_remote_discovery",
+            );
+            const showDiscoveryPanel = mcpEvents.length > 0 || a2aEvents.length > 0;
+
+            if (!showDiscoveryPanel) return null;
+
+            return (
+              <Grid size={{ xs: 12 }}>
+                <DiscoveryPhasePanel
+                  mcpEvents={mcpEvents}
+                  a2aEvents={a2aEvents}
+                  scenario={detail?.summary?.scenario ?? "tool_discovery"}
+                />
+              </Grid>
+            );
+          })()}
 
           <Grid size={{ xs: 12 }}>
             <Stack spacing={2}>
