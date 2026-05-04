@@ -40,3 +40,6 @@ frontend/*.tsbuildinfo
 # OS
 .DS_Store
 Thumbs.db
+
+# graphify cache (regenerable AST extraction artifacts)
+graphify-out/cache/
