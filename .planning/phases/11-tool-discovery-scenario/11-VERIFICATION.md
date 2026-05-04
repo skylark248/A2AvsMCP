@@ -1,9 +1,18 @@
 ---
 phase: 11-tool-discovery-scenario
-verified: 2026-05-01T10:57:00Z
-status: human_needed
+verified: 2026-05-04T16:14:00Z
+status: passed
 score: 16/16 must-haves verified
 overrides_applied: 0
+human_verification_evidence:
+  - test: "Run tool_discovery on A2A protocol via live UI"
+    result: "✓ Passed — agent cards populated with agents and skill chips, relative timestamps rendered, MCP column showed placeholder text, panel rendered above TraceExplorer"
+  - test: "Run tool_discovery on MCP protocol via live UI"
+    result: "✓ Passed — tool catalog populated with names and timestamps, search_docs fallback visible for NebulaSync Hub unknown SKU, panel rendered above TraceExplorer"
+  - test: "Run tool_discovery in compare mode (D-72 layout)"
+    result: "✓ Passed — single full-width DiscoveryPhasePanel above dual-column TraceExplorer grid, both MCP and A2A columns populated"
+  - test: "Verify visual ordering (panel before execution events)"
+    result: "✓ Passed — panel renders ABOVE TraceExplorer on all three modes (single MCP, single A2A, compare)"
 human_verification:
   - test: "Run the tool_discovery scenario on the A2A protocol via the live UI"
     expected: "TraceWorkspacePage renders DiscoveryPhasePanel above the TraceExplorer; A2A column populates with at least one agent card and skill chips; A2A — Agent Cards header shown; per-agent timestamps render"
@@ -150,5 +159,5 @@ These are surface-area confirmations, not implementation gaps. The phase is func
 
 ---
 
-_Verified: 2026-05-01T10:57:00Z_
-_Verifier: Claude (gsd-verifier)_
+_Verified: 2026-05-04T16:14:00Z (human UAT completed)_
+_Verifier: Claude (gsd-verifier) + human UAT (Shivansh Choudhary)_

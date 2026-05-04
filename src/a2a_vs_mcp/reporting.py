@@ -211,6 +211,14 @@ class ReportService:
 
     def save_report(self, ticket: SupportTicket, payload: list[dict[str, Any]]) -> Path:
         report_path = self.report_dir / f"{ticket.ticket_id}_report.json"
+        if report_path.exists():
+            try:
+                existing = json.loads(report_path.read_text(encoding="utf-8"))
+                existing_modes = {item.get("mode") for item in existing}
+                merged = existing + [item for item in payload if item.get("mode") not in existing_modes]
+                payload = merged
+            except (json.JSONDecodeError, AttributeError):
+                pass
         report_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
         return report_path
 
