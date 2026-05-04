@@ -290,7 +290,7 @@ export function TraceExplorer({ events, title = "Trace Explorer", subtitle, runt
                       with data-event-index is valid. But ProtocolEventRow's outer element is a
                       Stack (div), so we wrap each row at the call site here (Option b: element-aware
                       wrapper). Parent element type: Stack (= div), so Box wrapper is valid. */}
-                  <ProtocolTier events={filteredEvents} pinnedEventId={pinnedEventId} />
+                  <ProtocolTier events={filteredEvents} />
                 </AccordionDetails>
               </Accordion>
 
@@ -319,7 +319,7 @@ export function TraceExplorer({ events, title = "Trace Explorer", subtitle, runt
 
 const RENDER_CAP = 150;
 
-function ProtocolTier({ events, pinnedEventId }: { events: TraceEvent[]; pinnedEventId?: string | null }) {
+function ProtocolTier({ events }: { events: TraceEvent[] }) {
   const nonA2AEvents = events.filter(
     (e) => !isA2AEvent(e) && e.event_type !== "task_status" &&
            e.event_type !== "task_submit" && e.event_type !== "task_complete"
