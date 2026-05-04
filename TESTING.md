@@ -99,7 +99,7 @@ python main.py --help
 
 ```bash
 pytest
-# Expected: 345 passing
+# Expected: 352 passing (after v2.0 — Phase 14 added POST /api/race/run tests, Phase 15 added 07-VERIFICATION.md, Phase 16 added save_report merge fix)
 ```
 
 ### Run specific test files
@@ -172,7 +172,7 @@ pytest -k "recovery"
 ```bash
 cd frontend
 
-# Run all tests (326 passing)
+# Run all tests (335 passing — after v2.0 Phase 15-02 gate fix + Phase 15-04 cleanup)
 npm test
 
 # Watch mode
@@ -293,19 +293,47 @@ curl -X POST http://localhost:8008/api/run \
 
 ## 10. Race Tasks
 
-Race runs at `/race`. Three lane runners (pure_mcp, pure_a2a, hybrid) compete on these tasks:
+Race runs at `/race`. Three lane runners (`pure_mcp`, `pure_a2a`, `hybrid`) compete on these tasks:
 
-| Task | Location |
-|---|---|
-| `summarize_repo` | `src/a2a_vs_mcp/race/tasks/summarize_repo/` |
-| `negotiate_meeting` | `src/a2a_vs_mcp/race/tasks/negotiate_meeting/` |
-| `book_travel` | `src/a2a_vs_mcp/race/tasks/book_travel/` |
+| Task | Hardness Coverage | Location |
+|------|-------------------|----------|
+| `summarize_repo` | LONG_CHAIN, SCHEMA_VARIANCE | `src/a2a_vs_mcp/race/tasks/summarize_repo/` |
+| `negotiate_meeting` | RATE_PRESSURE, MULTI_SOURCE_SYNTHESIS | `src/a2a_vs_mcp/race/tasks/negotiate_meeting/` |
+| `book_travel` | LONG_CHAIN, RATE_PRESSURE, MULTI_SOURCE_SYNTHESIS | `src/a2a_vs_mcp/race/tasks/book_travel/` |
 
-### Start a race (WebSocket)
+Determinism: harness pins `model=claude-sonnet-4-6, seed=42, temperature=0, per_run_timeout_s=120`. Recovery state machine uses K=3 turn window with `agent_msg_acknowledging_fault` regex (negation guard). Each fault tagged: `recovered | gave_up | kept_going_without_noticing | kept_going_to_failure | indeterminate`.
 
-Connect: `ws://localhost:8008/api/race/ws?run_id=<id>`
+### Start a race (HTTP)
 
-Events streamed: `tick`, `tool_call`, `agent_msg`, `fault_injected`, `fault_observed`, `done`, `error`, `race_done`
+```bash
+curl -X POST http://localhost:8008/api/race/run \
+  -H "Content-Type: application/json" \
+  -d '{"task_id":"summarize_repo","lanes":["pure_mcp","pure_a2a","hybrid"],"n":1}'
+# Returns: {"run_id":"<uuid>"}
+```
+
+### Subscribe to live events (WebSocket)
+
+Connect: `ws://localhost:8008/api/race/ws?run_id=<id>` — `run_id` query param is **mandatory** (Phase 14-02 wired this; pre-fix versions emitted HTTP 422).
+
+Events streamed: `tick`, `tool_call`, `agent_msg`, `fault_injected`, `fault_observed`, `done`, `error`, `race_done`. Each event carries a per-lane `turn_index`. WebSocket reconnect resumes the client at its last `turn_index`.
+
+### Replay a recorded run
+
+```bash
+# UI replay (no LLM call)
+open http://localhost:8008/race/<run_id>
+
+# Raw trace events
+curl http://localhost:8008/api/race/runs/<run_id>/trace
+```
+
+### OG image (requires `[og]` install + `playwright install chromium`)
+
+```bash
+curl -o og.png http://localhost:8008/race/<run_id>/og.png       # 1200×630 cropped anchor
+curl -o heatmap.png http://localhost:8008/race/<run_id>/heatmap.png  # 1200×900 heatmap card
+```
 
 ---
 
@@ -366,6 +394,29 @@ Start the app (`python serve_ui.py`) before testing. Mark each item `[x]` as you
 
 - [ ] **DESIGN.md completeness** — Open `.planning/DESIGN.md`. Confirm 5 sections: failureTagColor map (5 entries), methodology-as-flat rule, secondary.main replay-pill, role-first contract, palette intent.
 
+### Phase 14: Race Demo Integration Fix (v2.0 gap closure)
+
+- [ ] **POST /api/race/run** — `curl -X POST http://localhost:8008/api/race/run -H "Content-Type: application/json" -d '{"task_id":"summarize_repo","lanes":["pure_mcp","pure_a2a","hybrid"],"n":1}'`. Returns `{"run_id":"<uuid>"}`. No 404.
+- [ ] **WebSocket connects with run_id** — After `POST /api/race/run`, connect `ws://localhost:8008/api/race/ws?run_id=<id>` (e.g. via browser devtools or `wscat`). Handshake succeeds — no HTTP 422.
+- [ ] **heatmap_has_data live wire** — Complete a race that produces heatmap-eligible runs. Reload `/race`. PageState transitions to a heatmap-populated state (not stuck on `heatmap-empty`).
+- [ ] **ReplayScrubber seek** — Open `/race/<run_id>` with a recorded run. Drag the scrubber. Lane state updates to reflect the selected `turn_index` (state advances/rewinds, not no-op).
+
+### Phase 15: Verification & Cleanup (v2.0 gap closure)
+
+- [ ] **07-VERIFICATION.md exists** — `ls .planning/phases/07-race-backend-lanes-harness-recovery/07-VERIFICATION.md`. File present, aggregates RACE-01..07 evidence.
+- [ ] **DiscoveryPhasePanel gate harmonized** — Import an NDJSON trace into `/traces` that contains `tool_discovery` events but no `summary.scenario === "tool_discovery"` field. Panel still renders (event-presence gate, not scenario-string gate).
+- [ ] **REQUIREMENTS coverage final** — `cat .planning/milestones/v2.0-REQUIREMENTS.md | grep -c "^- \[x\]"` returns `>=31`.
+- [ ] **Phase 12 cleanup** — `grep -rn "pinnedEventId" frontend/src/components/traces/ProtocolTier.tsx` returns nothing (dead prop removed).
+
+### Phase 16: Discovery UAT (v2.0 gap closure)
+
+- [ ] **MCP path live** — Run `tool_discovery` scenario in `mcp` mode via the UI. `DiscoveryPhasePanel` populates the MCP column with real discovery events.
+- [ ] **A2A path live** — Run `tool_discovery` scenario in `a2a` mode via the UI. `DiscoveryPhasePanel` populates the A2A column with real agent-card discovery events (skill chips visible).
+- [ ] **D-72 single-panel-above-dual** — Open Compare page with two `tool_discovery` runs (one MCP, one A2A). Exactly ONE full-width `DiscoveryPhasePanel` renders above the dual-column Grid (not two stacked panels).
+- [ ] **Ordering** — In compare mode, the `DiscoveryPhasePanel` appears strictly above all execution-phase events in the visual flow.
+- [ ] **Stale-cache warning** — When `requested_transport` differs from `transport`, an icon with `aria-label="Stale capability cache"` appears on the affected MCP tool card.
+- [ ] **Compare-mode merge** — Run `tool_discovery` in MCP mode, save report. Run again in A2A mode, save report with same name. Open the saved report — both protocol runs appear under the same scenario (no overwrite — Phase 16 inline fix to `ReportService.save_report`).
+
 ### Cold Start Smoke Test
 
 - [ ] **Cold start** — Kill any running server. Run `python serve_ui.py`. Server starts on port 8008 without errors. Navigate to `http://localhost:8008` — app loads with nav visible. Trigger one demo run (any scenario, any mode).
@@ -415,9 +466,9 @@ curl http://localhost:8008/api/scenarios | python3 -m json.tool | grep scenario_
 
 # 4. Backend tests
 pytest --tb=short -q
-# Expected: 345 passed
+# Expected: 352 passed
 
 # 5. Frontend tests
 cd frontend && npm test -- --reporter=verbose 2>&1 | tail -5
-# Expected: 326 passed
+# Expected: 335 passed
 ```
