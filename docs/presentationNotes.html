@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speaker Notes — A2A, MCP & Skills</title>
+    <style>
+        :root {
+            --bg: #faf9f7;
+            --panel: #ffffff;
+            --ink: #1a1a1a;
+            --ink-soft: #4a4a4a;
+            --ink-faint: #6b6b6b;
+            --accent: #1f4788;
+            --accent-soft: #e8eef7;
+            --highlight: #fff4c4;
+            --highlight-strong: #ffe680;
+            --direction: #6b6b6b;
+            --direction-bg: #f0f0ed;
+            --border: #e0ddd6;
+            --time: #b85c2f;
+            --section-bg: #1f4788;
+            --section-ink: #ffffff;
+            --pivot-bg: #fff9e6;
+            --pivot-border: #e0b020;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.6;
+            font-size: 17px;
+        }
+
+        /* Header */
+        header {
+            background: var(--ink);
+            color: white;
+            padding: 24px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        header .title {
+            font-size: 22px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: -0.01em;
+        }
+
+        header .meta {
+            font-size: 13px;
+            color: #aaa;
+            margin-top: 4px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        header .meta span::before {
+            content: "• ";
+            color: #666;
+        }
+
+        header .meta span:first-child::before {
+            content: "";
+        }
+
+        /* Layout */
+        .layout {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Sidebar nav */
+        nav.sidebar {
+            background: var(--panel);
+            border-right: 1px solid var(--border);
+            padding: 24px 0;
+            position: sticky;
+            top: 86px;
+            height: calc(100vh - 86px);
+            overflow-y: auto;
+        }
+
+        nav .nav-section {
+            padding: 8px 24px 4px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--ink-faint);
+            margin-top: 12px;
+        }
+
+        nav .nav-section:first-child {
+            margin-top: 0;
+        }
+
+        nav a {
+            display: block;
+            padding: 7px 24px;
+            color: var(--ink-soft);
+            text-decoration: none;
+            font-size: 14px;
+            border-left: 3px solid transparent;
+            transition: all 0.15s;
+        }
+
+        nav a:hover {
+            background: var(--accent-soft);
+            color: var(--accent);
+            border-left-color: var(--accent);
+        }
+
+        nav a .num {
+            display: inline-block;
+            width: 28px;
+            color: var(--ink-faint);
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Main content */
+        main {
+            padding: 32px 48px 80px;
+            max-width: 900px;
+        }
+
+        /* Section headers (Part 1, Part 2, etc.) */
+        .part-header {
+            background: var(--section-bg);
+            color: var(--section-ink);
+            padding: 18px 24px;
+            margin: 40px 0 24px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .part-header h2 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .part-header .duration {
+            font-size: 13px;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        /* Slide card */
+        .slide {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 24px 28px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .slide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 16px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .slide-header h3 {
+            margin: 0;
+            font-size: 19px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: var(--ink);
+        }
+
+        .slide-header .time {
+            font-size: 13px;
+            color: var(--time);
+            font-weight: 600;
+            background: #fdf2eb;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+
+        /* Body content */
+        .slide p {
+            margin: 12px 0;
+        }
+
+        /* Bold = what to say out loud */
+        .slide strong,
+        .slide b {
+            background: var(--highlight);
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        /* Stage directions */
+        .direction {
+            color: var(--direction);
+            font-style: italic;
+            background: var(--direction-bg);
+            padding: 8px 14px;
+            border-radius: 4px;
+            margin: 12px 0;
+            font-size: 15px;
+            border-left: 3px solid #c5c3bd;
+        }
+
+        .direction::before {
+            content: "▸ ";
+            font-style: normal;
+            color: var(--ink-faint);
+        }
+
+        /* Quoted speech */
+        .quote {
+            border-left: 3px solid var(--accent);
+            padding: 4px 16px;
+            margin: 12px 0 12px 4px;
+            color: var(--ink);
+            background: #f8fafd;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .quote::before {
+            content: "“";
+            color: var(--accent);
+            font-size: 26px;
+            line-height: 0;
+            vertical-align: -8px;
+            margin-right: 4px;
+        }
+
+        .quote::after {
+            content: "”";
+            color: var(--accent);
+            font-size: 26px;
+            line-height: 0;
+            vertical-align: -12px;
+            margin-left: 2px;
+        }
+
+        /* Lists */
+        .slide ul {
+            margin: 12px 0;
+            padding-left: 22px;
+        }
+
+        .slide ul li {
+            margin: 8px 0;
+        }
+
+        /* Pivot/critical slide */
+        .pivot {
+            background: var(--pivot-bg);
+            border: 2px solid var(--pivot-border);
+        }
+
+        .pivot .slide-header h3::before {
+            content: "★ ";
+            color: var(--pivot-border);
+        }
+
+        .pivot-badge {
+            display: inline-block;
+            background: var(--pivot-border);
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 3px 8px;
+            border-radius: 3px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        /* One-liner emphasis */
+        .oneliner {
+            background: var(--highlight-strong);
+            border-left: 4px solid var(--time);
+            padding: 12px 16px;
+            margin: 14px 0;
+            font-weight: 600;
+            border-radius: 0 4px 4px 0;
+            font-size: 17px;
+        }
+
+        .oneliner::before {
+            content: "🎯 SAY THIS: ";
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            display: block;
+            color: var(--time);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        /* How to use box */
+        .how-to-use {
+            background: var(--accent-soft);
+            border-radius: 8px;
+            padding: 20px 24px;
+            margin: 24px 0 40px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .how-to-use h3 {
+            margin: 0 0 12px;
+            color: var(--accent);
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            font-weight: 700;
+        }
+
+        .how-to-use .legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .how-to-use .legend-item {
+            background: white;
+            padding: 10px 14px;
+            border-radius: 4px;
+            font-size: 14px;
+            border: 1px solid var(--border);
+        }
+
+        /* Q&A section */
+        .qa-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin: 12px 0;
+            padding: 14px 18px;
+            box-shadow: var(--shadow);
+        }
+
+        .qa-card .question {
+            font-weight: 600;
+            color: var(--accent);
+            margin: 0 0 6px;
+            font-size: 15px;
+        }
+
+        .qa-card .answer {
+            margin: 0;
+            font-size: 15px;
+            color: var(--ink-soft);
+        }
+
+        /* Final tips */
+        .tip-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 14px 18px;
+            margin: 10px 0;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+
+        .tip-num {
+            background: var(--accent);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        /* Footer note */
+        .closing-note {
+            background: var(--accent-soft);
+            border-radius: 8px;
+            padding: 20px 24px;
+            margin-top: 40px;
+            text-align: center;
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        /* Print styles */
+        @media print {
+
+            header,
+            nav.sidebar {
+                display: none;
+            }
+
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            main {
+                padding: 20px;
+                max-width: none;
+            }
+
+            .slide {
+                page-break-inside: avoid;
+                box-shadow: none;
+            }
+
+            .part-header {
+                page-break-after: avoid;
+            }
+
+            body {
+                background: white;
+                font-size: 12pt;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 900px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            nav.sidebar {
+                display: none;
+            }
+
+            main {
+                padding: 20px 16px 60px;
+            }
+
+            header {
+                padding: 16px 20px;
+            }
+        }
+
+        /* Back-to-top */
+        .back-top {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--accent);
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            font-size: 18px;
+            z-index: 50;
+            opacity: 0.85;
+            transition: opacity 0.2s;
+        }
+
+        .back-top:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1 class="title">Speaker Notes — A2A, MCP &amp; Skills</h1>
+        <div class="meta">
+            <span>Target: 40–45 min + Q&amp;A</span>
+            <span>Audience: Mixed technical + leadership</span>
+            <span>Morgan Stanley · Portfolio Accounting Tech</span>
+        </div>
+    </header>
+
+    <div class="layout">
+
+        <nav class="sidebar">
+            <div class="nav-section">Setup</div>
+            <a href="#s1"><span class="num">1</span>Title</a>
+            <a href="#s2"><span class="num">2</span>Agenda</a>
+            <a href="#s3"><span class="num">3</span>Why This Talk</a>
+            <a href="#s4"><span class="num">4</span>Quick Vocabulary</a>
+            <a href="#s5"><span class="num">5</span>Three Problems</a>
+
+            <div class="nav-section">Part 1 — A2A</div>
+            <a href="#s6"><span class="num">6</span>Why A2A Exists</a>
+            <a href="#s7"><span class="num">7</span>Agent Card</a>
+            <a href="#s8"><span class="num">8</span>Communication</a>
+            <a href="#s9"><span class="num">9</span>A2A vs MCP ★</a>
+            <a href="#s10"><span class="num">10</span>A2A in Action</a>
+            <a href="#s11"><span class="num">11</span>Is A2A Real?</a>
+
+            <div class="nav-section">Part 2 — MCP</div>
+            <a href="#s13"><span class="num">13</span>MCP Recap</a>
+            <a href="#s14"><span class="num">14</span>MCP in Action</a>
+
+            <div class="nav-section">Part 3 — Skills</div>
+            <a href="#s16"><span class="num">16</span>Why Skills Exist</a>
+            <a href="#s17"><span class="num">17</span>Decision Tree ★</a>
+            <a href="#s18"><span class="num">18</span>Skills vs MCP vs RAG</a>
+            <a href="#s19"><span class="num">19</span>Skills in Action</a>
+
+            <div class="nav-section">Part 4 — Synthesis</div>
+            <a href="#s21"><span class="num">21</span>The Big Picture</a>
+            <a href="#s22"><span class="num">22</span>End-to-End ★</a>
+            <a href="#s23"><span class="num">23</span>Decision Cheat Sheet</a>
+
+            <div class="nav-section">Closing</div>
+            <a href="#s24"><span class="num">24</span>What This Means</a>
+            <a href="#s25"><span class="num">25</span>Q&amp;A</a>
+
+            <div class="nav-section">Reference</div>
+            <a href="#qa">Anticipated Q&amp;A</a>
+            <a href="#tips">Delivery Tips</a>
+        </nav>
+
+        <main>
+
+            <div class="how-to-use">
+                <h3>How to use these notes</h3>
+                <div class="legend">
+                    <div class="legend-item"><strong style="background: var(--highlight); padding: 1px 4px;">Highlighted
+                            text</strong> = key idea to say out loud</div>
+                    <div class="legend-item"><span style="font-style: italic; color: var(--direction);">▸ Italic</span>
+                        = stage direction (pause, gesture, ask)</div>
+                    <div class="legend-item">★ = pivot slide, slow down here</div>
+                    <div class="legend-item">🎯 = one-liner to land hard</div>
+                </div>
+                <p style="font-size: 14px; color: var(--ink-soft); margin: 14px 0 0;">Don't read these notes —
+                    internalize and speak naturally. Your job is the connective tissue between what's on the slide and
+                    what they should walk away understanding.</p>
+            </div>
+
+            <!-- SETUP -->
+            <div class="part-header">
+                <h2>Setup (Slides 1–5)</h2>
+                <div class="duration">~7 minutes total</div>
+            </div>
+
+            <div class="slide" id="s1">
+                <div class="slide-header">
+                    <h3>Slide 1 — Title</h3>
+                    <span class="time">~30 sec</span>
+                </div>
+                <p><strong>Open with</strong>: "Good morning/afternoon everyone. Over the next 45 minutes or so, I want
+                    to walk you through three things that are reshaping how we build AI agents — A2A, MCP, and Skills.
+                    Two of these we've covered before in earlier sessions, but A2A is brand new for us today."</p>
+                <div class="direction">Don't dwell on the title slide. Move on quickly.</div>
+            </div>
+
+            <div class="slide" id="s2">
+                <div class="slide-header">
+                    <h3>Slide 2 — Agenda</h3>
+                    <span class="time">~1 min</span>
+                </div>
+                <p>Walk through the four parts, pointing at each numeral as you go:</p>
+                <ul>
+                    <li>"We have four parts. Section one is A2A — the new piece — and that's where most of our time
+                        goes, about <strong>15 minutes</strong>."</li>
+                    <li>"Section two is MCP, where we did a deep dive in the prior session, so this will be a quick
+                        recap — about <strong>7 minutes</strong>."</li>
+                    <li>"Section three is Skills — also a recap, but with a sharper focus on <strong>when</strong> to
+                        use them versus other things, about <strong>12 minutes</strong>."</li>
+                    <li>"And section four is where everything composes together — how A2A, MCP, and Skills work as a
+                        system in production."</li>
+                </ul>
+                <p><strong>Set expectations</strong>: "By the end, my goal is that everyone in this room can look at any
+                    agent design problem and know which of these three tools fits."</p>
+            </div>
+
+            <div class="slide" id="s3">
+                <div class="slide-header">
+                    <h3>Slide 3 — Why This Talk</h3>
+                    <span class="time">~1.5 min</span>
+                </div>
+                <p><strong>The key idea</strong>: agents alone are isolated and useless in production. Real systems have
+                    three integration problems.</p>
+                <p>Walk through the three boxes:</p>
+                <div class="quote">An AI agent can reason. It can generate text. It can make decisions. But on its own,
+                    it's stuck.</div>
+                <div class="quote">In the real world, every agent needs three things: it needs to <strong>talk to other
+                        agents</strong> that someone else built, it needs to <strong>talk to your systems</strong> —
+                    your databases, your APIs — and it needs to <strong>know how to do the actual work</strong> your
+                    business cares about.</div>
+                <p><strong>Land the punchline</strong>: "Three different problems. The industry has produced three
+                    different open standards to solve them. That's A2A, MCP, and Skills."</p>
+                <div class="direction">Read the three "By the end" bullets out loud — this is the contract you're making
+                    with the audience.</div>
+            </div>
+
+            <div class="slide" id="s4">
+                <div class="slide-header">
+                    <h3>Slide 4 — Quick Vocabulary: 4 Things That Look Similar</h3>
+                    <span class="time">~2 min</span>
+                </div>
+                <p style="color: var(--time); font-weight: 600; margin-bottom: 8px;">⚠ This is your densest slide. Walk
+                    through it slowly.</p>
+                <p><strong>Open by acknowledging the confusion</strong>: "Before we dive in, I want to clear up
+                    something that trips a lot of people up. If you've been using Claude Code or GitHub Copilot, you've
+                    probably seen these markdown files — prompt files, instruction files, and now skill files. They all
+                    look similar. They do different things."</p>
+
+                <p><strong>Lead with the analogy</strong> — it's at the top of the slide for a reason:</p>
+                <ul>
+                    <li>"Picture the agent as an employee. The <strong>instruction file</strong> is the employee
+                        handbook — they always follow it. Doesn't matter what task they're on, the handbook applies."
+                    </li>
+                    <li>"A <strong>prompt file</strong> is a form you hand them. They only use it when you give it to
+                        them."</li>
+                    <li>"And a <strong>skill</strong> is the SOP binder on the shelf. The employee themselves recognize
+                        when a situation calls for it, walks over to the shelf, opens the binder, follows the
+                        procedure."</li>
+                </ul>
+
+                <p><strong>Then move to the table</strong>: "The technical distinction is just this — who decides when
+                    this content gets loaded? For instruction files, it's always on. For prompt files, you decide. For
+                    skills — and this is the key thing — the <strong>agent itself decides</strong> based on what task
+                    it's facing."</p>
+
+                <div class="direction">Pause and ask: "Does that distinction make sense? Because this is going to come
+                    up again when we talk about skills in detail." Take any questions before moving on.</div>
+            </div>
+
+            <div class="slide" id="s5">
+                <div class="slide-header">
+                    <h3>Slide 5 — Three Problems, Three Standards</h3>
+                    <span class="time">~1.5 min</span>
+                </div>
+                <p style="font-weight: 600; color: var(--accent);">This is your framing slide. Make sure it lands.</p>
+                <p>Walk through the three columns:</p>
+                <ul>
+                    <li>"Agent talks to another agent — A2A solves this."</li>
+                    <li>"Agent talks to its tools and data — that's MCP."</li>
+                    <li>"Agent knows your specific way of doing things — that's Skills."</li>
+                </ul>
+                <p><strong>Land the key insight at the bottom</strong>: "These are <strong>complementary, not
+                        competing</strong>. A real production agent will typically use all three. We're not picking one.
+                    We're learning when to reach for which."</p>
+                <p><strong>Set up Part 1</strong>: "Today, A2A is the new content. MCP and Skills, you've seen before —
+                    we'll recap them quickly. Let's start with A2A."</p>
+            </div>
+
+            <!-- PART 1: A2A -->
+            <div class="part-header">
+                <h2>Part 1 — A2A (Slides 6–12)</h2>
+                <div class="duration">~15 minutes — your headline section</div>
+            </div>
+
+            <div class="slide" id="s6">
+                <div class="slide-header">
+                    <h3>Slide 6 — Why A2A Exists</h3>
+                    <span class="time">~2 min</span>
+                </div>
+                <p><strong>Open with the story</strong>: "Imagine our retail company — and I'll use retail throughout
+                    for the recurring examples because it's universal — has built three agents over the past year."</p>
+                <p><strong>Walk through the three boxes</strong>: "One team builds an Inventory Agent in Python. Another
+                    team builds a Pricing Agent in a completely different framework. And we have a vendor SaaS providing
+                    a Customer Support Agent."</p>
+                <p><strong>Pose the question</strong>: "Each of these works fine on its own. But what happens when
+                    inventory drops and pricing needs to adjust? Or when a customer complaint requires checking both
+                    inventory and recent pricing changes?"</p>
+                <p><strong>Land the problem</strong>: "Today the answer is custom integration code. Brittle. One-off.
+                    Has to be rewritten every time any agent changes. This is the same N-by-M integration problem that
+                    drove us to MCP for tools — except now it's between agents."</p>
+                <p><strong>State A2A's job clearly</strong>: "A2A gives agents a standard way to discover each other and
+                    coordinate. It doesn't matter who built them or what framework they use."</p>
+            </div>
+
+            <div class="slide" id="s7">
+                <div class="slide-header">
+                    <h3>Slide 7 — How A2A Works: The Agent Card</h3>
+                    <span class="time">~2 min</span>
+                </div>
+                <p><strong>Use the resume metaphor</strong> — it's the most accessible explanation:</p>
+                <div class="quote">Every A2A-compatible agent publishes something called an agent card at a known URL.
+                    Think of it as the agent's resume. It says: who I am, what I can do, how to reach me.</div>
+                <p><strong>Walk through the JSON</strong>, but don't read it line by line: "What you're looking at is a
+                    simplified agent card for a Pricing Agent. It declares its name and description, the URL where it
+                    lives, the skills it offers — in this case <code>adjust-price</code> — what input formats it
+                    accepts, and how to authenticate."</p>
+                <p><strong>Walk through the four callouts on the right</strong>: "There are four parts to an agent card:
+                    <strong>Identity</strong> — who am I. <strong>Capabilities</strong> — what can I do, what do I
+                    accept as input. <strong>Authentication</strong> — how do you talk to me securely.
+                    <strong>Discovery</strong> — I'm published at a known URL so other agents can find me without
+                    hard-coded integration."</p>
+                <p><strong>Reinforce the metaphor</strong>: "Other agents read this resume before deciding to
+                    collaborate. No hard-coded integrations. If a new agent shows up tomorrow with new capabilities,
+                    agents that already exist can discover it and start using it. That's the power of the agent card."
+                </p>
+            </div>
+
+            <div class="slide" id="s8">
+                <div class="slide-header">
+                    <h3>Slide 8 — How A2A Works: The Communication</h3>
+                    <span class="time">~1.5 min</span>
+                </div>
+                <p><strong>Set the frame</strong>: "Here's where A2A makes a deliberate design choice. It's built
+                    entirely on familiar web technology. No new transport, no new protocol invented — just plain HTTP."
+                </p>
+                <p>Walk through the three boxes:</p>
+                <ul>
+                    <li>"Transport is plain HTTP. Any web server, API gateway, or load balancer can host an A2A agent.
+                        Nothing new here."</li>
+                    <li>"The format is JSON-RPC 2.0 — the same format MCP uses. And it's modality-agnostic, meaning
+                        agents can exchange text, images, files, structured data — all in the same flow."</li>
+                    <li>"And for long-running tasks, A2A uses Server-Sent Events. So if a remote agent is doing
+                        something that takes 30 seconds, it can stream partial results back instead of making you wait
+                        for the final response."</li>
+                </ul>
+                <p><strong>Land why this matters</strong> (read or paraphrase the right-side callout): "Because A2A is
+                    built on web infrastructure, agents get all the benefits we already have — routing, load balancing,
+                    security, authentication, logging, API gateway policies. We're not building a whole new ops stack."
+                </p>
+            </div>
+
+            <div class="slide pivot" id="s9">
+                <div class="slide-header">
+                    <h3>Slide 9 — A2A vs MCP: The Confusion Buster <span class="pivot-badge">Pivot slide</span></h3>
+                    <span class="time">~2.5 min</span>
+                </div>
+                <p><strong>Open by naming the confusion directly</strong>: "This is the slide where I want to clear up
+                    the biggest source of confusion. Because if you've been paying attention, you may be thinking —
+                    wait, A2A uses JSON-RPC over HTTP. MCP also uses JSON-RPC over HTTP. So what's actually different?"
+                </p>
+
+                <p><strong>Walk through the five rows of the table</strong>, comparing left to right each time:</p>
+                <ul>
+                    <li>"<strong>What they connect</strong>: MCP connects an agent to its tools and data. A2A connects
+                        an agent to another agent."</li>
+                    <li>"<strong>What's on the other side</strong>: With MCP, it's a passive server — it exposes tools
+                        and waits to be called. With A2A, it's another active reasoner — another agent that has its own
+                        goals."</li>
+                    <li>"<strong>The interaction pattern</strong>: With MCP, you call a function and you get a result
+                        back. With A2A, you send a task — and the other agent might negotiate, might push back, might
+                        stream progress over time, might even ask clarifying questions."</li>
+                    <li>"<strong>Mental model</strong>: MCP is the toolbox the agent reaches into. A2A is the peer the
+                        agent talks to."</li>
+                    <li>"<strong>Discovery</strong>: With MCP, you as the developer configure which MCP servers your
+                        agent connects to. With A2A, agents discover each other through agent cards."</li>
+                </ul>
+
+                <div class="direction">Pause, then land the one-liner — read it out loud, slowly.</div>
+
+                <div class="oneliner">If you only remember one thing from this section, remember this: MCP is for
+                    capability. A2A is for collaboration.</div>
+
+                <p><strong>Optional concrete example</strong>: "A database wrapped as an MCP server is passive — it
+                    answers when called. A pricing agent reached over A2A is active — it can push back, negotiate,
+                    stream partial results, even ask 'what's your budget?' before it acts."</p>
+                <div class="direction">Pause here. Take questions if there are any. This is the pivot slide for the
+                    whole talk.</div>
+            </div>
+
+            <div class="slide" id="s10">
+                <div class="slide-header">
+                    <h3>Slide 10 — A2A in Action: Order Fulfillment</h3>
+                    <span class="time">~2.5 min</span>
+                </div>
+                <p><strong>Set the scene</strong>: "Let's make this concrete. A high-value order for 50 units of an
+                    electronics SKU comes in. Five agents coordinate via A2A to fulfill it."</p>
+                <p>Walk through each step, pointing at the slide as you go:</p>
+                <ul>
+                    <li>"<strong>Step 1</strong>: The Order Agent asks the Inventory Agent — do we have 50 units of
+                        SKU-9821?"</li>
+                    <li>"<strong>Step 2</strong>: Inventory responds — only 12 in stock, 38 short."</li>
+                    <li>"<strong>Step 3</strong>: The Order Agent now reaches out to two Supplier Agents — different
+                        vendors, different tech stacks, different companies — and asks: can you fulfill 38 units?"</li>
+                    <li>"<strong>Step 4</strong>: The suppliers stream back quotes via SSE as they're calculated. Note:
+                        they're not all responding instantly. Some take longer than others, and the Order Agent gets
+                        partial results as they come in."</li>
+                    <li>"<strong>Step 5</strong>: The Order Agent picks the best quote, confirms, and notifies the
+                        Customer Notification Agent."</li>
+                </ul>
+                <p><strong>Land the punchline at the bottom</strong>: "Five agents. Multiple companies. Different tech
+                    stacks. All coordinating through one protocol they all understand. No developer wrote custom glue
+                    code for any pair of these agents to talk."</p>
+                <p style="color: var(--ink-faint); font-size: 15px;"><em>Optional add</em>: "This is what
+                    'composability' actually looks like in practice — you can introduce new agents to the ecosystem and
+                    existing agents can discover and work with them without code changes."</p>
+            </div>
+
+            <div class="slide" id="s11">
+                <div class="slide-header">
+                    <h3>Slide 11 — Is A2A Real? Should We Bet On It?</h3>
+                    <span class="time">~2 min</span>
+                </div>
+                <p><strong>Open by acknowledging the question</strong>: "Now, whenever I introduce something new, the
+                    natural question from anyone in this room — especially on the leadership side — is: is this real, or
+                    is this hype? Should we actually invest in this?"</p>
+                <p>Walk through the four bullets:</p>
+                <ul>
+                    <li>"First — A2A is open. Originally introduced by Google in 2025 as a specification. Not
+                        proprietary, not vendor-locked."</li>
+                    <li>"Second — same trajectory as MCP. MCP started at one company, Anthropic, and is now
+                        industry-wide. A2A is following the same pattern. Multiple vendors are already shipping
+                        support."</li>
+                    <li>"Third — vendor SDKs are already available. Python, JavaScript, Java, .NET. So whatever stack
+                        we're on, there's a path."</li>
+                    <li>"Fourth — it's compatible with the major frameworks. LangChain, Semantic Kernel, custom agents,
+                        MCP-based agents — A2A doesn't force you to throw anything away."</li>
+                </ul>
+                <p><strong>Land the "For us" callout</strong>: "For us — A2A is not ubiquitous yet, but it's clearly
+                    heading toward standard. The same vendors that adopted MCP early are now adding A2A support. Worth
+                    knowing now so we're not caught off-guard when it shows up in our vendor roadmaps or our own
+                    architecture diagrams."</p>
+                <div class="direction">Transition line: "Okay, that's A2A. The new piece. Now let's quickly recap MCP,
+                    since most of you have seen this before."</div>
+            </div>
+
+            <!-- PART 2: MCP -->
+            <div class="part-header">
+                <h2>Part 2 — MCP (Slides 13–14)</h2>
+                <div class="duration">~5 minutes — keep recap pace</div>
+            </div>
+
+            <div class="slide" id="s13">
+                <div class="slide-header">
+                    <h3>Slide 13 — MCP Recap</h3>
+                    <span class="time">~2.5 min</span>
+                </div>
+                <p><strong>Open with the recap framing</strong>: "Most of you have seen this material in our previous
+                    two sessions, including the hands-on session where we built an MCP server with FastAPI. So this is a
+                    refresher — not new material."</p>
+                <p><strong>The one-line definition first</strong>: "MCP is a standard interface that lets an agent reach
+                    tools and data — without rewriting integrations every time you swap a model or framework."</p>
+                <p>Walk through the four icons:</p>
+                <ul>
+                    <li>"<strong>Architecture</strong>: Host plus Client plus Server, communicating in JSON-RPC 2.0."
+                    </li>
+                    <li>"<strong>Primitives</strong>: Tools — actions the agent can take. Resources — data the agent can
+                        read. Prompts — pre-built templates."</li>
+                    <li>"<strong>Transport</strong>: STDIO when the server runs locally on the same machine, HTTP with
+                        Server-Sent Events when the server is remote."</li>
+                    <li>"<strong>Hands-on</strong>: You've built one of these with FastAPI in our prior session. You
+                        know what an MCP server looks like from the inside."</li>
+                </ul>
+                <p><strong>Land the key point at the bottom</strong> — and emphasize it because it pays off later:</p>
+                <div class="oneliner">MCP servers are passive. They expose capability. They don't reason. They don't
+                    plan. They don't negotiate. That's what distinguishes them from A2A peers.</div>
+                <p><strong>Connect back to the earlier confusion-buster</strong>: "Remember the line from earlier — MCP
+                    is for capability, A2A is for collaboration. The passivity of MCP servers is what makes that
+                    distinction concrete."</p>
+            </div>
+
+            <div class="slide" id="s14">
+                <div class="slide-header">
+                    <h3>Slide 14 — MCP in Action: Customer Support</h3>
+                    <span class="time">~2 min</span>
+                </div>
+                <p><strong>Set the scene</strong>: "Quick concrete example. A customer writes in: 'I want to return the
+                    headphones I ordered last month, but I lost the order number.'"</p>
+                <p>Walk through the four servers:</p>
+                <ul>
+                    <li>"The support agent reaches the <strong>CRM MCP server</strong> to look up the customer by email
+                        and pull their recent orders."</li>
+                    <li>"Then it reaches the <strong>Returns MCP server</strong> to check eligibility for the matching
+                        order."</li>
+                    <li>"Then the <strong>Logistics MCP server</strong> generates the return label."</li>
+                    <li>"Finally the <strong>Email MCP server</strong> sends the label to the customer."</li>
+                </ul>
+                <p><strong>Land the punchline</strong>: "Four backend systems. Zero custom integration code in the agent
+                    itself. The agent doesn't know about CRM APIs, doesn't know about logistics APIs — it just calls MCP
+                    tools. That's the MCP value proposition in one slide."</p>
+                <p style="color: var(--ink-faint); font-size: 15px;"><em>Optional bridge to Skills</em>: "But here's
+                    something worth noticing — MCP gave the agent the ability to <em>call</em> these systems. What told
+                    it to call them in this order, with this logic? That's where Skills come in."</p>
+            </div>
+
+            <!-- PART 3: SKILLS -->
+            <div class="part-header">
+                <h2>Part 3 — Skills (Slides 16–19)</h2>
+                <div class="duration">~10 minutes</div>
+            </div>
+
+            <div class="direction" style="margin: 16px 0 20px;">Transition into this section: "Alright. Skills. Same as
+                MCP, you've seen this before. We'll recap quickly, but I want to focus this section on the question that
+                matters most — when does something deserve to be a skill versus a prompt versus an instruction file?
+                Because that's where confusion still lives."</div>
+
+            <div class="slide" id="s16">
+                <div class="slide-header">
+                    <h3>Slide 16 — Why Skills Exist</h3>
+                    <span class="time">~2 min</span>
+                </div>
+                <p><strong>Open with what LLMs do and don't know</strong>: "LLMs are excellent reasoners. They know an
+                    enormous amount of general knowledge. What they don't know is <strong>how your company specifically
+                        does things</strong>."</p>
+                <p>Walk through the three highlighted areas:</p>
+                <ul>
+                    <li>"<strong>Specific procedures</strong> — the exact steps for handling a high-value return at our
+                        firm."</li>
+                    <li>"<strong>Periodic workflows</strong> — like reconciling inventory across regional warehouses at
+                        month-end."</li>
+                    <li>"<strong>Compliance gates</strong> — like the checks that must run before issuing a refund over
+                        $10,000."</li>
+                </ul>
+                <p><strong>Set up the dilemma</strong>: "Without skills, you have two bad options."</p>
+                <ul>
+                    <li>"<strong>One</strong> — you stuff everything into the system prompt or instruction file. But now
+                        your context window is bloated for every interaction, even when 99% of those instructions aren't
+                        relevant to the current task."</li>
+                    <li>"<strong>Two</strong> — you re-explain the procedure every time. But now the user becomes the
+                        SOP document. That doesn't scale."</li>
+                </ul>
+                <p><strong>Land the solution</strong>: "Skills solve this by packaging procedures into files the agent
+                    loads only when the task calls for them."</p>
+            </div>
+
+            <div class="slide pivot" id="s17">
+                <div class="slide-header">
+                    <h3>Slide 17 — When Is It a Skill? The Decision Tree <span class="pivot-badge">Pivot slide</span>
+                    </h3>
+                    <span class="time">~3 min</span>
+                </div>
+                <p><strong>Frame the slide</strong>: "I want to spend extra time on this slide because this is the most
+                    common question I get about skills. We have three nearby concepts — instructions, prompts, skills.
+                    They look similar. The decision tree on this slide is how you tell them apart."</p>
+                <p>Walk through the tree top to bottom:</p>
+                <ul>
+                    <li>"<strong>Question one</strong>: Is this content used every interaction? If yes — that's not a
+                        skill. That's an instruction file. Always-on context."</li>
+                    <li>"<strong>If no, question two</strong>: Does the user explicitly invoke it each time? If yes —
+                        that's a prompt file. The user types <code>/refactor</code> or whatever, and the prompt file
+                        gets pulled in."</li>
+                    <li>"<strong>If neither</strong> — meaning the agent itself should decide when to use it, based on
+                        the task at hand — then it's a skill."</li>
+                </ul>
+                <p>Walk through the two columns at the bottom:</p>
+                <div class="quote"><strong>A skill is the right answer when</strong> — the procedure has specific steps
+                    that must run in order, it applies to a category of tasks (not every task), and the agent should
+                    recognize when to use it without being told.</div>
+                <div class="quote"><strong>A skill is the wrong answer when</strong> — it's a general behavior rule like
+                    "always use TypeScript strict mode" — that's an instruction. It's a one-off manual transformation —
+                    that's a prompt. It's pure factual lookup — that's RAG. It's a raw API capability — that's MCP.
+                </div>
+                <p><strong>Use a concrete example to anchor this</strong>: "Here's a test. Suppose someone says: 'I want
+                    our agent to always reply in formal English.' Is that a skill?</p>
+                <div class="direction">Pause for audience response</div>
+                <p>— No. That's an instruction. It applies every interaction. Now suppose: 'I want our agent to handle
+                    high-value returns following our compliance playbook.' Skill — because it only fires when the task
+                    matches, and there are specific steps."</p>
+            </div>
+
+            <div class="slide" id="s18">
+                <div class="slide-header">
+                    <h3>Slide 18 — Skills vs MCP vs RAG</h3>
+                    <span class="time">~2 min</span>
+                </div>
+                <p><strong>Open with the mental model</strong>: "The most useful way to remember the difference between
+                    these three is this analogy."</p>
+                <p>Walk through the three columns, pointing at each icon:</p>
+                <ul>
+                    <li>"<strong>MCP is the toolbox</strong>. It gives the agent the capability — the actual tools. Like
+                        'I can call create_refund on the API.'"</li>
+                    <li>"<strong>RAG is the reference manual</strong>. It gives the agent facts — retrieved knowledge.
+                        Like 'Our return policy says 30 days.'"</li>
+                    <li>"<strong>Skills are the SOP binder</strong>. They give the agent the procedure — the ordered
+                        steps. Like 'For returns over $10K: check eligibility, get manager approval, log to compliance,
+                        refund, email customer.'"</li>
+                </ul>
+                <p><strong>Land the synthesis line at the bottom</strong> — read this out loud:</p>
+                <div class="oneliner">MCP is the toolbox. RAG is the reference manual. Skills are the SOP that tells the
+                    worker which tool to pick up and which page to read first.</div>
+                <p><strong>One more clarifying point</strong>: "A real skill almost always <em>uses</em> MCP tools (to
+                    act) and may <em>reference</em> RAG-retrieved policies (to decide). The skill is the orchestration
+                    layer — when and in what order."</p>
+            </div>
+
+            <div class="slide" id="s19">
+                <div class="slide-header">
+                    <h3>Slide 19 — Skills in Action: Concrete Examples</h3>
+                    <span class="time">~2 min</span>
+                </div>
+                <p><strong>Set up the table</strong>: "Let's make this concrete. Here are scenarios where a skill is the
+                    right answer."</p>
+                <p>Walk through the four rows quickly:</p>
+                <ul>
+                    <li>"<strong>Quarterly inventory reconciliation</strong> — same procedure quarterly, specific steps,
+                        specific report format."</li>
+                    <li>"<strong>New vendor onboarding</strong> — multi-step, has rules, repeats often."</li>
+                    <li>"<strong>High-value return needing compliance routing</strong> — decision tree the agent should
+                        follow, not invent."</li>
+                    <li>"<strong>Regulatory filing using a standard template</strong> — specific format requirements,
+                        agent should not improvise."</li>
+                </ul>
+                <p><strong>Look at the YAML at the bottom</strong>: "What does a skill actually look like? It's a YAML
+                    front matter and a markdown body. This is the <code>high-value-return</code> skill. Name,
+                    description — that's the trigger condition. The body contains the actual steps. The agent loads this
+                    skill only when the description matches. The other 99% of conversations don't pay the cost of having
+                    this in context."</p>
+            </div>
+
+            <!-- PART 4: SYNTHESIS -->
+            <div class="part-header">
+                <h2>Part 4 — Synthesis (Slides 21–23)</h2>
+                <div class="duration">~6 minutes — the payoff</div>
+            </div>
+
+            <div class="direction" style="margin: 16px 0 20px;">Transition: "Okay, we've covered all three pieces. Now I
+                want to show you how they fit together in a real architecture."</div>
+
+            <div class="slide" id="s21">
+                <div class="slide-header">
+                    <h3>Slide 21 — The Big Picture</h3>
+                    <span class="time">~2 min</span>
+                </div>
+                <p><strong>Frame this as the architecture diagram they should be able to draw</strong>: "This is the
+                    diagram I want everyone in this room to be able to draw on a whiteboard from memory after this talk.
+                    Three agents. Three layers. Three roles."</p>
+                <p>Walk through the three agents:</p>
+                <ul>
+                    <li>"<strong>Customer Support Agent</strong> — owned by one team. It has Skills for handling returns
+                        and escalating complaints. It uses MCP to reach the CRM, Orders DB, Email server, Returns API."
+                    </li>
+                    <li>"<strong>Inventory Agent</strong> — owned by a different team. Different Skills, different MCP
+                        servers."</li>
+                    <li>"<strong>Supplier Agent</strong> — external vendor. We don't even see inside it. All we know is
+                        it speaks A2A."</li>
+                </ul>
+                <p>Land the three roles at the bottom:</p>
+                <ul>
+                    <li>"<strong>A2A</strong> is how agents coordinate with their peers. The vertical arrows between
+                        agents."</li>
+                    <li>"<strong>MCP</strong> is how each agent reaches its tools and data. Into the agent."</li>
+                    <li>"<strong>Skills</strong> is the procedural knowledge inside each agent — what tells it what to
+                        do."</li>
+                </ul>
+                <p style="color: var(--ink-faint); font-size: 15px;"><em>Optional</em>: "Notice that the Supplier Agent
+                    is opaque to us. That's the power of A2A — we don't need to know how the external agent works
+                    internally. We just need to know its agent card and the protocol."</p>
+            </div>
+
+            <div class="slide pivot" id="s22">
+                <div class="slide-header">
+                    <h3>Slide 22 — End-to-End: All Three Pieces <span class="pivot-badge">Pivot slide</span></h3>
+                    <span class="time">~3 min</span>
+                </div>
+                <p style="font-weight: 600; color: var(--accent);">This is the slide that makes everything click. Spend
+                    real time here.</p>
+                <p><strong>Frame it</strong>: "This is the slide that makes everything click. One scenario — a
+                    high-value return request comes in. Let's watch all three pieces fire."</p>
+                <p><strong>Walk through each row</strong>, naming the piece each time:</p>
+                <ul>
+                    <li>"<strong>Step 1</strong>: Customer message arrives. Agent recognizes 'return over $10K' — and
+                        loads the <code>handle-high-value-return</code> <strong>skill</strong>. The skill's description
+                        matched."</li>
+                    <li>"<strong>Step 2</strong>: The skill instructs the agent to pull customer and order details. It
+                        calls the CRM and Orders <strong>MCP</strong> servers."</li>
+                    <li>"<strong>Step 3</strong>: The skill says — check inventory before approving the refund. The
+                        agent calls the Inventory Agent over <strong>A2A</strong>."
+                        <div class="direction">Slow down here — this is the A2A moment in the workflow.</div>
+                    </li>
+                    <li>"<strong>Step 4</strong>: Skill says route for manager approval. <strong>MCP</strong> call to
+                        the approval server."</li>
+                    <li>"<strong>Step 5</strong>: Skill says log to compliance. <strong>MCP</strong> call to the audit
+                        server."</li>
+                    <li>"<strong>Step 6</strong>: Skill says notify customer. <strong>MCP</strong> call to email."</li>
+                </ul>
+                <div class="oneliner">One agent. One skill. Several MCP tools. One A2A peer. That's the shape of a real
+                    production agent workflow.</div>
+                <p><strong>Optional emphasis</strong>: "Notice the skill is the orchestrator. It's the brain of this
+                    whole flow. MCP and A2A are the muscles. Without the skill, the agent wouldn't know what to do.
+                    Without MCP and A2A, the skill couldn't actually act on anything."</p>
+            </div>
+
+            <div class="slide" id="s23">
+                <div class="slide-header">
+                    <h3>Slide 23 — Decision Cheat Sheet</h3>
+                    <span class="time">~1 min</span>
+                </div>
+                <p><strong>Tell them to capture this slide</strong>: "This is the slide to photograph. If you take away
+                    one reference from this presentation, this is it."</p>
+                <p>Read through the cheat sheet quickly:</p>
+                <ul>
+                    <li>"Two or more agents to coordinate? Reach for <strong>A2A</strong>."</li>
+                    <li>"An agent to read/write data or call APIs? <strong>MCP</strong>."</li>
+                    <li>"An agent to follow a specific multi-step procedure? <strong>Skill</strong>."</li>
+                    <li>"Agent to know a fact? <strong>RAG</strong>."</li>
+                    <li>"Always-on behavior rules? <strong>Instruction file</strong>."</li>
+                    <li>"User-invoked templates? <strong>Prompt file</strong>."</li>
+                </ul>
+                <p><strong>Land the common production pattern</strong>: "In real production, you'll use multiple of
+                    these at once. A2A for coordination, MCP for capability, Skills for know-how, instruction files for
+                    project-wide rules. They're not competing. You compose them."</p>
+            </div>
+
+            <!-- CLOSING -->
+            <div class="part-header">
+                <h2>Closing (Slides 24–25)</h2>
+                <div class="duration">~2 minutes before Q&amp;A opens</div>
+            </div>
+
+            <div class="slide" id="s24">
+                <div class="slide-header">
+                    <h3>Slide 24 — What This Means For Our Team</h3>
+                    <span class="time">~2 min</span>
+                </div>
+                <p><strong>Open by translating to action</strong>: "So what does all of this mean for us, the Portfolio
+                    Accounting Tech team? Three concrete takeaways."</p>
+                <ol>
+                    <li style="margin-bottom: 14px;"><strong>MCP servers are our integration leverage</strong>: "Every
+                        internal system we wrap as an MCP server — position DB, ledger, trade store, regulatory
+                        reporting — becomes available to <em>every</em> future agent we build. Write once, reuse
+                        forever. This is the cheapest, highest-leverage thing we can do right now."</li>
+                    <li style="margin-bottom: 14px;"><strong>Skills encode our institutional knowledge</strong>: "The
+                        procedures our team has refined over years — month-end recon, position break investigation,
+                        regulatory filing prep — these are exactly what skills are for. We can make them reviewable,
+                        version-controlled, and reusable across every agent."</li>
+                    <li><strong>A2A is the bet for the next 12 months</strong>: "As more teams across the firm build
+                        agents, A2A is what lets them compose without us writing custom integration code per pair. Even
+                        if we don't adopt it tomorrow, it's worth tracking."</li>
+                </ol>
+                <p><strong>Close with the open standards line</strong>: "And the good news — all three are open
+                    standards. What we build today carries forward. We're not betting on any single vendor."</p>
+            </div>
+
+            <div class="slide" id="s25">
+                <div class="slide-header">
+                    <h3>Slide 25 — Discussion / Q&amp;A</h3>
+                    <span class="time">Open floor</span>
+                </div>
+                <p><strong>Transition</strong>: "That's the content. I want to open the floor now for questions and
+                    discussion. To get us started, here are some prompts I've been thinking about — feel free to take
+                    any of these or bring something completely different."</p>
+                <p>Read the four prompts (or pick the ones most likely to spark good discussion):</p>
+                <ul>
+                    <li>"Where in our current systems would A2A reduce custom integration code?"</li>
+                    <li>"Which of our internal systems would benefit most from being wrapped as MCP servers?"</li>
+                    <li>"What internal procedures would make good first skills?"</li>
+                    <li>"Where do you see the biggest risk or skepticism in adopting any of this?"</li>
+                </ul>
+                <div class="direction" style="font-weight: 600;">Then stop talking. Let the audience drive.</div>
+            </div>
+
+            <!-- Q&A REFERENCE -->
+            <div class="part-header" id="qa">
+                <h2>Anticipated Q&amp;A — Quick Reference</h2>
+                <div class="duration">Have a 30-second answer ready for each</div>
+            </div>
+
+            <div class="qa-card">
+                <p class="question">"Is anyone at Morgan Stanley actually using A2A yet?"</p>
+                <p class="answer">"Not widely yet — it's still early. The protocol was introduced in 2025. But we're
+                    seeing vendor support grow fast, and the same vendors that drove MCP adoption are now adding A2A.
+                    The right answer is to be ready, not to be first."</p>
+            </div>
+
+            <div class="qa-card">
+                <p class="question">"How is this different from microservices?"</p>
+                <p class="answer">"Microservices follow deterministic logic. They do what you coded them to do. A2A
+                    peers are AI agents that reason — they can negotiate, push back, ask clarifying questions, adapt.
+                    It's a different abstraction layer."</p>
+            </div>
+
+            <div class="qa-card">
+                <p class="question">"Why not just use REST APIs between agents?"</p>
+                <p class="answer">"You could. But A2A adds two things REST doesn't: standardized discovery via agent
+                    cards, and standardized task semantics — including streaming progress, modality handling, and
+                    negotiation. You'd end up reinventing all of these per integration."</p>
+            </div>
+
+            <div class="qa-card">
+                <p class="question">"Won't this proliferate complexity?"</p>
+                <p class="answer">"Yes — if used badly. The cheat sheet on Slide 23 is the antidote. Most projects don't
+                    need all three. Match the tool to the problem."</p>
+            </div>
+
+            <div class="qa-card">
+                <p class="question">"What about RAG?"</p>
+                <p class="answer">"RAG is the fact-lookup layer — we covered it briefly on the Skills vs MCP vs RAG
+                    slide. RAG retrieves relevant information; skills tell the agent how to use it. They're
+                    complementary, but RAG wasn't the focus of today's talk."</p>
+            </div>
+
+            <div class="qa-card">
+                <p class="question">"How do we secure agent-to-agent communication?"</p>
+                <p class="answer">"A2A inherits standard web security. OAuth2 is supported out of the box, as is API key
+                    authentication. Because it runs over HTTP, all our existing security infrastructure — gateways, WAF,
+                    monitoring — applies."</p>
+            </div>
+
+            <div class="qa-card">
+                <p class="question">"Which one should we pilot first?"</p>
+                <p class="answer">"I'd suggest MCP — wrap one internal system as an MCP server. It's the lowest-risk,
+                    highest-leverage starting point. Then build a small skill on top of it. A2A becomes relevant once we
+                    have multiple agents to coordinate."</p>
+            </div>
+
+            <!-- DELIVERY TIPS -->
+            <div class="part-header" id="tips">
+                <h2>Final Delivery Tips</h2>
+                <div class="duration">Read once before going on stage</div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-num">1</div>
+                <div><strong>Don't rush.</strong> 40-45 minutes is plenty of time. Pause after key slides — especially
+                    Slide 9 (A2A vs MCP confusion-buster), Slide 17 (Skills decision tree), and Slide 22 (end-to-end).
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-num">2</div>
+                <div><strong>Repeat the one-liners.</strong> "MCP is for capability. A2A is for collaboration." Say it
+                    twice if you can — once entering Slide 9, once leaving it. Same for "MCP is the toolbox, RAG is the
+                    reference manual, Skills are the SOP."</div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-num">3</div>
+                <div><strong>Use the analogies.</strong> Employees with handbooks, forms, and SOP binders. Toolbox /
+                    reference manual / SOP. These are sticky. They'll be remembered.</div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-num">4</div>
+                <div><strong>Walk slowly through Slide 22.</strong> This is the synthesis moment. Don't blow through it.
+                    Each row should be its own beat — "Step 1, skill. Step 2, MCP. Step 3 — and here's where A2A enters
+                    the workflow." Let it land.</div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-num">5</div>
+                <div><strong>Stay conversational.</strong> Don't read these notes. Internalize them, then talk like you
+                    would to a colleague at lunch. Your audience will engage more if it feels like a conversation, not a
+                    lecture.</div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-num">6</div>
+                <div><strong>Be honest about uncertainty.</strong> If someone asks something you don't know, say so.
+                    "I'd have to dig into that — let me follow up after." That builds more trust than improvising.</div>
+            </div>
+
+            <div class="closing-note">
+                Good luck. You're well prepared. The deck is solid, the structure is right, and the message is clear.
+                Focus on connecting with the audience and the rest will follow.
+            </div>
+
+        </main>
+
+    </div>
+
+    <a href="#" class="back-top" title="Back to top">↑</a>
+
+</body>
+
+</html>
